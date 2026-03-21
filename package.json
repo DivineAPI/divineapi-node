@@ -1,0 +1,52 @@
+{
+  "name": "divineapi",
+  "version": "1.0.0",
+  "description": "Official JavaScript/TypeScript SDK for Divine API - Astrology, Horoscope, Numerology, and more",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "divineapi",
+    "astrology",
+    "horoscope",
+    "numerology",
+    "tarot",
+    "kundli",
+    "panchang",
+    "zodiac",
+    "western-astrology",
+    "vedic-astrology"
+  ],
+  "author": "DivineAPI",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}
