@@ -47,7 +47,7 @@ export class TransitApi {
 
   /** Get planetary ingress data. */
   async planetaryIngress(params: PlanetRetrogradeCombustionParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/planet-retrograde-transit', params);
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/planetary-ingress', params);
   }
 
   /** Get planet retrograde transit. */
