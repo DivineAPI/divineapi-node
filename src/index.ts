@@ -6,6 +6,7 @@ import { PdfReportApi } from './pdf/index.js';
 import { NumerologyApi } from './numerology/index.js';
 import { LifestyleApi } from './lifestyle/index.js';
 import { CalculatorApi } from './calculators/index.js';
+import { DivineApiError } from './errors.js';
 import type { DivineApiConfig } from './types.js';
 
 /**
@@ -49,7 +50,7 @@ export class DivineApi {
 
   constructor(config: DivineApiConfig) {
     if (!config.apiKey) {
-      throw new Error('apiKey is required to initialize DivineApi');
+      throw new DivineApiError('apiKey is required to initialize DivineApi', 0);
     }
 
     const client = new BaseClient(config);

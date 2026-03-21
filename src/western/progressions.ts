@@ -19,16 +19,16 @@ export class ProgressionsApi {
 
   /** Get progressed lunar events. */
   async progressedLunarEvents(params: ProgressedLunarEventsParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/progressed-lunar-events', params as unknown as Record<string, unknown>);
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/progressed-lunar-events', params);
   }
 
   /** Get planetary arc directions. */
   async planetaryArcDirections(params: PlanetaryArcDirectionsParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/planetary-arc-directions', params as unknown as Record<string, unknown>);
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/planetary-arc-directions', params);
   }
 
   /** Get secondary progressions. */
   async secondaryProgressions(params: SecondaryProgressionsParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/secondary-progressions', params as unknown as Record<string, unknown>);
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/secondary-progressions', params);
   }
 }

@@ -18,11 +18,11 @@ export class PrenatalApi {
 
   /** Get prenatal list. */
   async list(params: PrenatalListParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/prenatal-list', params as unknown as Record<string, unknown>);
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/prenatal-list', params);
   }
 
   /** Get prenatal details. */
   async details(params: PrenatalDetailsParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/prenatal-details', params as unknown as Record<string, unknown>);
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/prenatal-details', params);
   }
 }

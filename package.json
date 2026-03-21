@@ -1,6 +1,6 @@
 {
   "name": "divineapi",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Official JavaScript/TypeScript SDK for Divine API - Astrology, Horoscope, Numerology, and more",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -43,6 +43,14 @@
   ],
   "author": "DivineAPI",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DivineAPI/divineapi-node.git"
+  },
+  "homepage": "https://divineapi.com",
+  "bugs": {
+    "url": "https://github.com/DivineAPI/divineapi-node/issues"
+  },
   "engines": {
     "node": ">=18.0.0"
   },

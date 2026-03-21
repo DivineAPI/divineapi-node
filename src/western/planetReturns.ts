@@ -18,11 +18,11 @@ export class PlanetReturnsApi {
 
   /** Get planet return list. */
   async list(params: PlanetReturnListParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/planet-returns-list', params as unknown as Record<string, unknown>);
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/planet-returns-list', params);
   }
 
   /** Get planet return details. */
   async details(params: PlanetReturnDetailsParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/planet-return-details', params as unknown as Record<string, unknown>);
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/planet-return-details', params);
   }
 }

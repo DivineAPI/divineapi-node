@@ -18,21 +18,21 @@ export class CompositeApi {
 
   /** Get composite planetary positions. */
   async planetaryPositions(params: CompositeParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/composite/planetary-positions', params as unknown as Record<string, unknown>);
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/composite/planetary-positions', params);
   }
 
   /** Get composite house cusps. */
   async houseCusps(params: CompositeParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/composite/house-cusps', params as unknown as Record<string, unknown>);
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/composite/house-cusps', params);
   }
 
   /** Get composite aspect table. */
   async aspectTable(params: CompositeParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/composite/aspect-table', params as unknown as Record<string, unknown>);
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/composite/aspect-table', params);
   }
 
   /** Get composite natal wheel chart. */
   async natalWheelChart(params: CompositeChartParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/composite/natal-wheel-chart', params as unknown as Record<string, unknown>);
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/composite/natal-wheel-chart', params);
   }
 }

@@ -18,11 +18,11 @@ export class CalculatorApi {
 
   /** Calculate FLAMES compatibility. */
   async flames(params: FlamesCalculatorParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-7.divineapi.com', '/calculator/v1/flames-calculator', params as unknown as Record<string, unknown>);
+    return this.client.post('astroapi-7.divineapi.com', '/calculator/v1/flames-calculator', params);
   }
 
   /** Calculate love compatibility. */
   async love(params: LoveCalculatorParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-7.divineapi.com', '/calculator/v1/love-calculator', params as unknown as Record<string, unknown>);
+    return this.client.post('astroapi-7.divineapi.com', '/calculator/v1/love-calculator', params);
   }
 }
