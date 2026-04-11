@@ -28,12 +28,12 @@ export class SynastryApi {
 
   /** Get synastry natal wheel chart. */
   async natalWheelChart(params: SynastryChartParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-4.divineapi.com', '/western-api/v1/synastry/natal-wheel-chart', params);
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v2/synastry/natal-wheel-chart', params);
   }
 
-  /** Get synastry aspects. */
-  async aspect(params: SynastryParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-4.divineapi.com', '/western-api/v1/synastry/aspect', params);
+  /** Get synastry aspect table. */
+  async aspectTable(params: SynastryParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v2/synastry/aspect-table', params);
   }
 
   /** Get harmonious aspect reading. */

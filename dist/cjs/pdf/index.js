@@ -62,6 +62,10 @@ class PdfReportApi {
     async numerologyReport(params) {
         return this.client.post('pdf.divineapi.com', '/numerology/v2/report', params);
     }
+    /** Generate Reports V2 PDF. */
+    async reportsGenerate(params) {
+        return this.client.post('pdf.divineapi.com', '/api/v1/reports/generate', params);
+    }
 }
 exports.PdfReportApi = PdfReportApi;
 //# sourceMappingURL=index.js.map

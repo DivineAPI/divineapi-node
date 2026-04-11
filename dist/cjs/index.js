@@ -9,6 +9,7 @@ const index_js_4 = require("./pdf/index.js");
 const index_js_5 = require("./numerology/index.js");
 const index_js_6 = require("./lifestyle/index.js");
 const index_js_7 = require("./calculators/index.js");
+const errors_js_1 = require("./errors.js");
 /**
  * Divine API SDK client.
  *
@@ -49,7 +50,7 @@ class DivineApi {
     calculators;
     constructor(config) {
         if (!config.apiKey) {
-            throw new Error('apiKey is required to initialize DivineApi');
+            throw new errors_js_1.DivineApiError('apiKey is required to initialize DivineApi', 0);
         }
         const client = new client_js_1.BaseClient(config);
         this.horoscope = new index_js_1.HoroscopeApi(client);
@@ -90,10 +91,10 @@ var index_js_13 = require("./lifestyle/index.js");
 Object.defineProperty(exports, "LifestyleApi", { enumerable: true, get: function () { return index_js_13.LifestyleApi; } });
 var index_js_14 = require("./calculators/index.js");
 Object.defineProperty(exports, "CalculatorApi", { enumerable: true, get: function () { return index_js_14.CalculatorApi; } });
-var errors_js_1 = require("./errors.js");
-Object.defineProperty(exports, "DivineApiError", { enumerable: true, get: function () { return errors_js_1.DivineApiError; } });
-Object.defineProperty(exports, "AuthenticationError", { enumerable: true, get: function () { return errors_js_1.AuthenticationError; } });
-Object.defineProperty(exports, "RateLimitError", { enumerable: true, get: function () { return errors_js_1.RateLimitError; } });
-Object.defineProperty(exports, "ValidationError", { enumerable: true, get: function () { return errors_js_1.ValidationError; } });
-Object.defineProperty(exports, "NetworkError", { enumerable: true, get: function () { return errors_js_1.NetworkError; } });
+var errors_js_2 = require("./errors.js");
+Object.defineProperty(exports, "DivineApiError", { enumerable: true, get: function () { return errors_js_2.DivineApiError; } });
+Object.defineProperty(exports, "AuthenticationError", { enumerable: true, get: function () { return errors_js_2.AuthenticationError; } });
+Object.defineProperty(exports, "RateLimitError", { enumerable: true, get: function () { return errors_js_2.RateLimitError; } });
+Object.defineProperty(exports, "ValidationError", { enumerable: true, get: function () { return errors_js_2.ValidationError; } });
+Object.defineProperty(exports, "NetworkError", { enumerable: true, get: function () { return errors_js_2.NetworkError; } });
 //# sourceMappingURL=index.js.map

@@ -24,7 +24,7 @@ class NatalApi {
     }
     /** Get natal wheel chart image. */
     async natalWheelChart(params) {
-        return this.client.post('astroapi-4.divineapi.com', '/western-api/v1/natal-wheel-chart', params);
+        return this.client.post('astroapi-8.divineapi.com', '/western-api/v2/natal-wheel-chart', params);
     }
     /** Get general sign report for a planet. */
     async generalSignReport(planet, params) {

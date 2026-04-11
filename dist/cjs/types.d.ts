@@ -11,20 +11,24 @@ export interface DivineApiConfig {
 }
 /** Base host definitions */
 export type ApiHost = 'astroapi-1.divineapi.com' | 'astroapi-2.divineapi.com' | 'astroapi-3.divineapi.com' | 'astroapi-4.divineapi.com' | 'astroapi-5.divineapi.com' | 'astroapi-7.divineapi.com' | 'astroapi-8.divineapi.com' | 'pdf.divineapi.com';
-export interface LanguageParam {
+/** Allow all param interfaces to be passed as Record<string, unknown> */
+export interface BaseParams {
+    [key: string]: unknown;
+}
+export interface LanguageParam extends BaseParams {
     /** Language code (e.g., "en", "hi") */
     lan?: string;
 }
-export interface TimezoneParam {
+export interface TimezoneParam extends BaseParams {
     /** Timezone offset (e.g., 5.5 for IST) */
     tzone: number;
 }
-export interface DateParams {
+export interface DateParams extends BaseParams {
     day: number;
     month: number;
     year: number;
 }
-export interface LocationParams {
+export interface LocationParams extends BaseParams {
     place: string;
     lat: number;
     lon: number;
@@ -36,7 +40,7 @@ export interface BirthParams extends DateParams, LocationParams, TimezoneParam, 
     sec?: number;
     gender?: string;
 }
-export interface ChartStylingParams {
+export interface ChartStylingParams extends BaseParams {
     chart_style?: string;
     chart_color?: string;
     font_color?: string;
@@ -44,7 +48,7 @@ export interface ChartStylingParams {
     sign_color?: string;
     sign_font_size?: string;
 }
-export interface CoupleBirthParams extends LanguageParam {
+export interface CoupleBirthParams extends LanguageParam, BaseParams {
     p1_full_name: string;
     p1_day: number;
     p1_month: number;
@@ -70,7 +74,7 @@ export interface CoupleBirthParams extends LanguageParam {
     p2_lon: number;
     p2_tzone: number;
 }
-export interface TransitDateParams {
+export interface TransitDateParams extends BaseParams {
     transit_day: number;
     transit_month: number;
     transit_year: number;
@@ -78,7 +82,7 @@ export interface TransitDateParams {
     transit_min: number;
     transit_sec?: number;
 }
-export interface PdfCompanyParams {
+export interface PdfCompanyParams extends BaseParams {
     company_name?: string;
     company_url?: string;
     company_email?: string;
@@ -112,10 +116,10 @@ export interface ChineseHoroscopeParams extends TimezoneParam, LanguageParam {
 export interface NumerologyHoroscopeParams extends TimezoneParam, LanguageParam, DateParams {
     number: number;
 }
-export interface CardImageParams extends LanguageParam {
+export interface CardImageParams extends LanguageParam, BaseParams {
     card_image?: string;
 }
-export interface LoveCompatibilityParams extends LanguageParam {
+export interface LoveCompatibilityParams extends LanguageParam, BaseParams {
     sign_1: string;
     sign_2: string;
 }
@@ -308,7 +312,7 @@ export interface PdfNumerologyReportParams extends PdfCompanyParams {
     year: number;
     report_code: string;
 }
-export interface NewMobileNumberParams {
+export interface NewMobileNumberParams extends BaseParams {
     fname: string;
     lname: string;
     day: number;
@@ -325,7 +329,7 @@ export interface ChaldeanNumerologyParams extends LanguageParam {
     fname: string;
     lname: string;
 }
-export interface CoreNumbersParams {
+export interface CoreNumbersParams extends BaseParams {
     full_name: string;
     day: number;
     month: number;
@@ -337,11 +341,11 @@ export interface LifestyleParams extends TimezoneParam, LanguageParam {
     sign: string;
     h_day: string;
 }
-export interface FlamesCalculatorParams {
+export interface FlamesCalculatorParams extends BaseParams {
     full_name: string;
     partner_name: string;
 }
-export interface LoveCalculatorParams {
+export interface LoveCalculatorParams extends BaseParams {
     your_name: string;
     partner_name: string;
     your_gender: string;

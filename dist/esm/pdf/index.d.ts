@@ -33,5 +33,7 @@ export declare class PdfReportApi {
     predictionReport(params: PdfNumerologyPredictionParams): Promise<ApiResponse>;
     /** Generate Numerology Report PDF. */
     numerologyReport(params: PdfNumerologyReportParams): Promise<ApiResponse>;
+    /** Generate Reports V2 PDF. */
+    reportsGenerate(params: PdfReportParams): Promise<ApiResponse>;
 }
 //# sourceMappingURL=index.d.ts.map

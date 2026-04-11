@@ -13,8 +13,8 @@ export declare class SynastryApi {
     houseCusps(params: SynastryParams): Promise<ApiResponse>;
     /** Get synastry natal wheel chart. */
     natalWheelChart(params: SynastryChartParams): Promise<ApiResponse>;
-    /** Get synastry aspects. */
-    aspect(params: SynastryParams): Promise<ApiResponse>;
+    /** Get synastry aspect table. */
+    aspectTable(params: SynastryParams): Promise<ApiResponse>;
     /** Get harmonious aspect reading. */
     harmoniousAspectReading(params: SynastryParams): Promise<ApiResponse>;
     /** Get conflicting aspect reading. */

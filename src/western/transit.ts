@@ -37,7 +37,7 @@ export class TransitApi {
 
   /** Get monthly transit. */
   async monthly(params: FullTransitParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/transit/monthly', params);
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v2/transit/monthly', params);
   }
 
   /** Get full transit data. */
@@ -58,6 +58,16 @@ export class TransitApi {
   /** Get planet combustion transit. */
   async planetCombustionTransit(params: PlanetRetrogradeCombustionParams): Promise<ApiResponse> {
     return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/planet-combustion-transit', params);
+  }
+
+  /** Get transit wheel chart. */
+  async wheelChart(params: FullTransitParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/transit/wheel-chart', params);
+  }
+
+  /** Get transit planetary positions. */
+  async planetaryPositions(params: FullTransitParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/transit/planetary-positions', params);
   }
 
   /** Get transit house data. */

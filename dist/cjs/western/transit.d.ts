@@ -23,6 +23,10 @@ export declare class TransitApi {
     planetRetrogradeTransit(params: PlanetRetrogradeCombustionParams): Promise<ApiResponse>;
     /** Get planet combustion transit. */
     planetCombustionTransit(params: PlanetRetrogradeCombustionParams): Promise<ApiResponse>;
+    /** Get transit wheel chart. */
+    wheelChart(params: FullTransitParams): Promise<ApiResponse>;
+    /** Get transit planetary positions. */
+    planetaryPositions(params: FullTransitParams): Promise<ApiResponse>;
     /** Get transit house data. */
     house(params: TransitHouseParams): Promise<ApiResponse>;
 }
