@@ -1,6 +1,6 @@
 {
   "name": "divineapi",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Official JavaScript/TypeScript SDK for Divine API - Astrology, Horoscope, Numerology, and more",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
