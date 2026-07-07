@@ -6,6 +6,7 @@ import type {
   DateSpecificFestivalParams,
   FindFestivalParams,
   MalayalamFestivalParams,
+  TamilFestivalParams,
 } from '../types.js';
 
 /**
@@ -97,5 +98,10 @@ export class FestivalApi {
   /** Get Malayalam (Kerala) festivals for a year (Vishu, Onam, Guruvayur Ekadashi, etc.). */
   async malayalamFestivals(params: MalayalamFestivalParams): Promise<ApiResponse> {
     return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/malayalam-festivals', params);
+  }
+
+  /** Get Tamil festivals for a year (Thai Pongal, Puthandu, Karthigai Deepam, etc.). */
+  async tamilFestivals(params: TamilFestivalParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/tamil-festivals', params);
   }
 }
