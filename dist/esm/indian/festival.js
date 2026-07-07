@@ -71,5 +71,9 @@ export class FestivalApi {
     async malayalamFestivals(params) {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/malayalam-festivals', params);
     }
+    /** Get Tamil festivals for a year (Thai Pongal, Puthandu, Karthigai Deepam, etc.). */
+    async tamilFestivals(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/tamil-festivals', params);
+    }
 }
 //# sourceMappingURL=festival.js.map
