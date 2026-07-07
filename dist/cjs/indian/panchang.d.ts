@@ -29,6 +29,8 @@ export declare class PanchangApi {
     findRituAndAnaya(params: PanchangWithSanskritParams): Promise<ApiResponse>;
     /** Find auspicious timings. */
     findAuspiciousTimings(params: PanchangBaseParams): Promise<ApiResponse>;
+    /** Find Gowri Panchangam (auspicious/inauspicious day and night segments, Nalla Neram). */
+    findGowriPanchangam(params: PanchangBaseParams): Promise<ApiResponse>;
     /** Find inauspicious timings. */
     findInauspiciousTimings(params: PanchangBaseParams): Promise<ApiResponse>;
     /** Find nivas and shool details. */

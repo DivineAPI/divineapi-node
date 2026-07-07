@@ -54,6 +54,10 @@ class PanchangApi {
     async findAuspiciousTimings(params) {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/auspicious-timings', params);
     }
+    /** Find Gowri Panchangam (auspicious/inauspicious day and night segments, Nalla Neram). */
+    async findGowriPanchangam(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/find-gowri-panchangam', params);
+    }
     /** Find inauspicious timings. */
     async findInauspiciousTimings(params) {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/inauspicious-timings', params);

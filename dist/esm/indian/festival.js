@@ -67,5 +67,9 @@ export class FestivalApi {
     async findFestival(params) {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/find-festival', params);
     }
+    /** Get Malayalam (Kerala) festivals for a year (Vishu, Onam, Guruvayur Ekadashi, etc.). */
+    async malayalamFestivals(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/malayalam-festivals', params);
+    }
 }
 //# sourceMappingURL=festival.js.map

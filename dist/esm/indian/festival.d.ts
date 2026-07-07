@@ -1,5 +1,5 @@
 import { BaseClient } from '../client.js';
-import type { ApiResponse, FestivalMonthParams, EnglishCalendarFestivalParams, DateSpecificFestivalParams, FindFestivalParams } from '../types.js';
+import type { ApiResponse, FestivalMonthParams, EnglishCalendarFestivalParams, DateSpecificFestivalParams, FindFestivalParams, MalayalamFestivalParams } from '../types.js';
 /**
  * Indian Festival API endpoints.
  * Host: astroapi-3.divineapi.com
@@ -37,5 +37,7 @@ export declare class FestivalApi {
     dateSpecificFestivals(params: DateSpecificFestivalParams): Promise<ApiResponse>;
     /** Find a specific festival. */
     findFestival(params: FindFestivalParams): Promise<ApiResponse>;
+    /** Get Malayalam (Kerala) festivals for a year (Vishu, Onam, Guruvayur Ekadashi, etc.). */
+    malayalamFestivals(params: MalayalamFestivalParams): Promise<ApiResponse>;
 }
 //# sourceMappingURL=festival.d.ts.map
