@@ -176,6 +176,7 @@ client.indian.festival.ashvinaFestivals(params)
 client.indian.festival.englishCalendarFestivals(params)
 client.indian.festival.dateSpecificFestivals(params)
 client.indian.festival.findFestival(params)
+client.indian.festival.malayalamFestivals(params)
 ```
 
 ### Western Astrology - Natal

@@ -215,6 +215,10 @@ export interface FindFestivalParams extends LocationParams, TimezoneParam {
   festival: string;
 }
 
+export interface MalayalamFestivalParams extends LocationParams, TimezoneParam {
+  year: number;
+}
+
 // ── Kundli Params ──
 
 export interface KundliBirthParams extends BirthParams {}

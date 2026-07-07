@@ -5,6 +5,7 @@ import type {
   EnglishCalendarFestivalParams,
   DateSpecificFestivalParams,
   FindFestivalParams,
+  MalayalamFestivalParams,
 } from '../types.js';
 
 /**
@@ -91,5 +92,10 @@ export class FestivalApi {
   /** Find a specific festival. */
   async findFestival(params: FindFestivalParams): Promise<ApiResponse> {
     return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/find-festival', params);
+  }
+
+  /** Get Malayalam (Kerala) festivals for a year (Vishu, Onam, Guruvayur Ekadashi, etc.). */
+  async malayalamFestivals(params: MalayalamFestivalParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/malayalam-festivals', params);
   }
 }
