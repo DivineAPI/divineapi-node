@@ -249,6 +249,30 @@ export interface PlanetAnalysisParams extends BirthParams {
   analysis_planet: string;
 }
 
+// ── Lal Kitab Params ──
+
+export interface LalKitabMahadashaContentParams extends LanguageParam {
+  /** Mahadasha planet (no birth data needed) */
+  maha_dasha: string;
+}
+
+export interface LalKitabAntardashaContentParams extends LanguageParam {
+  /** Mahadasha planet (no birth data needed) */
+  maha_dasha: string;
+  /** Must be a valid antardasha for the chosen mahadasha; the API lists the valid values on mismatch */
+  antar_dasha: string;
+}
+
+export interface LalKitabHouseSignificationParams extends BirthParams {
+  /** House number (1-12) */
+  house_no: number;
+}
+
+export interface LalKitabVarshphalParams extends BirthParams {
+  /** Year for the annual (varshphal) chart */
+  varshphal_year: number;
+}
+
 // ── Match Making Params ──
 
 export interface MatchMakingParams extends CoupleBirthParams {}

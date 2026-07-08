@@ -152,6 +152,24 @@ client.indian.kundli.prastharaChakra(params)
 client.indian.kundli.mahaDashaAnalysis(params)
 client.indian.kundli.antarDashaAnalysis(params)
 client.indian.kundli.pratyantarDashaAnalysis(params)
+// Lal Kitab
+client.indian.kundli.lalKitabPlanetaryPositions(params)
+client.indian.kundli.lalKitabHoroscopeChart(params)
+client.indian.kundli.lalKitabHousePosition(params)
+client.indian.kundli.lalKitabConjunctions(params)
+client.indian.kundli.lalKitabTeva(params)
+client.indian.kundli.lalKitabPlanetAnalysis(params)   // params + analysis_planet
+client.indian.kundli.lalKitabDasha(params)
+client.indian.kundli.lalKitabPlanetTypes(params)
+client.indian.kundli.lalKitabMahadashaContent({ maha_dasha: 'saturn' })
+client.indian.kundli.lalKitabAntardashaContent({ maha_dasha: 'saturn', antar_dasha: 'mercury' })
+client.indian.kundli.lalKitabDebts(params)
+client.indian.kundli.lalKitabHouseSignification(params)   // params + house_no (1-12)
+// Lal Kitab Varshphal (params + varshphal_year)
+client.indian.kundli.lalKitabVarshphalVarshaPravesh(params)
+client.indian.kundli.lalKitabVarshphalPlanetaryPositions(params)
+client.indian.kundli.lalKitabVarshphalMuntha(params)
+client.indian.kundli.lalKitabVarshphalChart(params)
 ```
 
 ### Indian Astrology - Match Making

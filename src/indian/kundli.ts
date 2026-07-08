@@ -8,6 +8,10 @@ import type {
   SubPlanetChartParams,
   KundliTransitParams,
   PlanetAnalysisParams,
+  LalKitabMahadashaContentParams,
+  LalKitabAntardashaContentParams,
+  LalKitabHouseSignificationParams,
+  LalKitabVarshphalParams,
 } from '../types.js';
 
 /**
@@ -224,5 +228,87 @@ export class KundliApi {
   /** Get sudarshana chakra. */
   async sudarshanChakra(params: KundliBirthParams): Promise<ApiResponse> {
     return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/sudarshana-chakra', params);
+  }
+
+  // ── Lal Kitab ──
+
+  /** Get Lal Kitab planetary positions. */
+  async lalKitabPlanetaryPositions(params: KundliBirthParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/planetary-positions', params);
+  }
+
+  /** Get Lal Kitab horoscope chart. */
+  async lalKitabHoroscopeChart(params: KundliBirthParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/horoscope-chart', params);
+  }
+
+  /** Get Lal Kitab house position. */
+  async lalKitabHousePosition(params: KundliBirthParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/house-position', params);
+  }
+
+  /** Get Lal Kitab conjunctions. */
+  async lalKitabConjunctions(params: KundliBirthParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/conjunctions', params);
+  }
+
+  /** Get Lal Kitab teva. */
+  async lalKitabTeva(params: KundliBirthParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/teva', params);
+  }
+
+  /** Get Lal Kitab planet-specific analysis (analysis_planet: sun, moon, mars, mercury, jupiter, venus, saturn, rahu or ketu). */
+  async lalKitabPlanetAnalysis(params: PlanetAnalysisParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/planet-analysis', params);
+  }
+
+  /** Get Lal Kitab dasha. */
+  async lalKitabDasha(params: KundliBirthParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/dasha', params);
+  }
+
+  /** Get Lal Kitab planet types. */
+  async lalKitabPlanetTypes(params: KundliBirthParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/planet-types', params);
+  }
+
+  /** Get Lal Kitab mahadasha content (no birth data needed). */
+  async lalKitabMahadashaContent(params: LalKitabMahadashaContentParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/mahadasha-content', params);
+  }
+
+  /** Get Lal Kitab antardasha content (no birth data needed). The antar_dasha must be valid for the chosen maha_dasha; the API lists the valid values on mismatch. */
+  async lalKitabAntardashaContent(params: LalKitabAntardashaContentParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/antardasha-content', params);
+  }
+
+  /** Get Lal Kitab debts. */
+  async lalKitabDebts(params: KundliBirthParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/debts', params);
+  }
+
+  /** Get Lal Kitab house signification (house_no: 1-12). */
+  async lalKitabHouseSignification(params: LalKitabHouseSignificationParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/house-signification', params);
+  }
+
+  /** Get Lal Kitab varshphal varsha pravesh for the given varshphal_year. */
+  async lalKitabVarshphalVarshaPravesh(params: LalKitabVarshphalParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/varshphal/varsha-pravesh', params);
+  }
+
+  /** Get Lal Kitab varshphal planetary positions for the given varshphal_year. */
+  async lalKitabVarshphalPlanetaryPositions(params: LalKitabVarshphalParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/varshphal/planetary-positions', params);
+  }
+
+  /** Get Lal Kitab varshphal muntha for the given varshphal_year. */
+  async lalKitabVarshphalMuntha(params: LalKitabVarshphalParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/varshphal/muntha', params);
+  }
+
+  /** Get Lal Kitab varshphal chart for the given varshphal_year. */
+  async lalKitabVarshphalChart(params: LalKitabVarshphalParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/varshphal/chart', params);
   }
 }

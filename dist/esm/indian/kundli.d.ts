@@ -1,5 +1,5 @@
 import { BaseClient } from '../client.js';
-import type { ApiResponse, KundliBirthParams, HoroscopeChartParams, VimshottariDashaParams, DashaAnalysisParams, SubPlanetChartParams, KundliTransitParams, PlanetAnalysisParams } from '../types.js';
+import type { ApiResponse, KundliBirthParams, HoroscopeChartParams, VimshottariDashaParams, DashaAnalysisParams, SubPlanetChartParams, KundliTransitParams, PlanetAnalysisParams, LalKitabMahadashaContentParams, LalKitabAntardashaContentParams, LalKitabHouseSignificationParams, LalKitabVarshphalParams } from '../types.js';
 /**
  * Indian Kundli (Birth Chart) API endpoints.
  * Host: astroapi-3.divineapi.com
@@ -90,5 +90,37 @@ export declare class KundliApi {
     planetAnalysis(params: PlanetAnalysisParams): Promise<ApiResponse>;
     /** Get sudarshana chakra. */
     sudarshanChakra(params: KundliBirthParams): Promise<ApiResponse>;
+    /** Get Lal Kitab planetary positions. */
+    lalKitabPlanetaryPositions(params: KundliBirthParams): Promise<ApiResponse>;
+    /** Get Lal Kitab horoscope chart. */
+    lalKitabHoroscopeChart(params: KundliBirthParams): Promise<ApiResponse>;
+    /** Get Lal Kitab house position. */
+    lalKitabHousePosition(params: KundliBirthParams): Promise<ApiResponse>;
+    /** Get Lal Kitab conjunctions. */
+    lalKitabConjunctions(params: KundliBirthParams): Promise<ApiResponse>;
+    /** Get Lal Kitab teva. */
+    lalKitabTeva(params: KundliBirthParams): Promise<ApiResponse>;
+    /** Get Lal Kitab planet-specific analysis (analysis_planet: sun, moon, mars, mercury, jupiter, venus, saturn, rahu or ketu). */
+    lalKitabPlanetAnalysis(params: PlanetAnalysisParams): Promise<ApiResponse>;
+    /** Get Lal Kitab dasha. */
+    lalKitabDasha(params: KundliBirthParams): Promise<ApiResponse>;
+    /** Get Lal Kitab planet types. */
+    lalKitabPlanetTypes(params: KundliBirthParams): Promise<ApiResponse>;
+    /** Get Lal Kitab mahadasha content (no birth data needed). */
+    lalKitabMahadashaContent(params: LalKitabMahadashaContentParams): Promise<ApiResponse>;
+    /** Get Lal Kitab antardasha content (no birth data needed). The antar_dasha must be valid for the chosen maha_dasha; the API lists the valid values on mismatch. */
+    lalKitabAntardashaContent(params: LalKitabAntardashaContentParams): Promise<ApiResponse>;
+    /** Get Lal Kitab debts. */
+    lalKitabDebts(params: KundliBirthParams): Promise<ApiResponse>;
+    /** Get Lal Kitab house signification (house_no: 1-12). */
+    lalKitabHouseSignification(params: LalKitabHouseSignificationParams): Promise<ApiResponse>;
+    /** Get Lal Kitab varshphal varsha pravesh for the given varshphal_year. */
+    lalKitabVarshphalVarshaPravesh(params: LalKitabVarshphalParams): Promise<ApiResponse>;
+    /** Get Lal Kitab varshphal planetary positions for the given varshphal_year. */
+    lalKitabVarshphalPlanetaryPositions(params: LalKitabVarshphalParams): Promise<ApiResponse>;
+    /** Get Lal Kitab varshphal muntha for the given varshphal_year. */
+    lalKitabVarshphalMuntha(params: LalKitabVarshphalParams): Promise<ApiResponse>;
+    /** Get Lal Kitab varshphal chart for the given varshphal_year. */
+    lalKitabVarshphalChart(params: LalKitabVarshphalParams): Promise<ApiResponse>;
 }
 //# sourceMappingURL=kundli.d.ts.map
