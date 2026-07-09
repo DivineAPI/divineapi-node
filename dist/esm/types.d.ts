@@ -175,6 +175,9 @@ export interface MalayalamFestivalParams extends LocationParams, TimezoneParam {
 export interface TamilFestivalParams extends LocationParams, TimezoneParam {
     year: number;
 }
+export interface SankrantiFestivalParams extends LocationParams, TimezoneParam {
+    year: number;
+}
 export interface KundliBirthParams extends BirthParams {
 }
 export interface HoroscopeChartParams extends BirthParams, ChartStylingParams {

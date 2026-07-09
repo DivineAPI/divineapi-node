@@ -7,6 +7,7 @@ import type {
   FindFestivalParams,
   MalayalamFestivalParams,
   TamilFestivalParams,
+  SankrantiFestivalParams,
 } from '../types.js';
 
 /**
@@ -103,5 +104,10 @@ export class FestivalApi {
   /** Get Tamil festivals for a year (Thai Pongal, Puthandu, Karthigai Deepam, etc.). */
   async tamilFestivals(params: TamilFestivalParams): Promise<ApiResponse> {
     return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/tamil-festivals', params);
+  }
+
+  /** Get Sankranti festivals for a year. */
+  async sankrantiFestivals(params: SankrantiFestivalParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/sankranti-festivals', params);
   }
 }

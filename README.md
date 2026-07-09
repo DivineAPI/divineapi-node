@@ -196,6 +196,7 @@ client.indian.festival.dateSpecificFestivals(params)
 client.indian.festival.findFestival(params)
 client.indian.festival.malayalamFestivals(params)
 client.indian.festival.tamilFestivals(params)
+client.indian.festival.sankrantiFestivals(params)
 ```
 
 ### Western Astrology - Natal

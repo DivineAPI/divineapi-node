@@ -223,6 +223,10 @@ export interface TamilFestivalParams extends LocationParams, TimezoneParam {
   year: number;
 }
 
+export interface SankrantiFestivalParams extends LocationParams, TimezoneParam {
+  year: number;
+}
+
 // ── Kundli Params ──
 
 export interface KundliBirthParams extends BirthParams {}

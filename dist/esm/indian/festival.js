@@ -75,5 +75,9 @@ export class FestivalApi {
     async tamilFestivals(params) {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/tamil-festivals', params);
     }
+    /** Get Sankranti festivals for a year. */
+    async sankrantiFestivals(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/sankranti-festivals', params);
+    }
 }
 //# sourceMappingURL=festival.js.map
