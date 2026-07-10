@@ -16,9 +16,15 @@ export class CalculatorApi {
     this.client = client;
   }
 
-  /** Calculate FLAMES compatibility. */
+  /**
+   * Calculate FLAMES compatibility.
+   * The API field is `your_name` (not `full_name`); a legacy `full_name` is
+   * mapped to `your_name` for backward compatibility.
+   */
   async flames(params: FlamesCalculatorParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-7.divineapi.com', '/calculator/v1/flames-calculator', params);
+    const { full_name, your_name, ...rest } = params as FlamesCalculatorParams & { full_name?: string };
+    const payload = { ...rest, your_name: your_name ?? full_name };
+    return this.client.post('astroapi-7.divineapi.com', '/calculator/v1/flames-calculator', payload);
   }
 
   /** Calculate love compatibility. */

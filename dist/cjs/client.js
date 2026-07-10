@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BaseClient = void 0;
+const houseSystem_js_1 = require("./houseSystem.js");
 const errors_js_1 = require("./errors.js");
 /**
  * Base HTTP client for Divine API.
@@ -24,10 +25,15 @@ class BaseClient {
      */
     async post(host, path, params = {}) {
         const url = `https://${host}${path}`;
+        // Normalize request params before sending:
+        //  - map the Western house_system friendly name to its letter code, and
+        //  - default the birth second(s) to 0 (the API requires `sec`).
+        // Both are no-ops for endpoints that lack the relevant fields.
+        const normalized = (0, houseSystem_js_1.applyBirthSecondDefaults)((0, houseSystem_js_1.applyHouseSystem)(params));
         // Build form data
         const formData = new URLSearchParams();
         formData.append('api_key', this.apiKey);
-        for (const [key, value] of Object.entries(params)) {
+        for (const [key, value] of Object.entries(normalized)) {
             if (value !== undefined && value !== null) {
                 formData.append(key, String(value));
             }

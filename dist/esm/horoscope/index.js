@@ -7,9 +7,19 @@ export class HoroscopeApi {
     constructor(client) {
         this.client = client;
     }
-    /** Get daily horoscope for a zodiac sign. */
+    /**
+     * Get daily horoscope for a zodiac sign.
+     * The reading is selected by `h_day` ('today' | 'tomorrow' | 'yesterday').
+     * The deprecated `day`/`month`/`year` fields are ignored by the API and are
+     * not forwarded.
+     */
     async daily(params) {
-        return this.client.post('astroapi-5.divineapi.com', '/api/v5/daily-horoscope', params);
+        // day/month/year are deprecated and ignored by the endpoint; do not send them.
+        const { day, month, year, ...payload } = params;
+        void day;
+        void month;
+        void year;
+        return this.client.post('astroapi-5.divineapi.com', '/api/v5/daily-horoscope', payload);
     }
     /** Get weekly horoscope for a zodiac sign. */
     async weekly(params) {

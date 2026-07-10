@@ -5,6 +5,8 @@ import type {
   WesternBirthParams,
   WeeklyTransitParams,
   FullTransitParams,
+  MonthlyTransitParams,
+  TransitChartParams,
   PlanetRetrogradeCombustionParams,
   TransitHouseParams,
 } from '../types.js';
@@ -35,12 +37,12 @@ export class TransitApi {
     return this.client.post('astroapi-4.divineapi.com', '/western-api/v1/transit/weekly', params);
   }
 
-  /** Get monthly transit. */
-  async monthly(params: FullTransitParams): Promise<ApiResponse> {
+  /** Get monthly transit. Requires transit_planet, transit_month, transit_year, and the transit location. */
+  async monthly(params: MonthlyTransitParams): Promise<ApiResponse> {
     return this.client.post('astroapi-8.divineapi.com', '/western-api/v2/transit/monthly', params);
   }
 
-  /** Get full transit data. */
+  /** Get full transit data. Requires transit_planet plus the transit date and location. */
   async full(params: FullTransitParams): Promise<ApiResponse> {
     return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/full-transit', params);
   }
@@ -60,13 +62,13 @@ export class TransitApi {
     return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/planet-combustion-transit', params);
   }
 
-  /** Get transit wheel chart. */
-  async wheelChart(params: FullTransitParams): Promise<ApiResponse> {
+  /** Get transit wheel chart. Requires the transit date and location (no transit_planet). */
+  async wheelChart(params: TransitChartParams): Promise<ApiResponse> {
     return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/transit/wheel-chart', params);
   }
 
-  /** Get transit planetary positions. */
-  async planetaryPositions(params: FullTransitParams): Promise<ApiResponse> {
+  /** Get transit planetary positions. Requires the transit date and location (no transit_planet). */
+  async planetaryPositions(params: TransitChartParams): Promise<ApiResponse> {
     return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/transit/planetary-positions', params);
   }
 

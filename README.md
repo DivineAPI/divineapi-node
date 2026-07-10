@@ -24,11 +24,11 @@ const client = new DivineApi({
 });
 
 // Daily Horoscope
+// The reading is chosen with h_day: 'today', 'tomorrow', or 'yesterday'
+// (the API does not accept a calendar date here).
 const horoscope = await client.horoscope.daily({
   sign: 'aries',
-  day: 21,
-  month: 3,
-  year: 2026,
+  h_day: 'today',
   tzone: 5.5,
   lan: 'en',
 });
@@ -41,10 +41,10 @@ console.log(horoscope);
 ### Horoscope & Tarot
 
 ```typescript
-client.horoscope.daily(params)
-client.horoscope.weekly(params)
-client.horoscope.monthly(params)
-client.horoscope.yearly(params)
+client.horoscope.daily(params)    // params.h_day: 'today' | 'tomorrow' | 'yesterday'
+client.horoscope.weekly(params)   // params.week:  'current' | 'prev' | 'next'
+client.horoscope.monthly(params)  // params.month: 'current' | 'prev' | 'next'
+client.horoscope.yearly(params)   // params.year:  'current' | 'prev' | 'next'
 client.horoscope.chinese(params)
 client.horoscope.numerology(params)
 client.horoscope.yesOrNoTarot(params)
@@ -222,7 +222,11 @@ client.western.natal.declinationsParallels(params)
 client.western.natal.aspectPatterns(params)
 client.western.natal.chartShape(params)
 client.western.natal.otherMinorBodies(params)
-client.western.natal.dominants(params)
+client.western.natal.dominants(params)   // params.method: 'TRADITIONAL' | 'MODERN' (required)
+
+// Note: house_system accepts a friendly name ('placidus', 'koch', 'whole-sign', ...)
+// or a letter code ('P', 'K', 'W', ...); it is mapped to the letter code the API
+// requires before the request is sent. Omit it to use the default (Placidus).
 ```
 
 ### Western Astrology - Synastry
@@ -246,15 +250,15 @@ client.western.synastry.financialCompatibility(params)
 ### Western Astrology - Transit
 
 ```typescript
-client.western.transit.basic(params)
+client.western.transit.basic(params)    // + transit_day/month/year/hour/min/sec
 client.western.transit.daily(params)
-client.western.transit.weekly(params)
-client.western.transit.monthly(params)
-client.western.transit.full(params)
+client.western.transit.weekly(params)   // + transit_planet (required)
+client.western.transit.monthly(params)  // + transit_planet, transit_month, transit_year, transit_place/lat/lon/tzone
+client.western.transit.full(params)     // + transit_planet, transit_day/month/year, transit_place/lat/lon/tzone
 client.western.transit.planetaryIngress(params)
 client.western.transit.planetRetrogradeTransit(params)
 client.western.transit.planetCombustionTransit(params)
-client.western.transit.house(params)
+client.western.transit.house(params)    // + transit_day/month/year/hour/min/sec, transit_place/lat/lon/tzone
 ```
 
 ### Western Astrology - Composite Chart
@@ -269,26 +273,32 @@ client.western.composite.natalWheelChart(params)
 ### Western Astrology - Planet Returns
 
 ```typescript
-client.western.planetReturns.list(params)
-client.western.planetReturns.details(params)
+client.western.planetReturns.list(params)     // + planet, return_year, return_place/lat/lon/tzone
+client.western.planetReturns.details(params)  // + planet, return_key, return_year, return_place/lat/lon/tzone
 ```
 
 ### Western Astrology - Progressions
 
 ```typescript
-client.western.progressions.progressedLunarEvents(params)
-client.western.progressions.planetaryArcDirections(params)
-client.western.progressions.secondaryProgressions(params)
+client.western.progressions.progressedLunarEvents(params)   // + prenatal_type (required)
+client.western.progressions.planetaryArcDirections(params)  // + planet, progressed_day/month/year
+client.western.progressions.secondaryProgressions(params)   // + progressed_day/month/year/hour/min/sec, progressed_type
 ```
 
 ### Western Astrology - Prenatal
 
 ```typescript
-client.western.prenatal.list(params)
-client.western.prenatal.details(params)
+client.western.prenatal.list(params)     // + prenatal_type (required)
+client.western.prenatal.details(params)  // + prenatal_key (required)
 ```
 
 ### PDF Reports
+
+All PDF reports REQUIRE the six branding fields on every call:
+`company_url`, `logo_url`, `footer_text`, `company_name`, `company_email`,
+`company_bio` (only `company_mobile` is optional). `natalReport` also needs
+`report_code` + `theme`; the numerology PDFs (`predictionReport`,
+`numerologyReport`) need `full_name` + `gender` + `report_code`.
 
 ```typescript
 client.pdf.kundaliSampoorna(params)
@@ -323,7 +333,7 @@ client.numerology.threeNumbersArrows(params)
 client.numerology.repeatingNumbers(params)
 client.numerology.yearlyPrediction(params)
 client.numerology.gemstones(params)
-client.numerology.coreNumbers(params)
+client.numerology.coreNumbers(params)   // params.method: 'general' | 'chaldean' | 'pythagorean' (required)
 ```
 
 ### Lifestyle
@@ -337,7 +347,7 @@ client.lifestyle.astroChicPicks(params)
 ### Calculators
 
 ```typescript
-client.calculators.flames(params)
+client.calculators.flames(params)   // params: { your_name, partner_name }
 client.calculators.love(params)
 ```
 

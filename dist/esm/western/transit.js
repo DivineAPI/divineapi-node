@@ -19,11 +19,11 @@ export class TransitApi {
     async weekly(params) {
         return this.client.post('astroapi-4.divineapi.com', '/western-api/v1/transit/weekly', params);
     }
-    /** Get monthly transit. */
+    /** Get monthly transit. Requires transit_planet, transit_month, transit_year, and the transit location. */
     async monthly(params) {
         return this.client.post('astroapi-8.divineapi.com', '/western-api/v2/transit/monthly', params);
     }
-    /** Get full transit data. */
+    /** Get full transit data. Requires transit_planet plus the transit date and location. */
     async full(params) {
         return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/full-transit', params);
     }
@@ -39,11 +39,11 @@ export class TransitApi {
     async planetCombustionTransit(params) {
         return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/planet-combustion-transit', params);
     }
-    /** Get transit wheel chart. */
+    /** Get transit wheel chart. Requires the transit date and location (no transit_planet). */
     async wheelChart(params) {
         return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/transit/wheel-chart', params);
     }
-    /** Get transit planetary positions. */
+    /** Get transit planetary positions. Requires the transit date and location (no transit_planet). */
     async planetaryPositions(params) {
         return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/transit/planetary-positions', params);
     }

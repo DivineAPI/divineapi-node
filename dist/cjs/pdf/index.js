@@ -62,7 +62,20 @@ class PdfReportApi {
     async numerologyReport(params) {
         return this.client.post('pdf.divineapi.com', '/numerology/v2/report', params);
     }
-    /** Generate Reports V2 PDF. */
+    /**
+     * Generate a Reports V2 PDF (`/api/v1/reports/generate`).
+     *
+     * TODO / KNOWN LIMITATION (unverified): this endpoint does NOT follow the
+     * form-data + api_key convention the rest of the SDK uses. It requires:
+     *   1. a SEPARATE reports_v2 credential pair (not the standard PDF key), and
+     *   2. a raw JSON request body keyed by `report_type` (not urlencoded
+     *      `report_code`).
+     * The current call posts urlencoded form-data with the standard PDF key, so
+     * it returns 401 with those credentials. It is left in place for API
+     * completeness but is not yet supported; do not rely on it until the SDK
+     * gains JSON-body + reports_v2-credential support. Not covered by any MCP
+     * tool. See SDK-PARITY-AUDIT-JS.md.
+     */
     async reportsGenerate(params) {
         return this.client.post('pdf.divineapi.com', '/api/v1/reports/generate', params);
     }

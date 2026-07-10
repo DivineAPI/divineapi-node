@@ -21,6 +21,34 @@ export type ApiHost =
   | 'astroapi-8.divineapi.com'
   | 'pdf.divineapi.com';
 
+/**
+ * Minimal POST surface the sub-API modules depend on. Both {@link BaseClient}
+ * and the Western house-system wrapper satisfy it structurally.
+ */
+export interface PostClient {
+  post<T = unknown>(host: ApiHost, path: string, params?: Record<string, unknown>): Promise<T>;
+}
+
+// ── Selector value types (the API validates each against a fixed set) ──
+
+/** Daily-horoscope / lifestyle day selector. The API rejects calendar dates. */
+export type HDaySelector = 'today' | 'tomorrow' | 'yesterday';
+/** Weekly / monthly / yearly horoscope period selector. The API rejects dates or numbers. */
+export type PeriodSelector = 'current' | 'prev' | 'next';
+/** core-numbers calculation method. */
+export type CoreNumberMethod = 'general' | 'chaldean' | 'pythagorean';
+/** dominants calculation method. */
+export type DominantsMethod = 'TRADITIONAL' | 'MODERN';
+/**
+ * Western house system. Friendly names are mapped to the single-letter code the
+ * API requires (placidus -> P, koch -> K, ...) before the request is sent, so
+ * either form works. Letter codes pass through unchanged.
+ */
+export type HouseSystem =
+  | 'placidus' | 'koch' | 'porphyry' | 'regiomontanus' | 'campanus'
+  | 'equal' | 'whole-sign' | 'whole_sign' | 'wholesign' | 'morinus' | 'alcabitius'
+  | 'P' | 'K' | 'O' | 'R' | 'C' | 'E' | 'W' | 'M' | 'B';
+
 // ── Common Parameter Interfaces ──
 
 /** Allow all param interfaces to be passed as Record<string, unknown> */
@@ -113,28 +141,51 @@ export interface PdfCompanyParams extends BaseParams {
   footer_text?: string;
 }
 
+/**
+ * Company branding block that the PDF backend REQUIRES on every report
+ * (verified live: a call missing any of the six 400s / success:2). Only
+ * company_mobile is genuinely optional.
+ */
+export interface PdfRequiredCompanyParams extends BaseParams {
+  company_name: string;
+  company_url: string;
+  company_email: string;
+  company_bio: string;
+  logo_url: string;
+  footer_text: string;
+  company_mobile?: string;
+}
+
 // ── Horoscope Params ──
 
 export interface DailyHoroscopeParams extends TimezoneParam, LanguageParam {
   sign: string;
-  day: number;
-  month: number;
-  year: number;
+  /** Day selector: 'today', 'tomorrow', or 'yesterday'. Required by the API. */
+  h_day: HDaySelector;
+  /** @deprecated Ignored by this endpoint (the reading is selected via h_day). Accepted for back-compat but NOT sent. */
+  day?: number;
+  /** @deprecated Ignored by this endpoint. Accepted for back-compat but NOT sent. */
+  month?: number;
+  /** @deprecated Ignored by this endpoint. Accepted for back-compat but NOT sent. */
+  year?: number;
 }
 
 export interface WeeklyHoroscopeParams extends TimezoneParam, LanguageParam {
   sign: string;
-  week: string;
+  /** Week selector: 'current', 'prev', or 'next'. Calendar dates are rejected. */
+  week: PeriodSelector;
 }
 
 export interface MonthlyHoroscopeParams extends TimezoneParam, LanguageParam {
   sign: string;
-  month: number;
+  /** Month selector: 'current', 'prev', or 'next'. Month numbers are rejected. */
+  month: PeriodSelector;
 }
 
 export interface YearlyHoroscopeParams extends TimezoneParam, LanguageParam {
   sign: string;
-  year: number;
+  /** Year selector: 'current', 'prev', or 'next'. Calendar years are rejected. */
+  year: PeriodSelector;
 }
 
 export interface ChineseHoroscopeParams extends TimezoneParam, LanguageParam {
@@ -288,7 +339,8 @@ export interface MatchingChartParams extends CoupleBirthParams {
 // ── Western Params ──
 
 export interface WesternBirthParams extends BirthParams {
-  house_system?: string;
+  /** Optional. Friendly name or letter code; mapped to a letter before sending. Omit to use the API default (Placidus / P). */
+  house_system?: HouseSystem;
 }
 
 export interface NatalWheelChartParams extends WesternBirthParams {
@@ -311,13 +363,15 @@ export interface FixedStarsDetailsParams extends WesternBirthParams {
 }
 
 export interface DominantsParams extends WesternBirthParams {
-  method?: string;
+  /** Required by the API. 'TRADITIONAL' or 'MODERN' (results differ). */
+  method: DominantsMethod;
 }
 
 // ── Western Synastry Params ──
 
 export interface SynastryParams extends CoupleBirthParams {
-  house_system?: string;
+  /** Optional. Friendly name or letter code; mapped to a letter before sending. */
+  house_system?: HouseSystem;
 }
 
 export interface SynastryChartParams extends SynastryParams {
@@ -328,17 +382,42 @@ export interface SynastryChartParams extends SynastryParams {
 
 // ── Western Transit Params ──
 
+/** Transit event location. Required by full-transit, transit house, monthly, wheel-chart, and transit planetary-positions. */
+export interface TransitLocationParams extends BaseParams {
+  transit_place: string;
+  transit_lat: number;
+  transit_lon: number;
+  transit_tzone: number;
+}
+
 export interface BasicTransitParams extends WesternBirthParams, TransitDateParams {}
 
 export interface WeeklyTransitParams extends WesternBirthParams {
-  transit_planet?: string;
+  /** Required by the API. Transiting planet to track (e.g. 'moon', 'mars'); the value changes the result. */
+  transit_planet: string;
 }
 
-export interface FullTransitParams extends WesternBirthParams, TransitDateParams {
-  transit_place?: string;
-  transit_lat?: number;
-  transit_lon?: number;
-  transit_tzone?: number;
+/** Natal chart + a specific transit moment and place (full-transit, transit house, wheel-chart, transit planetary-positions). */
+export interface TransitChartParams extends WesternBirthParams, TransitDateParams, TransitLocationParams {}
+
+export interface FullTransitParams extends TransitChartParams {
+  /** Required by the API. Transiting planet to analyze (e.g. 'moon', 'mars'). */
+  transit_planet: string;
+  aspects_type?: string;
+  aspect_orbs_type?: string;
+  aspect_orbs_value?: string;
+}
+
+export interface MonthlyTransitParams extends WesternBirthParams, TransitLocationParams {
+  /** Required. Transiting planet to track for the month. */
+  transit_planet: string;
+  /** Required. Transit month number (e.g. 10). */
+  transit_month: number;
+  /** Required. Transit year (e.g. 2025). */
+  transit_year: number;
+  aspects_type?: string;
+  aspect_orbs_type?: string;
+  aspect_orbs_value?: string;
 }
 
 export interface PlanetRetrogradeCombustionParams extends LocationParams, TimezoneParam {
@@ -347,12 +426,13 @@ export interface PlanetRetrogradeCombustionParams extends LocationParams, Timezo
   year: number;
 }
 
-export interface TransitHouseParams extends FullTransitParams {}
+export interface TransitHouseParams extends TransitChartParams {}
 
 // ── Western Composite Params ──
 
 export interface CompositeParams extends CoupleBirthParams {
-  house_system?: string;
+  /** Optional. Friendly name or letter code; mapped to a letter before sending. */
+  house_system?: HouseSystem;
 }
 
 export interface CompositeChartParams extends CompositeParams {
@@ -364,83 +444,144 @@ export interface CompositeChartParams extends CompositeParams {
 // ── Planet Returns Params ──
 
 export interface PlanetReturnListParams extends WesternBirthParams {
-  planet?: string;
+  /** Required. Planet whose returns to list (e.g. 'moon', 'sun'). */
+  planet: string;
+  /** Required. Year to list returns for (e.g. 2024). */
+  return_year: number;
+  /** Required. Return-location latitude. */
+  return_lat: number;
+  /** Required. Return-location longitude. */
+  return_lon: number;
+  /** Required. Return-location timezone offset. */
+  return_tzone: number;
+  /** Required. Return-location place name. */
+  return_place: string;
 }
 
 export interface PlanetReturnDetailsParams extends WesternBirthParams {
-  planet?: string;
-  return_key?: string;
-  return_day?: number;
-  return_month?: number;
-  return_year?: number;
-  return_hour?: number;
-  return_min?: number;
-  return_place?: string;
-  return_lat?: number;
-  return_lon?: number;
-  return_tzone?: number;
+  /** Required. Planet whose return chart to compute. */
+  planet: string;
+  /** Required. Return identifier from planetReturns.list (e.g. 'MOON_P_1705862940000'). */
+  return_key: string;
+  /** Required. Year of the return. */
+  return_year: number;
+  /** Required. Return-location latitude. */
+  return_lat: number;
+  /** Required. Return-location longitude. */
+  return_lon: number;
+  /** Required. Return-location timezone offset. */
+  return_tzone: number;
+  /** Required. Return-location place name. */
+  return_place: string;
 }
 
 // ── Progressions Params ──
 
 export interface ProgressedLunarEventsParams extends WesternBirthParams {
-  prenatal_type?: string;
+  /** Required. Prenatal event type (e.g. 'SYZYGY'). */
+  prenatal_type: string;
 }
 
 export interface PlanetaryArcDirectionsParams extends WesternBirthParams {
-  planet?: string;
-  progressed_day?: number;
-  progressed_month?: number;
-  progressed_year?: number;
+  /** Required. Planet to direct (e.g. 'mars'). */
+  planet: string;
+  /** Required. Target date day. */
+  progressed_day: number;
+  /** Required. Target date month. */
+  progressed_month: number;
+  /** Required. Target date year. */
+  progressed_year: number;
 }
 
 export interface SecondaryProgressionsParams extends WesternBirthParams {
+  /** Required. Target date day. */
+  progressed_day: number;
+  /** Required. Target date month. */
+  progressed_month: number;
+  /** Required. Target date year. */
+  progressed_year: number;
+  /** Required. Target time hour (24h). */
+  progressed_hour: number;
+  /** Required. Target time minute. */
+  progressed_min: number;
+  /** Required. Target time second. */
+  progressed_sec: number;
+  /** Required. Progression rate method (e.g. 'ARMC1_NAIBOD'). */
+  progressed_type: string;
+  /** Optional. Focus the progression on one planet. */
   planet?: string;
-  progressed_day?: number;
-  progressed_month?: number;
-  progressed_year?: number;
-  progressed_type?: string;
 }
 
 // ── Prenatal Params ──
 
 export interface PrenatalListParams extends WesternBirthParams {
-  prenatal_type?: string;
+  /** Required. Prenatal event type (e.g. 'SYZYGY'). */
+  prenatal_type: string;
 }
 
 export interface PrenatalDetailsParams extends WesternBirthParams {
-  prenatal_key?: string;
+  /** Required. Prenatal event identifier from prenatal.list (e.g. 'SYZYGY_NM_P_648635040000'). */
+  prenatal_key: string;
 }
 
 // ── PDF Params ──
+// The PDF backend requires the six branding fields on every report, so these
+// all extend PdfRequiredCompanyParams (not the optional PdfCompanyParams).
 
-export interface PdfBirthParams extends BirthParams, PdfCompanyParams {}
+export interface PdfBirthParams extends BirthParams, PdfRequiredCompanyParams {}
 
-export interface PdfCoupleParams extends CoupleBirthParams, PdfCompanyParams {}
+export interface PdfCoupleParams extends CoupleBirthParams, PdfRequiredCompanyParams {}
 
-export interface PdfReportParams extends BirthParams, PdfCompanyParams {
+export interface PdfReportParams extends BirthParams, PdfRequiredCompanyParams {
+  /** Required. Report code selecting the report (e.g. 'CAREER-REPORT'). */
   report_code: string;
-  theme?: string;
+  /** Required by the API. Visual theme code for the PDF (e.g. '001'). */
+  theme: string;
 }
 
-export interface PdfCoupleReportParams extends CoupleBirthParams, PdfCompanyParams {
+export interface PdfCoupleReportParams extends CoupleBirthParams, PdfRequiredCompanyParams {
+  /** Required. Report code (e.g. 'ALIGNED-ENERGIES-REPORT'). */
   report_code: string;
 }
 
-export interface PdfNumerologyPredictionParams extends PdfCompanyParams {
+export interface PdfNumerologyPredictionParams extends PdfRequiredCompanyParams {
   full_name: string;
   day: number;
   month: number;
   year: number;
+  /** Required by the API. 'male' or 'female'. */
+  gender: string;
+  /** Required. Report code (e.g. 'YEARLY-PREDICTION-3-YEAR'). */
   report_code: string;
+  /** Optional birth time/place; the report generates without them. */
+  hour?: number;
+  min?: number;
+  sec?: number;
+  place?: string;
+  lat?: number;
+  lon?: number;
+  tzone?: number;
+  lan?: string;
 }
 
-export interface PdfNumerologyReportParams extends PdfCompanyParams {
+export interface PdfNumerologyReportParams extends PdfRequiredCompanyParams {
   full_name: string;
   day: number;
   month: number;
   year: number;
+  /** Required by the API. 'male' or 'female'. */
+  gender: string;
+  /** Required. Report code (e.g. 'SCHOLARLY-SPIRITS'). */
   report_code: string;
+  /** Optional birth time/place; the report generates without them. */
+  hour?: number;
+  min?: number;
+  sec?: number;
+  place?: string;
+  lat?: number;
+  lon?: number;
+  tzone?: number;
+  lan?: string;
 }
 
 // ── Numerology Params ──
@@ -470,8 +611,10 @@ export interface CoreNumbersParams extends BaseParams {
   day: number;
   month: number;
   year: number;
-  gender: string;
-  method?: string;
+  /** Required by the API. 'general', 'chaldean', or 'pythagorean'. */
+  method: CoreNumberMethod;
+  /** Optional. Accepted by the API but does not change the result. */
+  gender?: string;
 }
 
 // ── Lifestyle Params ──
@@ -484,8 +627,11 @@ export interface LifestyleParams extends TimezoneParam, LanguageParam {
 // ── Calculator Params ──
 
 export interface FlamesCalculatorParams extends BaseParams {
-  full_name: string;
+  /** Your name. The API's field is `your_name` (not `full_name`). */
+  your_name: string;
   partner_name: string;
+  /** @deprecated Use your_name. Mapped to your_name when your_name is absent. */
+  full_name?: string;
 }
 
 export interface LoveCalculatorParams extends BaseParams {

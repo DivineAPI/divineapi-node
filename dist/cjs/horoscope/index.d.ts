@@ -7,7 +7,12 @@ import type { ApiResponse, DailyHoroscopeParams, WeeklyHoroscopeParams, MonthlyH
 export declare class HoroscopeApi {
     private readonly client;
     constructor(client: BaseClient);
-    /** Get daily horoscope for a zodiac sign. */
+    /**
+     * Get daily horoscope for a zodiac sign.
+     * The reading is selected by `h_day` ('today' | 'tomorrow' | 'yesterday').
+     * The deprecated `day`/`month`/`year` fields are ignored by the API and are
+     * not forwarded.
+     */
     daily(params: DailyHoroscopeParams): Promise<ApiResponse>;
     /** Get weekly horoscope for a zodiac sign. */
     weekly(params: WeeklyHoroscopeParams): Promise<ApiResponse>;
