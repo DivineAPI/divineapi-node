@@ -122,5 +122,17 @@ export declare class KundliApi {
     lalKitabVarshphalMuntha(params: LalKitabVarshphalParams): Promise<ApiResponse>;
     /** Get Lal Kitab varshphal chart for the given varshphal_year. */
     lalKitabVarshphalChart(params: LalKitabVarshphalParams): Promise<ApiResponse>;
+    /** Get vargottama planets. */
+    vargottamaPlanets(params: KundliBirthParams): Promise<ApiResponse>;
+    /** Get bhav bala. */
+    bhavBala(params: KundliBirthParams): Promise<ApiResponse>;
+    /** Get shani ashtam shani. */
+    shaniAshtamShani(params: KundliBirthParams): Promise<ApiResponse>;
+    /** Get bhava analysis. */
+    bhavaAnalysis(params: KundliBirthParams): Promise<ApiResponse>;
+    /** Get bhava group predictions. */
+    bhavaGroupPredictions(params: KundliBirthParams): Promise<ApiResponse>;
+    /** Get planet remedies (analysis_planet: sun, moon, mars, mercury, jupiter, venus, saturn, rahu or ketu). */
+    planetRemedies(params: PlanetAnalysisParams): Promise<ApiResponse>;
 }
 //# sourceMappingURL=kundli.d.ts.map

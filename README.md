@@ -170,6 +170,13 @@ client.indian.kundli.lalKitabVarshphalVarshaPravesh(params)
 client.indian.kundli.lalKitabVarshphalPlanetaryPositions(params)
 client.indian.kundli.lalKitabVarshphalMuntha(params)
 client.indian.kundli.lalKitabVarshphalChart(params)
+// Additional Kundli Analysis
+client.indian.kundli.vargottamaPlanets(params)
+client.indian.kundli.bhavBala(params)
+client.indian.kundli.shaniAshtamShani(params)
+client.indian.kundli.bhavaAnalysis(params)
+client.indian.kundli.bhavaGroupPredictions(params)
+client.indian.kundli.planetRemedies(params)   // params + analysis_planet
 ```
 
 ### Indian Astrology - Match Making

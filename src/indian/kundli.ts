@@ -311,4 +311,36 @@ export class KundliApi {
   async lalKitabVarshphalChart(params: LalKitabVarshphalParams): Promise<ApiResponse> {
     return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/varshphal/chart', params);
   }
+
+  // ── Additional Kundli Analysis ──
+
+  /** Get vargottama planets. */
+  async vargottamaPlanets(params: KundliBirthParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/vargottama-planets', params);
+  }
+
+  /** Get bhav bala. */
+  async bhavBala(params: KundliBirthParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/bhav-bala', params);
+  }
+
+  /** Get shani ashtam shani. */
+  async shaniAshtamShani(params: KundliBirthParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/shani-ashtam-shani', params);
+  }
+
+  /** Get bhava analysis. */
+  async bhavaAnalysis(params: KundliBirthParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/bhava-analysis', params);
+  }
+
+  /** Get bhava group predictions. */
+  async bhavaGroupPredictions(params: KundliBirthParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/bhava-group-predictions', params);
+  }
+
+  /** Get planet remedies (analysis_planet: sun, moon, mars, mercury, jupiter, venus, saturn, rahu or ketu). */
+  async planetRemedies(params: PlanetAnalysisParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/planet-remedies', params);
+  }
 }
