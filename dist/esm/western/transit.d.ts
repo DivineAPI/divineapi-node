@@ -1,5 +1,5 @@
 import { BaseClient } from '../client.js';
-import type { ApiResponse, BasicTransitParams, WesternBirthParams, WeeklyTransitParams, FullTransitParams, MonthlyTransitParams, TransitChartParams, PlanetRetrogradeCombustionParams, TransitHouseParams } from '../types.js';
+import type { ApiResponse, BasicTransitParams, CustomTransitParams, WesternBirthParams, WeeklyTransitParams, FullTransitParams, MonthlyTransitParams, TransitChartParams, PlanetRetrogradeCombustionParams, TransitHouseParams } from '../types.js';
 /**
  * Western Transit API endpoints.
  * Hosts: astroapi-4 and astroapi-8
@@ -9,6 +9,8 @@ export declare class TransitApi {
     constructor(client: BaseClient);
     /** Get basic transit data. */
     basic(params: BasicTransitParams): Promise<ApiResponse>;
+    /** Get custom transit data. Requires the natal birth block plus the full transit moment (date, time and location). */
+    customTransit(params: CustomTransitParams): Promise<ApiResponse>;
     /** Get daily transit. */
     daily(params: WesternBirthParams): Promise<ApiResponse>;
     /** Get weekly transit. */

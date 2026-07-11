@@ -428,6 +428,9 @@ export interface PlanetRetrogradeCombustionParams extends LocationParams, Timezo
 
 export interface TransitHouseParams extends TransitChartParams {}
 
+/** Natal chart + a specific transit moment and place. Custom transit does not require house_system. */
+export interface CustomTransitParams extends TransitChartParams {}
+
 // ── Western Composite Params ──
 
 export interface CompositeParams extends CoupleBirthParams {

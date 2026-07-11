@@ -11,6 +11,10 @@ export class TransitApi {
     async basic(params) {
         return this.client.post('astroapi-4.divineapi.com', '/western-api/v1/transit/basic', params);
     }
+    /** Get custom transit data. Requires the natal birth block plus the full transit moment (date, time and location). */
+    async customTransit(params) {
+        return this.client.post('astroapi-4.divineapi.com', '/western-api/v1/transit/custom', params);
+    }
     /** Get daily transit. */
     async daily(params) {
         return this.client.post('astroapi-4.divineapi.com', '/western-api/v1/transit/daily', params);

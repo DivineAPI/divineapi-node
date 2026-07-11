@@ -258,6 +258,7 @@ client.western.synastry.financialCompatibility(params)
 
 ```typescript
 client.western.transit.basic(params)    // + transit_day/month/year/hour/min/sec
+client.western.transit.customTransit(params) // + transit_day/month/year/hour/min/sec, transit_place/lat/lon/tzone
 client.western.transit.daily(params)
 client.western.transit.weekly(params)   // + transit_planet (required)
 client.western.transit.monthly(params)  // + transit_planet, transit_month, transit_year, transit_place/lat/lon/tzone

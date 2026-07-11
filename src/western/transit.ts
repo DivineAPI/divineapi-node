@@ -2,6 +2,7 @@ import { BaseClient } from '../client.js';
 import type {
   ApiResponse,
   BasicTransitParams,
+  CustomTransitParams,
   WesternBirthParams,
   WeeklyTransitParams,
   FullTransitParams,
@@ -25,6 +26,11 @@ export class TransitApi {
   /** Get basic transit data. */
   async basic(params: BasicTransitParams): Promise<ApiResponse> {
     return this.client.post('astroapi-4.divineapi.com', '/western-api/v1/transit/basic', params);
+  }
+
+  /** Get custom transit data. Requires the natal birth block plus the full transit moment (date, time and location). */
+  async customTransit(params: CustomTransitParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-4.divineapi.com', '/western-api/v1/transit/custom', params);
   }
 
   /** Get daily transit. */
