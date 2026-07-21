@@ -134,5 +134,6 @@ export declare class KundliApi {
     bhavaGroupPredictions(params: KundliBirthParams): Promise<ApiResponse>;
     /** Get planet remedies (analysis_planet: sun, moon, mars, mercury, jupiter, venus, saturn, rahu or ketu). */
     planetRemedies(params: PlanetAnalysisParams): Promise<ApiResponse>;
+    rudrakshaSuggestion(params: KundliBirthParams): Promise<ApiResponse>;
 }
 //# sourceMappingURL=kundli.d.ts.map

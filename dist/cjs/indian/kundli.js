@@ -260,6 +260,9 @@ class KundliApi {
     async planetRemedies(params) {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/planet-remedies', params);
     }
+    async rudrakshaSuggestion(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/rudraksha-suggestion', params);
+    }
 }
 exports.KundliApi = KundliApi;
 //# sourceMappingURL=kundli.js.map
