@@ -1,5 +1,5 @@
 import { BaseClient } from '../client.js';
-import type { ApiResponse, PanchangBaseParams, PanchangWithSanskritParams, ChandramasaParams, MonthlyPanchangParams, PlanetTransitParams, NakshatraTransitParams, ChandrashtamaParams, MonthSuryaNakshatraParams } from '../types.js';
+import type { ApiResponse, PanchangBaseParams, MuhuratMonthlyParams, PanchangWithSanskritParams, ChandramasaParams, MonthlyPanchangParams, PlanetTransitParams, NakshatraTransitParams, ChandrashtamaParams, MonthSuryaNakshatraParams } from '../types.js';
 /**
  * Indian Panchang API endpoints.
  * Various hosts under /indian-api/
@@ -63,5 +63,23 @@ export declare class PanchangApi {
     monthTithiList(params: MonthlyPanchangParams): Promise<ApiResponse>;
     /** Get monthly surya nakshatra list. */
     monthSuryaNakshatraList(params: MonthSuryaNakshatraParams): Promise<ApiResponse>;
+    /** Marriage Muhurat. */
+    muhuratMarriage(params: MuhuratMonthlyParams): Promise<ApiResponse>;
+    /** Griha Pravesh (House Entering) Muhurat. */
+    muhuratHouseEntering(params: MuhuratMonthlyParams): Promise<ApiResponse>;
+    /** Vehicle Purchase Muhurat. */
+    muhuratVehiclePurchase(params: MuhuratMonthlyParams): Promise<ApiResponse>;
+    /** Property Purchase Muhurat. */
+    muhuratPropertyPurchase(params: MuhuratMonthlyParams): Promise<ApiResponse>;
+    /** Business Start Muhurat. */
+    muhuratBusinessStart(params: MuhuratMonthlyParams): Promise<ApiResponse>;
+    /** Foundation Laying (Bhoomi Pujan) Muhurat. */
+    muhuratFoundationLaying(params: MuhuratMonthlyParams): Promise<ApiResponse>;
+    /** Do Ghati Muhurat. */
+    muhuratDoGhati(params: PanchangBaseParams): Promise<ApiResponse>;
+    /** Hora. */
+    muhuratHora(params: PanchangBaseParams): Promise<ApiResponse>;
+    /** Jain Pachakkhan. */
+    muhuratJainPachakkhan(params: PanchangBaseParams): Promise<ApiResponse>;
 }
 //# sourceMappingURL=panchang.d.ts.map

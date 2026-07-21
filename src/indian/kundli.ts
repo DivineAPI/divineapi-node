@@ -343,4 +343,8 @@ export class KundliApi {
   async planetRemedies(params: PlanetAnalysisParams): Promise<ApiResponse> {
     return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/planet-remedies', params);
   }
+
+  async rudrakshaSuggestion(params: KundliBirthParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/rudraksha-suggestion', params);
+  }
 }

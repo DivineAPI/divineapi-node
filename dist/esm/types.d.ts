@@ -184,6 +184,10 @@ export interface MonthlyPanchangParams extends LocationParams, TimezoneParam {
     month: number;
     year: number;
 }
+export interface MuhuratMonthlyParams extends LocationParams, TimezoneParam, LanguageParam {
+    month: number;
+    year: number;
+}
 export interface PlanetTransitParams extends LocationParams, TimezoneParam, LanguageParam {
     month: number;
     year: number;
