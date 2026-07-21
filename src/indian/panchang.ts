@@ -2,6 +2,7 @@ import { BaseClient } from '../client.js';
 import type {
   ApiResponse,
   PanchangBaseParams,
+  MuhuratMonthlyParams,
   PanchangWithSanskritParams,
   ChandramasaParams,
   MonthlyPanchangParams,
@@ -161,4 +162,50 @@ export class PanchangApi {
   async monthSuryaNakshatraList(params: MonthSuryaNakshatraParams): Promise<ApiResponse> {
     return this.client.post('astroapi-8.divineapi.com', '/indian-api/v1/month-surya-nakshatra-list', params);
   }
+
+  /** Marriage Muhurat. */
+  async muhuratMarriage(params: MuhuratMonthlyParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/marriage', params);
+  }
+
+  /** Griha Pravesh (House Entering) Muhurat. */
+  async muhuratHouseEntering(params: MuhuratMonthlyParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/house-entering', params);
+  }
+
+  /** Vehicle Purchase Muhurat. */
+  async muhuratVehiclePurchase(params: MuhuratMonthlyParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/vehicle-purchase', params);
+  }
+
+  /** Property Purchase Muhurat. */
+  async muhuratPropertyPurchase(params: MuhuratMonthlyParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/property-purchase', params);
+  }
+
+  /** Business Start Muhurat. */
+  async muhuratBusinessStart(params: MuhuratMonthlyParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/business-start', params);
+  }
+
+  /** Foundation Laying (Bhoomi Pujan) Muhurat. */
+  async muhuratFoundationLaying(params: MuhuratMonthlyParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/foundation-laying', params);
+  }
+
+  /** Do Ghati Muhurat. */
+  async muhuratDoGhati(params: PanchangBaseParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/do-ghati', params);
+  }
+
+  /** Hora. */
+  async muhuratHora(params: PanchangBaseParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/hora', params);
+  }
+
+  /** Jain Pachakkhan. */
+  async muhuratJainPachakkhan(params: PanchangBaseParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/jain-pachakkhan', params);
+  }
 }
+
