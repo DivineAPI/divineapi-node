@@ -263,6 +263,10 @@ export interface LalKitabVarshphalParams extends BirthParams {
     /** Year for the annual (varshphal) chart */
     varshphal_year: number;
 }
+export interface VarshphalParams extends BirthParams {
+    /** Year for the annual (varshphal) chart */
+    varshphal_year: number;
+}
 export interface MatchMakingParams extends CoupleBirthParams {
 }
 export interface MatchingChartParams extends CoupleBirthParams {

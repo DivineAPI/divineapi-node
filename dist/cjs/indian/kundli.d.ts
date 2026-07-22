@@ -1,5 +1,5 @@
 import { BaseClient } from '../client.js';
-import type { ApiResponse, KundliBirthParams, HoroscopeChartParams, VimshottariDashaParams, DashaAnalysisParams, SubPlanetChartParams, KundliTransitParams, PlanetAnalysisParams, LalKitabMahadashaContentParams, LalKitabAntardashaContentParams, LalKitabHouseSignificationParams, LalKitabVarshphalParams } from '../types.js';
+import type { ApiResponse, KundliBirthParams, VarshphalParams, HoroscopeChartParams, VimshottariDashaParams, DashaAnalysisParams, SubPlanetChartParams, KundliTransitParams, PlanetAnalysisParams, LalKitabMahadashaContentParams, LalKitabAntardashaContentParams, LalKitabHouseSignificationParams, LalKitabVarshphalParams } from '../types.js';
 /**
  * Indian Kundli (Birth Chart) API endpoints.
  * Host: astroapi-3.divineapi.com
@@ -135,5 +135,19 @@ export declare class KundliApi {
     /** Get planet remedies (analysis_planet: sun, moon, mars, mercury, jupiter, venus, saturn, rahu or ketu). */
     planetRemedies(params: PlanetAnalysisParams): Promise<ApiResponse>;
     rudrakshaSuggestion(params: KundliBirthParams): Promise<ApiResponse>;
+    varshphalVarshaPravesh(params: VarshphalParams): Promise<ApiResponse>;
+    varshphalBasicAstroDetails(params: VarshphalParams): Promise<ApiResponse>;
+    varshphalPlanetaryPositions(params: VarshphalParams): Promise<ApiResponse>;
+    varshphalHoroscopeChart(chartId: string, params: VarshphalParams): Promise<ApiResponse>;
+    varshphalTajikaAspect(params: VarshphalParams): Promise<ApiResponse>;
+    varshphalMuntha(params: VarshphalParams): Promise<ApiResponse>;
+    varshphalPanchadhikari(params: VarshphalParams): Promise<ApiResponse>;
+    varshphalTriPatakiChakra(params: VarshphalParams): Promise<ApiResponse>;
+    varshphalMuddaDasha(params: VarshphalParams): Promise<ApiResponse>;
+    varshphalYoginiDasha(params: VarshphalParams): Promise<ApiResponse>;
+    varshphalPatyaniniDasha(params: VarshphalParams): Promise<ApiResponse>;
+    varshphalPlanetaryStrengths(params: VarshphalParams): Promise<ApiResponse>;
+    varshphalSahams(params: VarshphalParams): Promise<ApiResponse>;
+    varshphalYogas(params: VarshphalParams): Promise<ApiResponse>;
 }
 //# sourceMappingURL=kundli.d.ts.map

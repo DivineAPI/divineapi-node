@@ -260,5 +260,47 @@ export class KundliApi {
     async rudrakshaSuggestion(params) {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/rudraksha-suggestion', params);
     }
+    async varshphalVarshaPravesh(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/varsha-pravesh', params);
+    }
+    async varshphalBasicAstroDetails(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/basic-astro-details', params);
+    }
+    async varshphalPlanetaryPositions(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/planetary-positions', params);
+    }
+    async varshphalHoroscopeChart(chartId, params) {
+        return this.client.post('astroapi-3.divineapi.com', `/indian-api/v1/varshphal/horoscope-chart/${chartId}`, params);
+    }
+    async varshphalTajikaAspect(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/tajika-aspect', params);
+    }
+    async varshphalMuntha(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/muntha', params);
+    }
+    async varshphalPanchadhikari(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/panchadhikari', params);
+    }
+    async varshphalTriPatakiChakra(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/tri-pataki-chakra', params);
+    }
+    async varshphalMuddaDasha(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/mudda-dasha', params);
+    }
+    async varshphalYoginiDasha(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/yogini-dasha', params);
+    }
+    async varshphalPatyaniniDasha(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/patyanini-dasha', params);
+    }
+    async varshphalPlanetaryStrengths(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/planetary-strengths', params);
+    }
+    async varshphalSahams(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/sahams', params);
+    }
+    async varshphalYogas(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/yogas', params);
+    }
 }
 //# sourceMappingURL=kundli.js.map
