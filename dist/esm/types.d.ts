@@ -496,6 +496,12 @@ export interface ChaldeanNumerologyParams extends LanguageParam {
     fname: string;
     lname: string;
 }
+export interface NameCorrectionParams extends LanguageParam {
+    full_name: string;
+    day: number;
+    month: number;
+    year: number;
+}
 export interface CoreNumbersParams extends BaseParams {
     full_name: string;
     day: number;

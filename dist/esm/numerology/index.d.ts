@@ -1,5 +1,5 @@
 import { BaseClient } from '../client.js';
-import type { ApiResponse, NewMobileNumberParams, AnalyzeMobileNumberParams, ChaldeanNumerologyParams, CoreNumbersParams } from '../types.js';
+import type { ApiResponse, NewMobileNumberParams, AnalyzeMobileNumberParams, ChaldeanNumerologyParams, NameCorrectionParams, CoreNumbersParams } from '../types.js';
 /**
  * Numerology API endpoints.
  * Hosts: astroapi-7 and astroapi-4
@@ -19,6 +19,8 @@ export declare class NumerologyApi {
     luckNumerology(params: ChaldeanNumerologyParams): Promise<ApiResponse>;
     /** Get name number analysis. */
     nameNumber(params: ChaldeanNumerologyParams): Promise<ApiResponse>;
+    /** Get name correction suggestions (takes full_name, not fname/lname). */
+    nameCorrection(params: NameCorrectionParams): Promise<ApiResponse>;
     /** Get birthday number analysis. */
     birthdayNumber(params: ChaldeanNumerologyParams): Promise<ApiResponse>;
     /** Get missing numbers. */

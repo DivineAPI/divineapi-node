@@ -619,6 +619,14 @@ export interface ChaldeanNumerologyParams extends LanguageParam {
   lname: string;
 }
 
+// Name Correction takes a single full_name, not fname/lname like its siblings.
+export interface NameCorrectionParams extends LanguageParam {
+  full_name: string;
+  day: number;
+  month: number;
+  year: number;
+}
+
 export interface CoreNumbersParams extends BaseParams {
   full_name: string;
   day: number;

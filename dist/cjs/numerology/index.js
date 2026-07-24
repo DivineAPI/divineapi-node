@@ -34,6 +34,10 @@ class NumerologyApi {
     async nameNumber(params) {
         return this.client.post('astroapi-7.divineapi.com', '/numerology/v1/name-number', params);
     }
+    /** Get name correction suggestions (takes full_name, not fname/lname). */
+    async nameCorrection(params) {
+        return this.client.post('astroapi-7.divineapi.com', '/numerology/v1/name-correction', params);
+    }
     /** Get birthday number analysis. */
     async birthdayNumber(params) {
         return this.client.post('astroapi-7.divineapi.com', '/numerology/v1/birthday-number', params);

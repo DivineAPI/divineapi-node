@@ -4,6 +4,7 @@ import type {
   NewMobileNumberParams,
   AnalyzeMobileNumberParams,
   ChaldeanNumerologyParams,
+  NameCorrectionParams,
   CoreNumbersParams,
 } from '../types.js';
 
@@ -46,6 +47,11 @@ export class NumerologyApi {
   /** Get name number analysis. */
   async nameNumber(params: ChaldeanNumerologyParams): Promise<ApiResponse> {
     return this.client.post('astroapi-7.divineapi.com', '/numerology/v1/name-number', params);
+  }
+
+  /** Get name correction suggestions (takes full_name, not fname/lname). */
+  async nameCorrection(params: NameCorrectionParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-7.divineapi.com', '/numerology/v1/name-correction', params);
   }
 
   /** Get birthday number analysis. */
