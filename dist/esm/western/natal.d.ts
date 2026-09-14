@@ -1,5 +1,5 @@
 import { BaseClient } from '../client.js';
-import type { ApiResponse, WesternBirthParams, NatalWheelChartParams, MoonPhaseCalendarParams, FixedStarsDetailsParams, DominantsParams } from '../types.js';
+import type { ApiResponse, WesternBirthParams, NatalWheelChartParams, MoonPhaseCalendarParams, FixedStarsDetailsParams, DominantsParams, PersonaChartParams } from '../types.js';
 /**
  * Western Natal Astrology API endpoints.
  * Hosts: astroapi-4 and astroapi-8
@@ -49,5 +49,24 @@ export declare class NatalApi {
     otherMinorBodies(params: WesternBirthParams): Promise<ApiResponse>;
     /** Get dominants analysis. */
     dominants(params: DominantsParams): Promise<ApiResponse>;
+    /**
+     * Get a Persona Chart for a chosen natal planet.
+     *
+     * Casts the full chart for the exact moment - within the first year of life -
+     * that the transiting Sun reaches the natal degree of `persona_planet`. The
+     * search starts one day after birth and scans up to 366 days forward.
+     *
+     * Returns `persona_planet`, `persona_datetime`, `planetary_positions`,
+     * `house_cusps`, `aspect_table` (persona-to-persona) and
+     * `persona_natal_aspect` (persona-planet-to-natal-planet).
+     *
+     * `output_include` controls response size and defaults to `raw_data`
+     * server-side (~21 KB). Image tokens are ~0.5 MB per SVG and `all` returns
+     * ~4.3 MB, so request only what you need.
+     *
+     * Note `persona_planet: 'sun'` is accepted but reduces to a one-year-later
+     * Solar Return chart.
+     */
+    personaChart(params: PersonaChartParams): Promise<ApiResponse>;
 }
 //# sourceMappingURL=natal.d.ts.map

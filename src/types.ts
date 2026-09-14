@@ -46,8 +46,37 @@ export type DominantsMethod = 'TRADITIONAL' | 'MODERN';
  */
 export type HouseSystem =
   | 'placidus' | 'koch' | 'porphyry' | 'regiomontanus' | 'campanus'
-  | 'equal' | 'whole-sign' | 'whole_sign' | 'wholesign' | 'morinus' | 'alcabitius'
-  | 'P' | 'K' | 'O' | 'R' | 'C' | 'E' | 'W' | 'M' | 'B';
+  | 'equal' | 'equal-asc' | 'equal_asc' | 'equal-mc' | 'equal_mc'
+  | 'vehlow' | 'vehlow-equal' | 'whole-sign' | 'whole_sign' | 'wholesign'
+  | 'meridian' | 'axial-rotation' | 'morinus' | 'sripati'
+  | 'topocentric' | 'polich-page' | 'alcabitius'
+  | 'whole-sign-aries' | 'whole_sign_aries'
+  | 'P' | 'K' | 'O' | 'R' | 'C' | 'A' | 'E' | 'D'
+  | 'V' | 'W' | 'X' | 'M' | 'S' | 'T' | 'B' | 'N';
+
+/** Planet whose natal degree the transiting Sun must reach for a persona chart. */
+export type PersonaPlanet =
+  | 'sun' | 'moon' | 'mercury' | 'venus' | 'mars'
+  | 'jupiter' | 'saturn' | 'uranus' | 'neptune' | 'pluto';
+
+/**
+ * Wheel-image layout for the persona chart. Affects the chart images only,
+ * never the numeric data, and is case-sensitive on the wire.
+ */
+export type PersonaGraphicLayout =
+  | 'PLANETS_ONLY' | 'PLANETS_DEGREES' | 'PLANETS_DEGREES_SIGNS'
+  | 'INNER_V1_HOUSE_CUSPS_PLANETS'
+  | 'INNER_V1_HOUSE_CUSPS_PLANETS_DEGREES'
+  | 'INNER_V1_HOUSE_CUSPS_PLANETS_DEGREES_SIGNS'
+  | 'INNER_V2_HOUSE_CUSPS_PLANETS'
+  | 'INNER_V2_HOUSE_CUSPS_PLANETS_DEGREES'
+  | 'INNER_V2_HOUSE_CUSPS_PLANETS_DEGREES_SIGNS'
+  | 'OUTER_HOUSE_CUSPS_PLANETS'
+  | 'OUTER_HOUSE_CUSPS_PLANETS_DEGREES'
+  | 'OUTER_HOUSE_CUSPS_PLANETS_DEGREES_SIGNS';
+
+/** Lunar node convention used for the North/South Node positions. */
+export type NodeType = 'meannode' | 'truenode';
 
 // ── Common Parameter Interfaces ──
 
@@ -375,6 +404,21 @@ export interface FixedStarsDetailsParams extends WesternBirthParams {
 export interface DominantsParams extends WesternBirthParams {
   /** Required by the API. 'TRADITIONAL' or 'MODERN' (results differ). */
   method: DominantsMethod;
+}
+
+export interface PersonaChartParams extends WesternBirthParams {
+  /** Required. Planet whose natal degree the transiting Sun must reach. Case-insensitive on the wire. */
+  persona_planet: PersonaPlanet | string;
+  /** Optional. Lunar node convention for the North/South Node positions. */
+  node_type?: NodeType;
+  /**
+   * Optional. Response size control; comma-separated tokens. The API defaults
+   * to 'raw_data' (~21 KB, numeric data only). Chart images are large: the
+   * *_svg and *_base64 tokens are ~0.5 MB each and 'all' returns ~4.3 MB.
+   */
+  output_include?: string;
+  /** Optional. Wheel-image layout. Affects images only, never the numeric data. */
+  graphic_layout?: PersonaGraphicLayout;
 }
 
 // ── Western Synastry Params ──

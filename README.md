@@ -230,6 +230,12 @@ client.western.natal.aspectPatterns(params)
 client.western.natal.chartShape(params)
 client.western.natal.otherMinorBodies(params)
 client.western.natal.dominants(params)   // params.method: 'TRADITIONAL' | 'MODERN' (required)
+client.western.natal.personaChart(params)  // params.persona_planet: 'sun' | 'moon' | ... (required)
+
+// personaChart: the chart for the moment, within the first year of life, that the
+// transiting Sun reaches the natal degree of persona_planet. output_include controls
+// response size and defaults to 'raw_data' (~21 KB); image tokens are ~0.5 MB per SVG
+// and output_include: 'all' returns ~4.3 MB.
 
 // Note: house_system accepts a friendly name ('placidus', 'koch', 'whole-sign', ...)
 // or a letter code ('P', 'K', 'W', ...); it is mapped to the letter code the API
