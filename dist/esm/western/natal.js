@@ -91,5 +91,26 @@ export class NatalApi {
     async dominants(params) {
         return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/dominants', params);
     }
+    /**
+     * Get a Persona Chart for a chosen natal planet.
+     *
+     * Casts the full chart for the exact moment - within the first year of life -
+     * that the transiting Sun reaches the natal degree of `persona_planet`. The
+     * search starts one day after birth and scans up to 366 days forward.
+     *
+     * Returns `persona_planet`, `persona_datetime`, `planetary_positions`,
+     * `house_cusps`, `aspect_table` (persona-to-persona) and
+     * `persona_natal_aspect` (persona-planet-to-natal-planet).
+     *
+     * `output_include` controls response size and defaults to `raw_data`
+     * server-side (~21 KB). Image tokens are ~0.5 MB per SVG and `all` returns
+     * ~4.3 MB, so request only what you need.
+     *
+     * Note `persona_planet: 'sun'` is accepted but reduces to a one-year-later
+     * Solar Return chart.
+     */
+    async personaChart(params) {
+        return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/persona-chart', params);
+    }
 }
 //# sourceMappingURL=natal.js.map

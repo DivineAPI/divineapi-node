@@ -25,16 +25,41 @@ const HOUSE_SYSTEM_MAP: Record<string, string> = {
   regiomontanus: 'R',
   campanus: 'C',
   equal: 'E',
+  'equal-asc': 'A',
+  equal_asc: 'A',
+  'equal-mc': 'D',
+  equal_mc: 'D',
+  vehlow: 'V',
+  'vehlow-equal': 'V',
   'whole-sign': 'W',
   whole_sign: 'W',
   wholesign: 'W',
+  meridian: 'X',
+  'axial-rotation': 'X',
   morinus: 'M',
+  sripati: 'S',
+  topocentric: 'T',
+  'polich-page': 'T',
   alcabitius: 'B',
+  'whole-sign-aries': 'N',
+  whole_sign_aries: 'N',
 };
 
-const VALID_HOUSE_SYSTEM_LETTERS = new Set(Object.values(HOUSE_SYSTEM_MAP));
+/**
+ * The full Swiss Ephemeris code set the API accepts. Deliberately NOT derived
+ * from Object.values(HOUSE_SYSTEM_MAP): 'A' and 'E' are both Equal, so a
+ * value-derived set silently omitted A, D, V, X, S, T and N and threw
+ * ValidationError for them even though the API accepts all sixteen. Verified
+ * 2026-09-14 against astroapi-4 /planetary-positions and astroapi-8
+ * /persona-chart.
+ */
+const VALID_HOUSE_SYSTEM_LETTERS = new Set([
+  'P', 'K', 'O', 'R', 'C', 'A', 'E', 'D',
+  'V', 'W', 'X', 'M', 'S', 'T', 'B', 'N',
+]);
 const HOUSE_SYSTEM_FRIENDLY_NAMES =
-  'placidus, koch, porphyry, regiomontanus, campanus, equal, whole-sign, morinus, alcabitius';
+  'placidus, koch, porphyry, regiomontanus, campanus, equal, equal-asc, equal-mc, ' +
+  'vehlow, whole-sign, meridian, morinus, sripati, topocentric, alcabitius, whole-sign-aries';
 
 /**
  * Map a friendly house-system name to its single-letter API code. Already-valid
