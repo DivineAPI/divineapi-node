@@ -7,9 +7,18 @@ export class NatalApi {
     constructor(client) {
         this.client = client;
     }
-    /** Get planetary positions. */
+    /**
+     * Get planetary positions (18 bodies, including Vertex).
+     *
+     * Served from astroapi-8; the older astroapi-4 version omits Vertex. The
+     * response uses the newer envelope - `{ status: 'success', code: 200,
+     * message, data }` - rather than `{ success: 1, data }`, and invalid input
+     * now rejects with a `DivineApiError` whose `statusCode` is 422 (and
+     * `responseBody.error.details` names the bad field) instead of resolving
+     * with `{ success: 2 }`. The `data` array is unchanged apart from Vertex.
+     */
     async planetaryPositions(params) {
-        return this.client.post('astroapi-4.divineapi.com', '/western-api/v1/planetary-positions', params);
+        return this.client.post('astroapi-8.divineapi.com', '/western-api/v1/planetary-positions', params);
     }
     /** Get house cusps. */
     async houseCusps(params) {
