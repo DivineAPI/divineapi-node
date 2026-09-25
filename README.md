@@ -209,7 +209,7 @@ client.indian.festival.sankrantiFestivals(params)
 ### Western Astrology - Natal
 
 ```typescript
-client.western.natal.planetaryPositions(params)
+client.western.natal.planetaryPositions(params)   // 18 bodies incl. Vertex (astroapi-8 since 1.10.0; see note below)
 client.western.natal.houseCusps(params)
 client.western.natal.aspectTable(params)
 client.western.natal.natalWheelChart(params)
@@ -241,6 +241,12 @@ client.western.natal.personaChart(params)  // params.persona_planet: 'sun' | 'mo
 // or a letter code ('P', 'K', 'W', ...); it is mapped to the letter code the API
 // requires before the request is sent. Omit it to use the default (Placidus).
 ```
+
+> **`planetaryPositions` changed in 1.10.0.** It now calls astroapi-8 instead of astroapi-4, so the response includes **Vertex** (18 bodies instead of 17). Two behaviour changes come with it:
+> - the envelope is `{ status: 'success', code: 200, message, data }` - there is no longer a `success` key, so code checking `res.success === 1` must switch to `res.status === 'success'` (or just read `res.data`);
+> - invalid input now rejects with a `DivineApiError` whose `statusCode` is `422` (`responseBody.error.details` names the bad field) instead of resolving with `{ success: 2 }`.
+>
+> The `data` array is otherwise unchanged: same fields, same types, identical values for the other 17 bodies.
 
 ### Western Astrology - Synastry
 
