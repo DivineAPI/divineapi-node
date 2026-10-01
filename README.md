@@ -132,6 +132,7 @@ client.indian.kundli.jaiminiPlanetaryPositions(params)
 client.indian.kundli.jaiminiPadas(params)
 client.indian.kundli.jaiminiKarakamshaLagna(params)
 client.indian.kundli.jaiminiCharaDasha(params)
+client.indian.kundli.jaiminiSwamsaChart(params)   // atmakaraka, swamsha/lagnamsha signs + chart svg
 // Sub Planet
 client.indian.kundli.subPlanetPositions(params)
 client.indian.kundli.subPlanetChart(params)

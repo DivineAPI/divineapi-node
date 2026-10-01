@@ -24,6 +24,10 @@ export class KundliApi {
     async jaiminiCharaDasha(params) {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/jaimini-astrology/chara-dasha', params);
     }
+    /** Get Jaimini swamsa chart (the Navamsa recast with the Karakamsha sign as house 1): atmakaraka, swamsha and lagnamsha signs, plus the chart as svg and base64_image. */
+    async jaiminiSwamsaChart(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/swamsa-chart', params);
+    }
     // ── Sub Planet ──
     /** Get sub planet positions. */
     async subPlanetPositions(params) {

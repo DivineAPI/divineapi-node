@@ -15,6 +15,8 @@ export declare class KundliApi {
     jaiminiKarakamshaLagna(params: KundliBirthParams): Promise<ApiResponse>;
     /** Get Jaimini chara dasha. */
     jaiminiCharaDasha(params: KundliBirthParams): Promise<ApiResponse>;
+    /** Get Jaimini swamsa chart (the Navamsa recast with the Karakamsha sign as house 1): atmakaraka, swamsha and lagnamsha signs, plus the chart as svg and base64_image. */
+    jaiminiSwamsaChart(params: KundliBirthParams): Promise<ApiResponse>;
     /** Get sub planet positions. */
     subPlanetPositions(params: KundliBirthParams): Promise<ApiResponse>;
     /** Get sub planet chart. */
