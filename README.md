@@ -1,6 +1,22 @@
-# divineapi
+# Astrology API Node.js SDK (DivineAPI)
 
-Official JavaScript/TypeScript SDK for [Divine API](https://divineapi.com) - Astrology, Horoscope, Numerology, Tarot, and more.
+![Astrology API Node.js SDK (DivineAPI)](https://raw.githubusercontent.com/DivineAPI/DivineAPI/main/assets/divineapi-node.png)
+
+[![npm](https://img.shields.io/npm/v/divineapi)](https://www.npmjs.com/package/divineapi)
+[![Docs](https://img.shields.io/badge/Docs-developers.divineapi.com-blue)](https://developers.divineapi.com)
+[![Trial](https://img.shields.io/badge/Trial-14--day-green)](https://divineapi.com/start-trial)
+[![Status](https://img.shields.io/badge/Status-status.divineapi.com-lightgrey)](https://status.divineapi.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
+
+Verified live against the DivineAPI API on 2 October 2026.
+
+Official [DivineAPI](https://divineapi.com) JavaScript and TypeScript client for Vedic, Western, horoscope, tarot and numerology astrology endpoints. It has typed parameters and returns the API's JSON.
+
+## Get your API key
+
+1. Start the [14-day free trial](https://divineapi.com/start-trial) (credit card required to activate the trial).
+2. Copy your **API key** and **auth token** from the DivineAPI dashboard. The SDK sends the token as an
+   `Authorization: Bearer` header and the key as the `api_key` form field on every request.
 
 ## Requirements
 
@@ -15,25 +31,81 @@ npm install divineapi
 
 ## Quick Start
 
-```typescript
+ES module (save as `index.mjs`, run with `node index.mjs`):
+
+```javascript
 import { DivineApi } from 'divineapi';
 
+const client = new DivineApi({ apiKey: 'YOUR_API_KEY', authToken: 'YOUR_AUTH_TOKEN' });
+
+// Western natal chart: planets for a birth in New York (tzone -4 = EDT on that date)
+const res = await client.western.natal.planetaryPositions({
+  full_name: 'Jane Smith', gender: 'female',
+  day: 15, month: 6, year: 1995, hour: 8, min: 0, sec: 0,
+  place: 'new york', lat: 40.7128, lon: -74.006, tzone: -4,
+  house_system: 'placidus',
+});
+
+console.log(res.status);                               // 'success'
+for (const p of res.data.slice(0, 4)) console.log(p.name, p.sign, p.longitude, 'house', p.house);
+// Ascendant Cancer 26:25:42 house 1
+// Sun Gemini 23:55:56 house 11
+// Moon Capricorn 26:59:57 house 7
+// Mars Virgo 10:6:0 house 3
+```
+
+CommonJS works too: `const { DivineApi } = require('divineapi');`
+
+Real response (2 Oct 2026, trimmed with `...`). Since 1.10.0 this method uses `astroapi-8`, so the envelope is `status`, not `success`:
+
+```json
+{
+  "status": "success",
+  "code": 200,
+  "message": "Request successful",
+  "data": [
+    {
+      "name": "Ascendant",
+      "full_degree": "116.4283411",
+      "sign": "Cancer",
+      "sign_no": 4,
+      "longitude": "26:25:42",
+      "house": 1,
+      "element": "Water",
+      "modality": "Cardinal",
+      "...": "..."
+    },
+    {
+      "name": "Sun",
+      "full_degree": "83.9322195",
+      "sign": "Gemini",
+      "longitude": "23:55:56",
+      "is_retro": "false",
+      "house": 11,
+      "...": "..."
+    },
+    {
+      "name": "Moon",
+      "full_degree": "296.9992259",
+      "sign": "Capricorn",
+      "longitude": "26:59:57",
+      "is_setting": "true",
+      "house": 7,
+      "...": "..."
+    },
+    "..."
+  ]
+}
+```
+
+## Configuration
+
+```typescript
 const client = new DivineApi({
-  apiKey: 'your-api-key',
-  authToken: 'your-bearer-token', // optional, defaults to apiKey
+  apiKey: 'YOUR_API_KEY',       // Required: API key from the dashboard
+  authToken: 'YOUR_AUTH_TOKEN', // Use the auth token from the dashboard (if omitted, the SDK sends apiKey as the Bearer token)
+  timeout: 60000,               // Optional (default: 30000ms)
 });
-
-// Daily Horoscope
-// The reading is chosen with h_day: 'today', 'tomorrow', or 'yesterday'
-// (the API does not accept a calendar date here).
-const horoscope = await client.horoscope.daily({
-  sign: 'aries',
-  h_day: 'today',
-  tzone: 5.5,
-  lan: 'en',
-});
-
-console.log(horoscope);
 ```
 
 ## API Categories
@@ -52,9 +124,9 @@ client.horoscope.dailyTarot(params)
 client.horoscope.fortuneCookie(params)
 client.horoscope.coffeeCupReading(params)
 client.horoscope.careerDailyReading(params)
-client.horoscope.divineAngelReading(params)
+client.horoscope.divineAngelReading(params)        // Divine Angel Reading: an angel-card reading with a short message of encouragement
 client.horoscope.divineMagicReading(params)
-client.horoscope.dreamComeTrueReading(params)
+client.horoscope.dreamComeTrueReading(params)      // Dream Come True Reading: 1 to 5 tarot cards about a wish (love, hopes, goals)
 client.horoscope.egyptianPrediction(params)
 client.horoscope.eroticLoveReading(params)
 client.horoscope.exFlameReading(params)
@@ -136,12 +208,6 @@ client.indian.kundli.jaiminiSwamsaChart(params)   // atmakaraka, swamsha/lagnams
 // Sub Planet
 client.indian.kundli.subPlanetPositions(params)
 client.indian.kundli.subPlanetChart(params)
-// KP
-client.indian.kundli.kpPlanetaryPositions(params)
-client.indian.kundli.kpCuspal(params)
-client.indian.kundli.kpPlanetarySub(params)
-client.indian.kundli.kpPlanetaryCuspalSignificatorTable(params)
-client.indian.kundli.kpCuspalSub(params)
 // Transit
 client.indian.kundli.transitAscendant(params)
 client.indian.kundli.transitMoon(params)
@@ -255,7 +321,7 @@ client.western.natal.personaChart(params)  // params.persona_planet: 'sun' | 'mo
 client.western.synastry.planetaryPositions(params)
 client.western.synastry.houseCusps(params)
 client.western.synastry.natalWheelChart(params)
-client.western.synastry.aspect(params)
+client.western.synastry.aspectTable(params)
 client.western.synastry.harmoniousAspectReading(params)
 client.western.synastry.conflictingAspectReading(params)
 client.western.synastry.contrastingAspectReading(params)
@@ -315,9 +381,10 @@ client.western.prenatal.details(params)  // + prenatal_key (required)
 
 ### PDF Reports
 
-All PDF reports REQUIRE the six branding fields on every call:
-`company_url`, `logo_url`, `footer_text`, `company_name`, `company_email`,
-`company_bio` (only `company_mobile` is optional). `natalReport` also needs
+The API requires seven branding fields on every PDF request: `company_name`,
+`company_url`, `company_email`, `company_mobile`, `company_bio`, `logo_url` and
+`footer_text` (a few legacy reports also need `company_landline`). Pass
+`company_mobile` even though the SDK types mark it optional. `natalReport` also needs
 `report_code` + `theme`; the numerology PDFs (`predictionReport`,
 `numerologyReport`) need `full_name` + `gender` + `report_code`.
 
@@ -393,15 +460,34 @@ try {
 }
 ```
 
-## Configuration
+## Related repos
 
-```typescript
-const client = new DivineApi({
-  apiKey: 'your-api-key',       // Required
-  authToken: 'your-token',      // Optional (defaults to apiKey)
-  timeout: 60000,               // Optional (default: 30000ms)
-});
-```
+| Type | Repo |
+|---|---|
+| SDK | [divineapi-python](https://github.com/DivineAPI/divineapi-python): Python SDK (`pip install divineapi`) |
+| SDK | [divineapi-php](https://github.com/DivineAPI/divineapi-php): PHP SDK (`composer require divineapi/divineapi`) |
+| REST API | [kundli-api](https://github.com/DivineAPI/kundli-api): Kundli / Kundali API (Vedic birth chart, dashas, doshas) |
+| REST API | [kundli-matching-api](https://github.com/DivineAPI/kundli-matching-api): Kundli matching API (Ashtakoot, Dashakoot) |
+| REST API | [lal-kitab-api](https://github.com/DivineAPI/lal-kitab-api): Lal Kitab API |
+| REST API | [panchang-api](https://github.com/DivineAPI/panchang-api): Panchang API |
+| REST API | [hindu-festival-api](https://github.com/DivineAPI/hindu-festival-api): Hindu Festival API |
+| REST API | [birth-chart-api](https://github.com/DivineAPI/birth-chart-api): Birth Chart API |
+| REST API | [horoscope-api](https://github.com/DivineAPI/horoscope-api): Horoscope API |
+| REST API | [tarot-api](https://github.com/DivineAPI/tarot-api): Tarot API |
+| REST API | [numerology-api](https://github.com/DivineAPI/numerology-api): Numerology API |
+| REST API | [astrology-api](https://github.com/DivineAPI/astrology-api): Astrology API (overview of all domains) |
+| MCP | [mcp-indian-astrology](https://github.com/DivineAPI/mcp-indian-astrology): Vedic astrology MCP server |
+| MCP | [mcp-western-astrology](https://github.com/DivineAPI/mcp-western-astrology): Western astrology MCP server |
+| MCP | [mcp-horoscope-numerology](https://github.com/DivineAPI/mcp-horoscope-numerology): Horoscope, tarot and numerology MCP server |
+
+## Support
+
+- API reference: [developers.divineapi.com](https://developers.divineapi.com)
+- Postman collection: [documenter.getpostman.com/view/26759678/2sBYAysU8Y](https://documenter.getpostman.com/view/26759678/2sBYAysU8Y)
+- API status: [status.divineapi.com](https://status.divineapi.com)
+- Help centre: [support.divineapi.com](https://support.divineapi.com)
+- Plans and prices: [divineapi.com/pricing](https://divineapi.com/pricing)
+- SDK bugs: open an issue in this repo
 
 ## License
 
