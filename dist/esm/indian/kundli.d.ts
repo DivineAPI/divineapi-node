@@ -25,11 +25,17 @@ export declare class KundliApi {
     kpPlanetaryPositions(params: KundliBirthParams): Promise<ApiResponse>;
     /** Get KP cuspal details. */
     kpCuspal(params: KundliBirthParams): Promise<ApiResponse>;
-    /** Get KP planetary sub. */
+    /**
+     * Get KP planetary sub (v2). Each `table_data` row also carries the planet's
+     * KP aspects: `conjunction`, `aspected_by` and `aspect_to` (`planets`, `houses`).
+     */
     kpPlanetarySub(params: KundliBirthParams): Promise<ApiResponse>;
     /** Get KP planetary cuspal significator table. */
     kpPlanetaryCuspalSignificatorTable(params: KundliBirthParams): Promise<ApiResponse>;
-    /** Get KP cuspal sub. */
+    /**
+     * Get KP cuspal sub (v2). Each `table_data` row also carries `aspected_by`:
+     * the planets that aspect that cusp.
+     */
     kpCuspalSub(params: KundliBirthParams): Promise<ApiResponse>;
     /** Get kundali transit ascendant chart. */
     transitAscendant(params: KundliTransitParams): Promise<ApiResponse>;
