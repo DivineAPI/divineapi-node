@@ -199,6 +199,7 @@ client.indian.kundli.kaalChakraDasha(params)
 client.indian.kundli.yogas(params)
 client.indian.kundli.pitraDosha(params)
 client.indian.kundli.planetAnalysis(params)
+client.indian.kundli.grahaDrishti(params)   // Vedic aspects: planets -> houses and planets
 client.indian.kundli.sudarshanChakra(params)
 // Jaimini
 client.indian.kundli.jaiminiPlanetaryPositions(params)

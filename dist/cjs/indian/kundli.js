@@ -176,6 +176,17 @@ class KundliApi {
     async planetAnalysis(params) {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v2/planet-analysis', params);
     }
+    /**
+     * Get Graha Drishti (Vedic planetary aspects). Parashari drishti on whole-sign
+     * houses from the Lagna: every graha aspects the 7th; Mars also the 4th/8th,
+     * Jupiter the 5th/9th, Saturn the 3rd/10th, Rahu and Ketu the 5th/9th.
+     * Returns `planets` (with `aspects` and `aspected_by`) and `houses` (with
+     * `planets` and `aspected_by`). Accepts the optional `node_type`
+     * ("meannode" or "truenode"). Names are in English whatever `lan`.
+     */
+    async grahaDrishti(params) {
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/aspects', params);
+    }
     /** Get sudarshana chakra. */
     async sudarshanChakra(params) {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/sudarshana-chakra', params);
