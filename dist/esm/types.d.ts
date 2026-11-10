@@ -236,6 +236,19 @@ export interface SankrantiFestivalParams extends LocationParams, TimezoneParam {
 }
 export interface KundliBirthParams extends BirthParams {
 }
+/** How the weekday (vaar) is counted. */
+export type WeekdayMode = 'civil' | 'vedic';
+export interface WeekdayParam extends BaseParams {
+    /**
+     * 'civil' (the API default) changes the day at midnight; 'vedic' changes it at
+     * local sunrise, so a moment between midnight and sunrise belongs to the previous
+     * day. Case-insensitive; any other value throws a ValidationError before the call.
+     */
+    weekday?: WeekdayMode;
+}
+/** basicAstroDetails: birth details plus the optional weekday mode. */
+export interface BasicAstroDetailsParams extends KundliBirthParams, WeekdayParam {
+}
 export interface HoroscopeChartParams extends BirthParams, ChartStylingParams {
     chart_id: string;
 }
@@ -272,9 +285,15 @@ export interface LalKitabVarshphalParams extends BirthParams {
     /** Year for the annual (varshphal) chart */
     varshphal_year: number;
 }
+/** lalKitabVarshphalVarshaPravesh: varshphal params plus the optional weekday mode. */
+export interface LalKitabVarshaPraveshParams extends LalKitabVarshphalParams, WeekdayParam {
+}
 export interface VarshphalParams extends BirthParams {
     /** Year for the annual (varshphal) chart */
     varshphal_year: number;
+}
+/** varshphalVarshaPravesh and varshphalBasicAstroDetails: varshphal params plus the optional weekday mode. */
+export interface VarshphalWeekdayParams extends VarshphalParams, WeekdayParam {
 }
 export interface MatchMakingParams extends CoupleBirthParams {
 }

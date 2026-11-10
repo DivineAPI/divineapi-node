@@ -1,8 +1,12 @@
 import { BaseClient } from '../client.js';
+import { ValidationError } from '../errors.js';
 import type {
   ApiResponse,
   KundliBirthParams,
+  BasicAstroDetailsParams,
   VarshphalParams,
+  VarshphalWeekdayParams,
+  LalKitabVarshaPraveshParams,
   HoroscopeChartParams,
   VimshottariDashaParams,
   DashaAnalysisParams,
@@ -14,6 +18,25 @@ import type {
   LalKitabHouseSignificationParams,
   LalKitabVarshphalParams,
 } from '../types.js';
+
+const WEEKDAY_MODES = new Set(['civil', 'vedic']);
+
+/**
+ * Return a copy of params with `weekday` trimmed and lowercased. Left out when
+ * not given, so the API applies its default ('civil').
+ * @throws {ValidationError} for anything other than 'civil' or 'vedic'.
+ */
+function applyWeekday<T extends Record<string, unknown>>(params: T): T {
+  const wd = params?.weekday;
+  if (wd === undefined || wd === null || wd === '') {
+    return params;
+  }
+  const mode = String(wd).trim().toLowerCase();
+  if (!WEEKDAY_MODES.has(mode)) {
+    throw new ValidationError(`Invalid weekday '${String(wd)}'. Must be 'civil' or 'vedic'.`);
+  }
+  return { ...params, weekday: mode };
+}
 
 /**
  * Indian Kundli (Birth Chart) API endpoints.
@@ -146,9 +169,12 @@ export class KundliApi {
 
   // ── Core Kundli Endpoints ──
 
-  /** Get basic astro details. */
-  async basicAstroDetails(params: KundliBirthParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v3/basic-astro-details', params);
+  /**
+   * Get basic astro details. `vaar` is the weekday of birth; with
+   * `weekday: 'vedic'` a birth before sunrise gets the previous day.
+   */
+  async basicAstroDetails(params: BasicAstroDetailsParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v3/basic-astro-details', applyWeekday(params));
   }
 
   /** Get planetary positions. */
@@ -316,9 +342,13 @@ export class KundliApi {
     return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/house-signification', params);
   }
 
-  /** Get Lal Kitab varshphal varsha pravesh for the given varshphal_year. */
-  async lalKitabVarshphalVarshaPravesh(params: LalKitabVarshphalParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/varshphal/varsha-pravesh', params);
+  /**
+   * Get Lal Kitab varshphal varsha pravesh for the given varshphal_year.
+   * `weekday` in the response is the day of that moment; with
+   * `weekday: 'vedic'` a moment before sunrise gets the previous day.
+   */
+  async lalKitabVarshphalVarshaPravesh(params: LalKitabVarshaPraveshParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/varshphal/varsha-pravesh', applyWeekday(params));
   }
 
   /** Get Lal Kitab varshphal planetary positions for the given varshphal_year. */
@@ -372,12 +402,22 @@ export class KundliApi {
     return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/rudraksha-suggestion', params);
   }
 
-  async varshphalVarshaPravesh(params: VarshphalParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/varsha-pravesh', params);
+  /**
+   * Get the varshphal Varsha Pravesh (start of the annual chart) for varshphal_year.
+   * `weekday` in the response is the day of that moment; with
+   * `weekday: 'vedic'` a moment before sunrise gets the previous day.
+   */
+  async varshphalVarshaPravesh(params: VarshphalWeekdayParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/varsha-pravesh', applyWeekday(params));
   }
 
-  async varshphalBasicAstroDetails(params: VarshphalParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/basic-astro-details', params);
+  /**
+   * Get varshphal basic astro details for varshphal_year. `vaar` is the day of
+   * the Varsha Pravesh moment; with `weekday: 'vedic'` a moment before sunrise
+   * gets the previous day.
+   */
+  async varshphalBasicAstroDetails(params: VarshphalWeekdayParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/basic-astro-details', applyWeekday(params));
   }
 
   async varshphalPlanetaryPositions(params: VarshphalParams): Promise<ApiResponse> {
