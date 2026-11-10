@@ -20,10 +20,10 @@ export declare class RateLimitError extends DivineApiError {
     constructor(message?: string, retryAfter?: number, responseBody?: unknown);
 }
 /**
- * Thrown when the API returns a 400 status or validation fails.
+ * Thrown when the API returns a 400 or 422 status or validation fails.
  */
 export declare class ValidationError extends DivineApiError {
-    constructor(message: string, responseBody?: unknown);
+    constructor(message: string, responseBody?: unknown, statusCode?: number);
 }
 /**
  * Thrown when a network error occurs (timeout, DNS, connection refused).

@@ -7,6 +7,7 @@ import { NumerologyApi } from './numerology/index.js';
 import { LifestyleApi } from './lifestyle/index.js';
 import { CalculatorApi } from './calculators/index.js';
 import { LocationApi } from './location/index.js';
+import { ChatbotApi } from './chatbot/index.js';
 import { DivineApiError } from './errors.js';
 import type { DivineApiConfig } from './types.js';
 
@@ -50,6 +51,8 @@ export class DivineApi {
   public readonly calculators: CalculatorApi;
   /** Location endpoints (place name -> lat, lon, timezone) */
   public readonly location: LocationApi;
+  /** Astro Chatbot endpoints (ask.divineapi.com; needs an Astro Chatbot plan) */
+  public readonly chatbot: ChatbotApi;
 
   constructor(config: DivineApiConfig) {
     if (!config.apiKey) {
@@ -66,6 +69,7 @@ export class DivineApi {
     this.lifestyle = new LifestyleApi(client);
     this.calculators = new CalculatorApi(client);
     this.location = new LocationApi(client);
+    this.chatbot = new ChatbotApi(client);
   }
 }
 
@@ -79,5 +83,6 @@ export { NumerologyApi } from './numerology/index.js';
 export { LifestyleApi } from './lifestyle/index.js';
 export { CalculatorApi } from './calculators/index.js';
 export { LocationApi } from './location/index.js';
+export { ChatbotApi } from './chatbot/index.js';
 export { DivineApiError, AuthenticationError, RateLimitError, ValidationError, NetworkError } from './errors.js';
 export type * from './types.js';

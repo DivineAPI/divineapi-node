@@ -39,11 +39,11 @@ class RateLimitError extends DivineApiError {
 }
 exports.RateLimitError = RateLimitError;
 /**
- * Thrown when the API returns a 400 status or validation fails.
+ * Thrown when the API returns a 400 or 422 status or validation fails.
  */
 class ValidationError extends DivineApiError {
-    constructor(message, responseBody) {
-        super(message, 400, responseBody);
+    constructor(message, responseBody, statusCode = 400) {
+        super(message, statusCode, responseBody);
         this.name = 'ValidationError';
     }
 }
