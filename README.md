@@ -442,6 +442,19 @@ client.calculators.flames(params)   // params: { your_name, partner_name }
 client.calculators.love(params)
 ```
 
+### Location
+
+```typescript
+// Place name (at least 3 characters) -> up to 10 matches with lat, lon and timezone
+const res = await client.location.search({ place: 'Patna' });
+const first = res.data.results[0];   // latitude 25.41667, longitude 85.16667, timezone "Asia/Kolkata"
+
+// timezone_value is the zone's UTC offset today. For a birth date in a zone with
+// summer time (e.g. America/New_York: -5 in winter, -4 in summer) work out the offset
+// for that date from first.timezone before passing it as tzone.
+// Place data (c) GeoNames (geonames.org), CC BY 4.0: res.attribution.
+```
+
 ## Error Handling
 
 ```typescript

@@ -10,7 +10,7 @@ export interface DivineApiConfig {
     timeout?: number;
 }
 /** Base host definitions */
-export type ApiHost = 'astroapi-1.divineapi.com' | 'astroapi-2.divineapi.com' | 'astroapi-3.divineapi.com' | 'astroapi-4.divineapi.com' | 'astroapi-5.divineapi.com' | 'astroapi-7.divineapi.com' | 'astroapi-8.divineapi.com' | 'pdf.divineapi.com';
+export type ApiHost = 'astroapi-1.divineapi.com' | 'astroapi-2.divineapi.com' | 'astroapi-3.divineapi.com' | 'astroapi-4.divineapi.com' | 'astroapi-5.divineapi.com' | 'astroapi-7.divineapi.com' | 'astroapi-8.divineapi.com' | 'pdf.divineapi.com' | 'geolocation.divineapi.com';
 /**
  * Minimal POST surface the sub-API modules depend on. Both {@link BaseClient}
  * and the Western house-system wrapper satisfy it structurally.
@@ -538,6 +538,10 @@ export interface CoreNumbersParams extends BaseParams {
 export interface LifestyleParams extends TimezoneParam, LanguageParam {
     sign: string;
     h_day: string;
+}
+export interface LocationSearchParams extends BaseParams {
+    /** Place name to search for, at least 3 characters (e.g. "Patna"). */
+    place: string;
 }
 export interface FlamesCalculatorParams extends BaseParams {
     /** Your name. The API's field is `your_name` (not `full_name`). */

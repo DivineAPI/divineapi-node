@@ -19,7 +19,8 @@ export type ApiHost =
   | 'astroapi-5.divineapi.com'
   | 'astroapi-7.divineapi.com'
   | 'astroapi-8.divineapi.com'
-  | 'pdf.divineapi.com';
+  | 'pdf.divineapi.com'
+  | 'geolocation.divineapi.com';
 
 /**
  * Minimal POST surface the sub-API modules depend on. Both {@link BaseClient}
@@ -687,6 +688,13 @@ export interface CoreNumbersParams extends BaseParams {
 export interface LifestyleParams extends TimezoneParam, LanguageParam {
   sign: string;
   h_day: string;
+}
+
+// ── Location Params ──
+
+export interface LocationSearchParams extends BaseParams {
+  /** Place name to search for, at least 3 characters (e.g. "Patna"). */
+  place: string;
 }
 
 // ── Calculator Params ──
