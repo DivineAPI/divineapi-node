@@ -86,6 +86,105 @@ export class BaseClient {
     });
   }
 
+  /**
+   * POST a JSON body like {@link postJson} and read a Server-Sent Events reply, yielding
+   * each event's JSON `data` payload as it arrives. A reply that is plain JSON instead of
+   * a stream is yielded as one event. The timeout covers the wait for the response and
+   * then each gap between chunks. Breaking out of the loop closes the connection.
+   */
+  async *postJsonStream<T = unknown>(
+    host: ApiHost,
+    path: string,
+    body: Record<string, unknown> = {}
+  ): AsyncGenerator<T, void, undefined> {
+    const url = `https://${host}${path}`;
+    const controller = new AbortController();
+    let timeoutId = setTimeout(() => controller.abort(), this.timeout);
+    const restartTimeout = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => controller.abort(), this.timeout);
+    };
+
+    try {
+      let response: Response;
+      try {
+        response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${this.authToken}`,
+            'x-api-key': this.apiKey,
+            'Content-Type': 'application/json',
+            'Accept': 'text/event-stream',
+          },
+          body: JSON.stringify(body),
+          signal: controller.signal,
+        });
+        if (!response.ok) {
+          throw await this.httpError(response);
+        }
+      } catch (error) {
+        throw this.toSdkError(error);
+      }
+
+      if (!response.body || !(response.headers.get('Content-Type') ?? '').includes('text/event-stream')) {
+        try {
+          yield (await response.json()) as T;
+        } catch (error) {
+          throw this.toSdkError(error);
+        }
+        return;
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let buffer = '';
+      let dataLines: string[] = [];
+      try {
+        for (;;) {
+          // The timeout runs only while waiting for data, not while the caller
+          // handles an event.
+          restartTimeout();
+          let chunk: ReadableStreamReadResult<Uint8Array>;
+          try {
+            chunk = await reader.read();
+          } catch (error) {
+            throw this.toSdkError(error);
+          } finally {
+            clearTimeout(timeoutId);
+          }
+          buffer += chunk.done ? decoder.decode() : decoder.decode(chunk.value, { stream: true });
+          if (chunk.done && buffer && !buffer.endsWith('\n')) {
+            buffer += '\n';
+          }
+          let newline: number;
+          while ((newline = buffer.indexOf('\n')) >= 0) {
+            let line = buffer.slice(0, newline);
+            buffer = buffer.slice(newline + 1);
+            if (line.endsWith('\r')) {
+              line = line.slice(0, -1);
+            }
+            if (line.startsWith('data:')) {
+              dataLines.push(line.slice(line.startsWith('data: ') ? 6 : 5));
+            } else if (line === '' && dataLines.length) {
+              yield parseEvent<T>(dataLines, url);
+              dataLines = [];
+            }
+          }
+          if (chunk.done) {
+            break;
+          }
+        }
+        if (dataLines.length) {
+          yield parseEvent<T>(dataLines, url);
+        }
+      } finally {
+        await reader.cancel().catch(() => undefined);
+      }
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }
+
   /** Send a request with the timeout, and map HTTP and network failures to SDK errors. */
   private async send<T>(url: string, init: RequestInit): Promise<T> {
     const controller = new AbortController();
@@ -96,61 +195,114 @@ export class BaseClient {
 
       clearTimeout(timeoutId);
 
-      // Handle HTTP errors
       if (!response.ok) {
-        let body: unknown;
-        try {
-          body = await response.json();
-        } catch {
-          body = await response.text().catch(() => null);
-        }
-
-        switch (response.status) {
-          case 401:
-          case 403:
-            throw new AuthenticationError(
-              `Authentication failed (${response.status}): Check your API key and auth token.`,
-              body
-            );
-          case 429: {
-            const retryAfter = response.headers.get('Retry-After');
-            throw new RateLimitError(
-              'Rate limit exceeded. Please wait before making more requests.',
-              retryAfter ? parseInt(retryAfter, 10) : undefined,
-              body
-            );
-          }
-          case 400:
-            throw new ValidationError(
-              `Bad request: ${typeof body === 'object' && body && 'message' in body ? (body as { message: string }).message : typeof body === 'object' && body && 'error' in body && typeof (body as { error: unknown }).error === 'string' ? (body as { error: string }).error : 'Invalid parameters'}`,
-              body
-            );
-          default:
-            throw new DivineApiError(
-              `API request failed with status ${response.status}`,
-              response.status,
-              body
-            );
-        }
+        throw await this.httpError(response);
       }
 
       const data = await response.json();
       return data as T;
     } catch (error) {
       clearTimeout(timeoutId);
-
-      if (error instanceof DivineApiError) {
-        throw error;
-      }
-
-      if (error instanceof Error) {
-        if (error.name === 'AbortError') {
-          throw new NetworkError(`Request timed out after ${this.timeout}ms`, error);
-        }
-        throw new NetworkError(`Network request failed: ${error.message}`, error);
-      }
-
-      throw new NetworkError('An unknown network error occurred');
+      throw this.toSdkError(error);
     }
+  }
+
+  /** Map a non-2xx response to the matching SDK error. */
+  private async httpError(response: Response): Promise<DivineApiError> {
+    const text = await response.text().catch(() => '');
+    let body: unknown = text || null;
+    try {
+      body = JSON.parse(text);
+    } catch {
+      // not JSON: keep the raw text
+    }
+    const detail = errorMessage(body);
+
+    switch (response.status) {
+      case 401:
+      case 403:
+        return new AuthenticationError(
+          `Authentication failed (${response.status}): ${detail || 'Check your API key and auth token.'}`,
+          body
+        );
+      case 429: {
+        const retryAfter = response.headers.get('Retry-After');
+        return new RateLimitError(
+          'Rate limit exceeded. Please wait before making more requests.',
+          retryAfter ? parseInt(retryAfter, 10) : undefined,
+          body
+        );
+      }
+      case 400:
+      case 422:
+        return new ValidationError(`Bad request: ${detail || 'Invalid parameters'}`, body, response.status);
+      default:
+        return new DivineApiError(
+          `API request failed with status ${response.status}${detail ? `: ${detail}` : ''}`,
+          response.status,
+          body
+        );
+    }
+  }
+
+  /** Wrap fetch, abort and parse failures as SDK errors; SDK errors pass through. */
+  private toSdkError(error: unknown): DivineApiError {
+    if (error instanceof DivineApiError) {
+      return error;
+    }
+    if (error instanceof Error) {
+      if (error.name === 'AbortError') {
+        return new NetworkError(`Request timed out after ${this.timeout}ms`, error);
+      }
+      return new NetworkError(`Network request failed: ${error.message}`, error);
+    }
+    return new NetworkError('An unknown network error occurred');
+  }
+}
+
+/**
+ * The server's error text: `message` or `error` (DivineAPI), or FastAPI's `detail`
+ * (ask.divineapi.com), which is a string or a list of field errors such as
+ * `[{ loc: ['body', 'user_id'], msg: 'Field required' }]`.
+ */
+function errorMessage(body: unknown): string {
+  if (!body || typeof body !== 'object') {
+    return '';
+  }
+  const fields = body as Record<string, unknown>;
+  for (const key of ['message', 'error']) {
+    const value = fields[key];
+    if (typeof value === 'string' && value) {
+      return value;
+    }
+  }
+  const detail = fields.detail;
+  if (typeof detail === 'string') {
+    return detail;
+  }
+  if (Array.isArray(detail)) {
+    return detail
+      .map((item) => {
+        if (item && typeof item === 'object') {
+          const { loc, msg } = item as { loc?: unknown; msg?: unknown };
+          const field = Array.isArray(loc) && loc.length ? String(loc[loc.length - 1]) : '';
+          const text = msg === undefined ? '' : String(msg);
+          return field ? `${field}: ${text}` : text;
+        }
+        return String(item);
+      })
+      .filter(Boolean)
+      .join('; ');
+  }
+  return '';
+}
+
+/** Parse the joined `data` lines of one Server-Sent Event as JSON. */
+function parseEvent<T>(dataLines: string[], url: string): T {
+  const data = dataLines.join('\n');
+  try {
+    return JSON.parse(data) as T;
+  } catch {
+    throw new DivineApiError(`Unreadable event in the stream from ${url}: ${data.slice(0, 200)}`);
   }
 }

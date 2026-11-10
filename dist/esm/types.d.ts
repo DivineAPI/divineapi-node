@@ -10,7 +10,7 @@ export interface DivineApiConfig {
     timeout?: number;
 }
 /** Base host definitions */
-export type ApiHost = 'astroapi-1.divineapi.com' | 'astroapi-2.divineapi.com' | 'astroapi-3.divineapi.com' | 'astroapi-4.divineapi.com' | 'astroapi-5.divineapi.com' | 'astroapi-7.divineapi.com' | 'astroapi-8.divineapi.com' | 'pdf.divineapi.com' | 'geolocation.divineapi.com';
+export type ApiHost = 'astroapi-1.divineapi.com' | 'astroapi-2.divineapi.com' | 'astroapi-3.divineapi.com' | 'astroapi-4.divineapi.com' | 'astroapi-5.divineapi.com' | 'astroapi-7.divineapi.com' | 'astroapi-8.divineapi.com' | 'pdf.divineapi.com' | 'geolocation.divineapi.com' | 'ask.divineapi.com';
 /**
  * Minimal POST surface the sub-API modules depend on. Both {@link BaseClient}
  * and the Western house-system wrapper satisfy it structurally.
@@ -586,6 +586,168 @@ export interface LifestyleParams extends TimezoneParam, LanguageParam {
 export interface LocationSearchParams extends BaseParams {
     /** Place name to search for, at least 3 characters (e.g. "Patna"). */
     place: string;
+}
+/**
+ * Birth details for the Astro Chatbot. Numbers are fine: the SDK sends every value as
+ * the string the chatbot requires (it rejects JSON numbers with 422).
+ */
+export interface ChatbotBirthDetails {
+    /** Name used to address the person. */
+    full_name?: string;
+    /** Day of birth, 1-31. */
+    day?: number | string;
+    /** Month of birth, 1-12. */
+    month?: number | string;
+    /** Year of birth, e.g. 1996. */
+    year?: number | string;
+    /** Hour of birth, 0-23 (24-hour clock). */
+    hour?: number | string;
+    /** Minute of birth, 0-59. */
+    min?: number | string;
+    /** Second of birth, 0-59 (default 0). */
+    sec?: number | string;
+    /** "male" or "female". */
+    gender?: string;
+    /** Birth city, e.g. "New Delhi". */
+    place?: string;
+    /** Latitude of the birth place, e.g. 28.7041. */
+    lat?: number | string;
+    /** Longitude of the birth place, e.g. 77.1025. */
+    lon?: number | string;
+    /** Hours ahead of UTC at birth, e.g. 5.5. */
+    tzone?: number | string;
+}
+/** Answer depth: quick costs 20 credits, standard 30, deep 50. */
+export type ChatbotDepth = 'quick' | 'standard' | 'deep';
+/** Style and cost options for a chat message. All optional. */
+export interface ChatbotChatOptions {
+    /** quick (20 credits), standard (30, default) or deep (50). */
+    depth?: ChatbotDepth;
+    /** Answer length ceiling (default medium). */
+    length_cap?: 'short' | 'medium' | 'full';
+    /** "English" (default), "Hindi", any other language name, or "auto" to mirror the message. */
+    language?: string;
+    /** Astrology school (default western). */
+    school?: 'western' | 'vedic' | 'kp' | 'lalkitab';
+    /** Topic focus (default general). */
+    lens?: 'general' | 'career' | 'love' | 'health' | 'money' | 'spiritual';
+    /** How firmly predictions are worded (default balanced). */
+    confidence?: 'balanced' | 'definitive' | 'careful';
+    /** "strict" is recommended for matrimony and relationship products (default standard). */
+    sensitivity?: 'standard' | 'strict';
+    /** Free text, default "warm, friendly". */
+    tone?: string;
+    /** Free text, default "empowering". */
+    framing?: string;
+    /** What the astrologer calls itself. */
+    assistant_name?: string;
+    /** Free text describing your brand's voice. */
+    brand_voice?: string;
+    /** Appended to every answer. */
+    sign_off?: string;
+    /** Free-text output instructions, at most 500 characters. */
+    style_notes?: string;
+}
+/**
+ * One chat message. Send the birth details with the first message of a session; later
+ * messages in the same session reuse them until a new complete set replaces them.
+ */
+export interface ChatbotChatParams extends ChatbotBirthDetails, ChatbotChatOptions {
+    /** Your ID for the end user. Sessions are scoped to it. */
+    user_id: string | number;
+    /** Your ID for the conversation; a new one starts a fresh thread. */
+    session_id: string | number;
+    /** The user's question, in any language. */
+    message: string;
+}
+/** Daily horoscope for one date. Every call needs the complete birth details. */
+export interface ChatbotHoroscopeParams extends ChatbotBirthDetails {
+    /** Your ID for the end user. */
+    user_id: string | number;
+    /** Date of the horoscope, YYYY-MM-DD (1900-01-01 to 2100-12-30). */
+    date: string;
+    /** quick (up to 20 words), standard (35-50, default) or deep (50-80). Same credits as chat. */
+    depth?: ChatbotDepth;
+    /** "English" (default) or any other language name. */
+    language?: string;
+}
+export interface ChatbotSessionsParams {
+    /** Your ID for the end user. */
+    user_id: string | number;
+}
+export interface ChatbotSessionParams {
+    /** Your ID for the end user. */
+    user_id: string | number;
+    /** One of this user's session IDs. */
+    session_id: string | number;
+}
+/** Answer to a chat message. */
+export interface ChatbotChatResponse {
+    request_id: string;
+    answer: string;
+    band: string;
+    /** Absent on a blocked (free) reply. */
+    credits_charged?: number;
+    credits_remaining: number;
+    /** true when the guardrails answered instead; nothing is charged. */
+    blocked?: boolean;
+    block_reason?: string;
+    [key: string]: unknown;
+}
+/**
+ * One event from {@link ChatbotApi.chatStream}: `{ delta }` while the answer is written,
+ * then one last event with `done: true` and the fields of {@link ChatbotChatResponse}.
+ */
+export interface ChatbotStreamEvent extends Partial<ChatbotChatResponse> {
+    delta?: string;
+    done?: boolean;
+}
+export interface ChatbotHoroscopeResponse {
+    request_id: string;
+    date: string;
+    prediction: string;
+    moon_phase_today: string;
+    credits_charged: number;
+    credits_remaining: number;
+    [key: string]: unknown;
+}
+export interface ChatbotSessionSummary {
+    session_id: string;
+    /** Number of messages. */
+    messages: number;
+    /** Unix seconds. */
+    started: number;
+    /** Unix seconds. */
+    last_active: number;
+    has_birth_details: boolean;
+}
+export interface ChatbotSessionsResponse {
+    /** Most recent first. */
+    sessions: ChatbotSessionSummary[];
+}
+export interface ChatbotMessage {
+    role: 'user' | 'assistant';
+    text: string;
+    /** Unix seconds. */
+    ts: number;
+}
+export interface ChatbotSessionResponse {
+    session_id: string;
+    /** Oldest first. */
+    messages: ChatbotMessage[];
+    /** The stored birth details, as strings. */
+    birth_details: Record<string, string> | null;
+}
+export interface ChatbotDeleteSessionResponse {
+    deleted: boolean;
+    session_id: string;
+    messages_removed: number;
+}
+export interface ChatbotBalanceResponse {
+    state: 'active' | 'expired' | 'limit_reached';
+    credits_remaining: number;
+    /** YYYY-MM-DD */
+    expires: string;
 }
 export interface FlamesCalculatorParams extends BaseParams {
     /** Your name. The API's field is `your_name` (not `full_name`). */

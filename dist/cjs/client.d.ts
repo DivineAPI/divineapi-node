@@ -22,7 +22,18 @@ export declare class BaseClient {
      * which rejects form-encoded requests with 401 "x-api-key header required".
      */
     postJson<T = unknown>(host: ApiHost, path: string, body?: Record<string, unknown>): Promise<T>;
+    /**
+     * POST a JSON body like {@link postJson} and read a Server-Sent Events reply, yielding
+     * each event's JSON `data` payload as it arrives. A reply that is plain JSON instead of
+     * a stream is yielded as one event. The timeout covers the wait for the response and
+     * then each gap between chunks. Breaking out of the loop closes the connection.
+     */
+    postJsonStream<T = unknown>(host: ApiHost, path: string, body?: Record<string, unknown>): AsyncGenerator<T, void, undefined>;
     /** Send a request with the timeout, and map HTTP and network failures to SDK errors. */
     private send;
+    /** Map a non-2xx response to the matching SDK error. */
+    private httpError;
+    /** Wrap fetch, abort and parse failures as SDK errors; SDK errors pass through. */
+    private toSdkError;
 }
 //# sourceMappingURL=client.d.ts.map
