@@ -1,5 +1,5 @@
 import { BaseClient } from '../client.js';
-import type { ApiResponse, KundliBirthParams, VarshphalParams, HoroscopeChartParams, VimshottariDashaParams, DashaAnalysisParams, SubPlanetChartParams, KundliTransitParams, PlanetAnalysisParams, LalKitabMahadashaContentParams, LalKitabAntardashaContentParams, LalKitabHouseSignificationParams, LalKitabVarshphalParams } from '../types.js';
+import type { ApiResponse, KundliBirthParams, KpPrashnaParams, KpPrashnaChartParams, VarshphalParams, HoroscopeChartParams, VimshottariDashaParams, DashaAnalysisParams, SubPlanetChartParams, KundliTransitParams, PlanetAnalysisParams, LalKitabMahadashaContentParams, LalKitabAntardashaContentParams, LalKitabHouseSignificationParams, LalKitabVarshphalParams } from '../types.js';
 /**
  * Indian Kundli (Birth Chart) API endpoints.
  * Host: astroapi-3.divineapi.com
@@ -37,6 +37,31 @@ export declare class KundliApi {
      * the planets that aspect that cusp.
      */
     kpCuspalSub(params: KundliBirthParams): Promise<ApiResponse>;
+    /**
+     * List the KP Prashna question categories: `key`, `question` and
+     * `house_hint` (the houses that answer it, e.g. marriage: 2, 7, 11).
+     */
+    kpPrashnaInstantQuestions(): Promise<ApiResponse>;
+    /**
+     * Build a KP Prashna (horary) chart from the querent's number (1-249) and
+     * the moment and place the question is asked. Returns `ascendant_source`,
+     * `cusps`, `planets`, `significators` (`houses`, `planets`) and
+     * `current_dasha` with `houses_matching_current_dasha`. The API gives no
+     * yes/no verdict. Names are in English.
+     */
+    kpPrashnaChart(params: KpPrashnaChartParams): Promise<ApiResponse>;
+    /**
+     * Get the KP Ruling Planets for a moment and place (no horary number):
+     * `ascendant`, `moon`, `ruling_planets` (day lord and the Moon's and
+     * Ascendant's sign, star and sub lords) and `ruling_planets_list`.
+     */
+    kpPrashnaRulingPlanets(params: KpPrashnaParams): Promise<ApiResponse>;
+    /**
+     * Get the Vimshottari Dasha from the moment a KP Prashna question is asked:
+     * `current_dasha` and `dasha_timeline`, the full 120-year tree from the
+     * current mahadasha (819 periods, about 74 KB).
+     */
+    kpPrashnaDasha(params: KpPrashnaParams): Promise<ApiResponse>;
     /** Get kundali transit ascendant chart. */
     transitAscendant(params: KundliTransitParams): Promise<ApiResponse>;
     /** Get kundali transit moon chart. */

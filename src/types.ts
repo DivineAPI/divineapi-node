@@ -318,6 +318,27 @@ export interface SankrantiFestivalParams extends LocationParams, TimezoneParam {
 
 export interface KundliBirthParams extends BirthParams {}
 
+/**
+ * When and where a KP Prashna (horary) question is asked. These are not birth
+ * details. The API requires `full_name` and `gender` but does not use them in
+ * the calculation; the SDK sends 'Querent' and 'other' when they are omitted.
+ */
+export interface KpPrashnaParams extends DateParams, LocationParams, TimezoneParam {
+  hour: number;
+  min: number;
+  /** Default 0; the API requires it. */
+  sec?: number;
+  full_name?: string;
+  /** 'male', 'female' or 'other' */
+  gender?: string;
+}
+
+export interface KpPrashnaChartParams extends KpPrashnaParams {
+  /** The number (1-249) the querent thinks of. */
+  horary_number: number;
+  node_type?: 'meannode' | 'truenode';
+}
+
 export interface HoroscopeChartParams extends BirthParams, ChartStylingParams {
   chart_id: string;
 }

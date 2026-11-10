@@ -210,6 +210,13 @@ client.indian.kundli.jaiminiSwamsaChart(params)   // atmakaraka, swamsha/lagnams
 // Sub Planet
 client.indian.kundli.subPlanetPositions(params)
 client.indian.kundli.subPlanetChart(params)
+// KP Prashna (horary): the moment and place the question is asked, not birth data.
+// full_name and gender are optional (the API requires them but ignores them).
+const asked = { day: 12, month: 10, year: 2026, hour: 10, min: 30, place: 'New Delhi', lat: 28.6139, lon: 77.209, tzone: 5.5 };
+client.indian.kundli.kpPrashnaInstantQuestions()   // question categories + house_hint
+client.indian.kundli.kpPrashnaChart({ ...asked, horary_number: 100 })   // number 1-249
+client.indian.kundli.kpPrashnaRulingPlanets(asked)
+client.indian.kundli.kpPrashnaDasha(asked)         // full 819-period timeline (~74 KB)
 // Transit
 client.indian.kundli.transitAscendant(params)
 client.indian.kundli.transitMoon(params)
