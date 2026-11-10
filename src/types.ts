@@ -590,6 +590,21 @@ export interface PdfBirthParams extends BirthParams, PdfRequiredCompanyParams {}
 
 export interface PdfCoupleParams extends CoupleBirthParams, PdfRequiredCompanyParams {}
 
+/** Reports V2 request body (`/api/v1/reports/generate` and `/api/v1/western/reports/generate`). */
+export interface ReportsV2Params extends BaseParams {
+  /** Report slug, e.g. 'vedic-career-report' or 'western-natal-blueprint' (or a Western family code with tier). */
+  report_type: string;
+  /** Western only: depth for a family code. Omit for 'comprehensive'. */
+  tier?: 'snapshot' | 'insight' | 'advanced' | 'comprehensive';
+  company_name: string;
+  company_url: string;
+  company_email: string;
+  company_mobile: string;
+  company_bio: string;
+  footer_text: string;
+  logo_url: string;
+}
+
 export interface PdfReportParams extends BirthParams, PdfRequiredCompanyParams {
   /** Required. Report code selecting the report (e.g. 'CAREER-REPORT'). */
   report_code: string;

@@ -7,6 +7,7 @@ import type {
   PdfCoupleReportParams,
   PdfNumerologyPredictionParams,
   PdfNumerologyReportParams,
+  ReportsV2Params,
 } from '../types.js';
 
 /**
@@ -86,20 +87,24 @@ export class PdfReportApi {
   }
 
   /**
-   * Generate a Reports V2 PDF (`/api/v1/reports/generate`).
+   * Reports V2: Vedic and Numerology reports (`POST /api/v1/reports/generate`).
+   * Sent as a JSON body with the API key in an `x-api-key` header, as this endpoint
+   * requires. Returns `reportId`, `htmlUrl`, `pdfUrl`, `statusUrl` and `status`; the
+   * report is ready in about 10-30 seconds.
    *
-   * TODO / KNOWN LIMITATION (unverified): this endpoint does NOT follow the
-   * form-data + api_key convention the rest of the SDK uses. It requires:
-   *   1. a SEPARATE reports_v2 credential pair (not the standard PDF key), and
-   *   2. a raw JSON request body keyed by `report_type` (not urlencoded
-   *      `report_code`).
-   * The current call posts urlencoded form-data with the standard PDF key, so
-   * it returns 401 with those credentials. It is left in place for API
-   * completeness but is not yet supported; do not rely on it until the SDK
-   * gains JSON-body + reports_v2-credential support. Not covered by any MCP
-   * tool. See SDK-PARITY-AUDIT-JS.md.
+   * Reports V2 only accepts DivineAPI PDF accounts: create the client with that
+   * account's apiKey and authToken. A standard API account gets 401 "Invalid Bearer token".
    */
-  async reportsGenerate(params: PdfReportParams): Promise<ApiResponse> {
-    return this.client.post('pdf.divineapi.com', '/api/v1/reports/generate', params);
+  async reportsGenerate(params: ReportsV2Params): Promise<ApiResponse> {
+    return this.client.postJson('pdf.divineapi.com', '/api/v1/reports/generate', { ...params });
+  }
+
+  /**
+   * Reports V2: Western reports (`POST /api/v1/western/reports/generate`). `report_type`
+   * is a Western slug (e.g. 'western-natal-blueprint') or a family code with `tier`.
+   * Same credentials and branding fields as {@link reportsGenerate}.
+   */
+  async westernReportsGenerate(params: ReportsV2Params): Promise<ApiResponse> {
+    return this.client.postJson('pdf.divineapi.com', '/api/v1/western/reports/generate', { ...params });
   }
 }

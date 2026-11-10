@@ -38,19 +38,39 @@ class BaseClient {
                 formData.append(key, String(value));
             }
         }
+        return this.send(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${this.authToken}`,
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json',
+            },
+            body: formData.toString(),
+        });
+    }
+    /**
+     * POST a JSON body with the API key in an `x-api-key` header.
+     * Used by Reports V2 (`/api/v1/reports/generate`, `/api/v1/western/reports/generate`),
+     * which rejects form-encoded requests with 401 "x-api-key header required".
+     */
+    async postJson(host, path, body = {}) {
+        return this.send(`https://${host}${path}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${this.authToken}`,
+                'x-api-key': this.apiKey,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(body),
+        });
+    }
+    /** Send a request with the timeout, and map HTTP and network failures to SDK errors. */
+    async send(url, init) {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), this.timeout);
         try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${this.authToken}`,
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Accept': 'application/json',
-                },
-                body: formData.toString(),
-                signal: controller.signal,
-            });
+            const response = await fetch(url, { ...init, signal: controller.signal });
             clearTimeout(timeoutId);
             // Handle HTTP errors
             if (!response.ok) {
@@ -70,7 +90,7 @@ class BaseClient {
                         throw new errors_js_1.RateLimitError('Rate limit exceeded. Please wait before making more requests.', retryAfter ? parseInt(retryAfter, 10) : undefined, body);
                     }
                     case 400:
-                        throw new errors_js_1.ValidationError(`Bad request: ${typeof body === 'object' && body && 'message' in body ? body.message : 'Invalid parameters'}`, body);
+                        throw new errors_js_1.ValidationError(`Bad request: ${typeof body === 'object' && body && 'message' in body ? body.message : typeof body === 'object' && body && 'error' in body && typeof body.error === 'string' ? body.error : 'Invalid parameters'}`, body);
                     default:
                         throw new errors_js_1.DivineApiError(`API request failed with status ${response.status}`, response.status, body);
                 }
