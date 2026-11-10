@@ -244,6 +244,7 @@ export interface KundliBirthParams extends BirthParams {
 export interface KpPrashnaParams extends DateParams, LocationParams, TimezoneParam {
     hour: number;
     min: number;
+    /** Default 0; the API requires it. */
     sec?: number;
     full_name?: string;
     /** 'male', 'female' or 'other' */

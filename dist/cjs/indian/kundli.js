@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.KundliApi = void 0;
-/** KP Prashna payload with the API-required but unused fields filled in. */
+/** KP Prashna payload with sec (default 0) and the API-required but unused fields filled in. */
 function prashnaPayload(params) {
-    return { ...params, full_name: params.full_name ?? 'Querent', gender: params.gender ?? 'other' };
+    return { ...params, sec: params.sec ?? 0, full_name: params.full_name ?? 'Querent', gender: params.gender ?? 'other' };
 }
 /**
  * Indian Kundli (Birth Chart) API endpoints.

@@ -17,9 +17,9 @@ import type {
   LalKitabVarshphalParams,
 } from '../types.js';
 
-/** KP Prashna payload with the API-required but unused fields filled in. */
+/** KP Prashna payload with sec (default 0) and the API-required but unused fields filled in. */
 function prashnaPayload<T extends KpPrashnaParams>(params: T): Record<string, unknown> {
-  return { ...params, full_name: params.full_name ?? 'Querent', gender: params.gender ?? 'other' };
+  return { ...params, sec: params.sec ?? 0, full_name: params.full_name ?? 'Querent', gender: params.gender ?? 'other' };
 }
 
 /**
