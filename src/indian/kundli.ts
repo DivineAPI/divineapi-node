@@ -77,9 +77,12 @@ export class KundliApi {
     return this.client.post('astroapi-3.divineapi.com', '/indian-api/v2/kp/cuspal', params);
   }
 
-  /** Get KP planetary sub. */
+  /**
+   * Get KP planetary sub (v2). Each `table_data` row also carries the planet's
+   * KP aspects: `conjunction`, `aspected_by` and `aspect_to` (`planets`, `houses`).
+   */
   async kpPlanetarySub(params: KundliBirthParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/kp/planetary-sub', params);
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v2/kp/planetary-sub', params);
   }
 
   /** Get KP planetary cuspal significator table. */
@@ -87,9 +90,12 @@ export class KundliApi {
     return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/kp/planetary-cuspal-significator-table', params);
   }
 
-  /** Get KP cuspal sub. */
+  /**
+   * Get KP cuspal sub (v2). Each `table_data` row also carries `aspected_by`:
+   * the planets that aspect that cusp.
+   */
   async kpCuspalSub(params: KundliBirthParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/kp/cuspal-sub', params);
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v2/kp/cuspal-sub', params);
   }
 
   // ── Kundali Transit ──
