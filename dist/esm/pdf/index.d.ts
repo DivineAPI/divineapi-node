@@ -41,12 +41,13 @@ export declare class PdfReportApi {
      *
      * Reports V2 only accepts DivineAPI PDF accounts: create the client with that
      * account's apiKey and authToken. A standard API account gets 401 "Invalid Bearer token".
+     * `hide_frontpage_details: true` shows only `front_image` on the cover and requires it.
      */
     reportsGenerate(params: ReportsV2Params): Promise<ApiResponse>;
     /**
      * Reports V2: Western reports (`POST /api/v1/western/reports/generate`). `report_type`
      * is a Western slug (e.g. 'western-natal-blueprint') or a family code with `tier`.
-     * Same credentials and branding fields as {@link reportsGenerate}.
+     * Same credentials, branding fields and cover options as {@link reportsGenerate}.
      */
     westernReportsGenerate(params: ReportsV2Params): Promise<ApiResponse>;
 }
