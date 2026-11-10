@@ -182,6 +182,10 @@ client.indian.panchang.monthSuryaNakshatraList(params)
 
 ```typescript
 client.indian.kundli.basicAstroDetails(params)
+// weekday: 'vedic' changes the day at sunrise, so a birth before sunrise gets the
+// previous day's vaar ('civil', the default, changes it at midnight). Also accepted by
+// varshphalVarshaPravesh, varshphalBasicAstroDetails and lalKitabVarshphalVarshaPravesh.
+client.indian.kundli.basicAstroDetails({ ...params, weekday: 'vedic' })
 client.indian.kundli.planetaryPositions(params)
 client.indian.kundli.horoscopeChart(params)
 client.indian.kundli.vimshottariDasha(params)
