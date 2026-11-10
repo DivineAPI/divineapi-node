@@ -586,9 +586,36 @@ export interface PrenatalDetailsParams extends WesternBirthParams {
 // The PDF backend requires the six branding fields on every report, so these
 // all extend PdfRequiredCompanyParams (not the optional PdfCompanyParams).
 
-export interface PdfBirthParams extends BirthParams, PdfRequiredCompanyParams {}
+/** Cover-page options of the Vedic V1 PDF reports (DV-529). */
+export interface PdfCoverParams extends BaseParams {
+  /** URL of a cover image for the first page (PNG or JPEG). */
+  front_image?: string;
+  /** Show only front_image on the cover. The SDK sends true/false as 1/0, as the V1 API expects. */
+  hide_frontpage_details?: boolean | 0 | 1;
+}
 
-export interface PdfCoupleParams extends CoupleBirthParams, PdfRequiredCompanyParams {}
+export interface PdfBirthParams extends BirthParams, PdfRequiredCompanyParams, PdfCoverParams {}
+
+export interface PdfCoupleParams extends CoupleBirthParams, PdfRequiredCompanyParams, PdfCoverParams {}
+
+/** Reports V2 request body (`/api/v1/reports/generate` and `/api/v1/western/reports/generate`). */
+export interface ReportsV2Params extends BaseParams {
+  /** Report slug, e.g. 'vedic-career-report' or 'western-natal-blueprint' (or a Western family code with tier). */
+  report_type: string;
+  /** Western only: depth for a family code. Omit for 'comprehensive'. */
+  tier?: 'snapshot' | 'insight' | 'advanced' | 'comprehensive';
+  company_name: string;
+  company_url: string;
+  company_email: string;
+  company_mobile: string;
+  company_bio: string;
+  footer_text: string;
+  logo_url: string;
+  /** URL of the cover image (PNG or JPEG). */
+  front_image?: string;
+  /** True shows only front_image on the cover (requires front_image). Default false. */
+  hide_frontpage_details?: boolean | 'true' | 'false';
+}
 
 export interface PdfReportParams extends BirthParams, PdfRequiredCompanyParams {
   /** Required. Report code selecting the report (e.g. 'CAREER-REPORT'). */

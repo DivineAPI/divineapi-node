@@ -16,5 +16,13 @@ export declare class BaseClient {
      * @param params - Request parameters (excluding api_key, which is added automatically)
      */
     post<T = unknown>(host: ApiHost, path: string, params?: Record<string, unknown>): Promise<T>;
+    /**
+     * POST a JSON body with the API key in an `x-api-key` header.
+     * Used by Reports V2 (`/api/v1/reports/generate`, `/api/v1/western/reports/generate`),
+     * which rejects form-encoded requests with 401 "x-api-key header required".
+     */
+    postJson<T = unknown>(host: ApiHost, path: string, body?: Record<string, unknown>): Promise<T>;
+    /** Send a request with the timeout, and map HTTP and network failures to SDK errors. */
+    private send;
 }
 //# sourceMappingURL=client.d.ts.map

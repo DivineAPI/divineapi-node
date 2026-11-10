@@ -404,6 +404,19 @@ client.pdf.natalReport(params)
 client.pdf.natalCoupleReport(params)
 client.pdf.predictionReport(params)
 client.pdf.numerologyReport(params)
+
+// Optional cover on the 9 Vedic V1 PDFs (kundali, match making, government job,
+// foreign travel, yearly): show only your image on page 1
+client.pdf.kundaliSampoorna({ ...params, front_image: 'https://example.com/cover.png', hide_frontpage_details: true })
+
+// Reports V2: JSON body + x-api-key header (handled by the SDK). Needs a DivineAPI PDF
+// account's apiKey/authToken; a standard API account gets 401 "Invalid Bearer token".
+// Returns reportId, htmlUrl, pdfUrl, statusUrl; ready in about 10-30 seconds.
+client.pdf.reportsGenerate({ report_type: 'vedic-career-report', ...birth, ...branding })
+client.pdf.westernReportsGenerate({ report_type: 'western-inner-moon', tier: 'snapshot', ...birth, ...branding })
+// hide_frontpage_details: true shows only front_image on the cover (requires front_image)
+client.pdf.reportsGenerate({ report_type: 'vedic-career-report', ...birth, ...branding,
+  front_image: 'https://example.com/cover.png', hide_frontpage_details: true })
 ```
 
 ### Numerology

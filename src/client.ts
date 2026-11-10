@@ -53,20 +53,46 @@ export class BaseClient {
       }
     }
 
+    return this.send<T>(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${this.authToken}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
+      },
+      body: formData.toString(),
+    });
+  }
+
+  /**
+   * POST a JSON body with the API key in an `x-api-key` header.
+   * Used by Reports V2 (`/api/v1/reports/generate`, `/api/v1/western/reports/generate`),
+   * which rejects form-encoded requests with 401 "x-api-key header required".
+   */
+  async postJson<T = unknown>(
+    host: ApiHost,
+    path: string,
+    body: Record<string, unknown> = {}
+  ): Promise<T> {
+    return this.send<T>(`https://${host}${path}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${this.authToken}`,
+        'x-api-key': this.apiKey,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+  }
+
+  /** Send a request with the timeout, and map HTTP and network failures to SDK errors. */
+  private async send<T>(url: string, init: RequestInit): Promise<T> {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.timeout);
 
     try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${this.authToken}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': 'application/json',
-        },
-        body: formData.toString(),
-        signal: controller.signal,
-      });
+      const response = await fetch(url, { ...init, signal: controller.signal });
 
       clearTimeout(timeoutId);
 
@@ -96,7 +122,7 @@ export class BaseClient {
           }
           case 400:
             throw new ValidationError(
-              `Bad request: ${typeof body === 'object' && body && 'message' in body ? (body as { message: string }).message : 'Invalid parameters'}`,
+              `Bad request: ${typeof body === 'object' && body && 'message' in body ? (body as { message: string }).message : typeof body === 'object' && body && 'error' in body && typeof (body as { error: unknown }).error === 'string' ? (body as { error: string }).error : 'Invalid parameters'}`,
               body
             );
           default:
