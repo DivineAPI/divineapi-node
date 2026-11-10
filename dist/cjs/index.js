@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NetworkError = exports.ValidationError = exports.RateLimitError = exports.AuthenticationError = exports.DivineApiError = exports.LocationApi = exports.CalculatorApi = exports.LifestyleApi = exports.NumerologyApi = exports.PdfReportApi = exports.PrenatalApi = exports.ProgressionsApi = exports.PlanetReturnsApi = exports.CompositeApi = exports.TransitApi = exports.SynastryApi = exports.NatalApi = exports.WesternApi = exports.FestivalApi = exports.MatchMakingApi = exports.KundliApi = exports.PanchangApi = exports.IndianApi = exports.HoroscopeApi = exports.BaseClient = exports.DivineApi = void 0;
+exports.NetworkError = exports.ValidationError = exports.RateLimitError = exports.AuthenticationError = exports.DivineApiError = exports.ChatbotApi = exports.LocationApi = exports.CalculatorApi = exports.LifestyleApi = exports.NumerologyApi = exports.PdfReportApi = exports.PrenatalApi = exports.ProgressionsApi = exports.PlanetReturnsApi = exports.CompositeApi = exports.TransitApi = exports.SynastryApi = exports.NatalApi = exports.WesternApi = exports.FestivalApi = exports.MatchMakingApi = exports.KundliApi = exports.PanchangApi = exports.IndianApi = exports.HoroscopeApi = exports.BaseClient = exports.DivineApi = void 0;
 const client_js_1 = require("./client.js");
 const index_js_1 = require("./horoscope/index.js");
 const index_js_2 = require("./indian/index.js");
@@ -10,6 +10,7 @@ const index_js_5 = require("./numerology/index.js");
 const index_js_6 = require("./lifestyle/index.js");
 const index_js_7 = require("./calculators/index.js");
 const index_js_8 = require("./location/index.js");
+const index_js_9 = require("./chatbot/index.js");
 const errors_js_1 = require("./errors.js");
 /**
  * Divine API SDK client.
@@ -51,6 +52,8 @@ class DivineApi {
     calculators;
     /** Location endpoints (place name -> lat, lon, timezone) */
     location;
+    /** Astro Chatbot endpoints (ask.divineapi.com; needs an Astro Chatbot plan) */
+    chatbot;
     constructor(config) {
         if (!config.apiKey) {
             throw new errors_js_1.DivineApiError('apiKey is required to initialize DivineApi', 0);
@@ -64,39 +67,42 @@ class DivineApi {
         this.lifestyle = new index_js_6.LifestyleApi(client);
         this.calculators = new index_js_7.CalculatorApi(client);
         this.location = new index_js_8.LocationApi(client);
+        this.chatbot = new index_js_9.ChatbotApi(client);
     }
 }
 exports.DivineApi = DivineApi;
 // Re-export everything
 var client_js_2 = require("./client.js");
 Object.defineProperty(exports, "BaseClient", { enumerable: true, get: function () { return client_js_2.BaseClient; } });
-var index_js_9 = require("./horoscope/index.js");
-Object.defineProperty(exports, "HoroscopeApi", { enumerable: true, get: function () { return index_js_9.HoroscopeApi; } });
-var index_js_10 = require("./indian/index.js");
-Object.defineProperty(exports, "IndianApi", { enumerable: true, get: function () { return index_js_10.IndianApi; } });
-Object.defineProperty(exports, "PanchangApi", { enumerable: true, get: function () { return index_js_10.PanchangApi; } });
-Object.defineProperty(exports, "KundliApi", { enumerable: true, get: function () { return index_js_10.KundliApi; } });
-Object.defineProperty(exports, "MatchMakingApi", { enumerable: true, get: function () { return index_js_10.MatchMakingApi; } });
-Object.defineProperty(exports, "FestivalApi", { enumerable: true, get: function () { return index_js_10.FestivalApi; } });
-var index_js_11 = require("./western/index.js");
-Object.defineProperty(exports, "WesternApi", { enumerable: true, get: function () { return index_js_11.WesternApi; } });
-Object.defineProperty(exports, "NatalApi", { enumerable: true, get: function () { return index_js_11.NatalApi; } });
-Object.defineProperty(exports, "SynastryApi", { enumerable: true, get: function () { return index_js_11.SynastryApi; } });
-Object.defineProperty(exports, "TransitApi", { enumerable: true, get: function () { return index_js_11.TransitApi; } });
-Object.defineProperty(exports, "CompositeApi", { enumerable: true, get: function () { return index_js_11.CompositeApi; } });
-Object.defineProperty(exports, "PlanetReturnsApi", { enumerable: true, get: function () { return index_js_11.PlanetReturnsApi; } });
-Object.defineProperty(exports, "ProgressionsApi", { enumerable: true, get: function () { return index_js_11.ProgressionsApi; } });
-Object.defineProperty(exports, "PrenatalApi", { enumerable: true, get: function () { return index_js_11.PrenatalApi; } });
-var index_js_12 = require("./pdf/index.js");
-Object.defineProperty(exports, "PdfReportApi", { enumerable: true, get: function () { return index_js_12.PdfReportApi; } });
-var index_js_13 = require("./numerology/index.js");
-Object.defineProperty(exports, "NumerologyApi", { enumerable: true, get: function () { return index_js_13.NumerologyApi; } });
-var index_js_14 = require("./lifestyle/index.js");
-Object.defineProperty(exports, "LifestyleApi", { enumerable: true, get: function () { return index_js_14.LifestyleApi; } });
-var index_js_15 = require("./calculators/index.js");
-Object.defineProperty(exports, "CalculatorApi", { enumerable: true, get: function () { return index_js_15.CalculatorApi; } });
-var index_js_16 = require("./location/index.js");
-Object.defineProperty(exports, "LocationApi", { enumerable: true, get: function () { return index_js_16.LocationApi; } });
+var index_js_10 = require("./horoscope/index.js");
+Object.defineProperty(exports, "HoroscopeApi", { enumerable: true, get: function () { return index_js_10.HoroscopeApi; } });
+var index_js_11 = require("./indian/index.js");
+Object.defineProperty(exports, "IndianApi", { enumerable: true, get: function () { return index_js_11.IndianApi; } });
+Object.defineProperty(exports, "PanchangApi", { enumerable: true, get: function () { return index_js_11.PanchangApi; } });
+Object.defineProperty(exports, "KundliApi", { enumerable: true, get: function () { return index_js_11.KundliApi; } });
+Object.defineProperty(exports, "MatchMakingApi", { enumerable: true, get: function () { return index_js_11.MatchMakingApi; } });
+Object.defineProperty(exports, "FestivalApi", { enumerable: true, get: function () { return index_js_11.FestivalApi; } });
+var index_js_12 = require("./western/index.js");
+Object.defineProperty(exports, "WesternApi", { enumerable: true, get: function () { return index_js_12.WesternApi; } });
+Object.defineProperty(exports, "NatalApi", { enumerable: true, get: function () { return index_js_12.NatalApi; } });
+Object.defineProperty(exports, "SynastryApi", { enumerable: true, get: function () { return index_js_12.SynastryApi; } });
+Object.defineProperty(exports, "TransitApi", { enumerable: true, get: function () { return index_js_12.TransitApi; } });
+Object.defineProperty(exports, "CompositeApi", { enumerable: true, get: function () { return index_js_12.CompositeApi; } });
+Object.defineProperty(exports, "PlanetReturnsApi", { enumerable: true, get: function () { return index_js_12.PlanetReturnsApi; } });
+Object.defineProperty(exports, "ProgressionsApi", { enumerable: true, get: function () { return index_js_12.ProgressionsApi; } });
+Object.defineProperty(exports, "PrenatalApi", { enumerable: true, get: function () { return index_js_12.PrenatalApi; } });
+var index_js_13 = require("./pdf/index.js");
+Object.defineProperty(exports, "PdfReportApi", { enumerable: true, get: function () { return index_js_13.PdfReportApi; } });
+var index_js_14 = require("./numerology/index.js");
+Object.defineProperty(exports, "NumerologyApi", { enumerable: true, get: function () { return index_js_14.NumerologyApi; } });
+var index_js_15 = require("./lifestyle/index.js");
+Object.defineProperty(exports, "LifestyleApi", { enumerable: true, get: function () { return index_js_15.LifestyleApi; } });
+var index_js_16 = require("./calculators/index.js");
+Object.defineProperty(exports, "CalculatorApi", { enumerable: true, get: function () { return index_js_16.CalculatorApi; } });
+var index_js_17 = require("./location/index.js");
+Object.defineProperty(exports, "LocationApi", { enumerable: true, get: function () { return index_js_17.LocationApi; } });
+var index_js_18 = require("./chatbot/index.js");
+Object.defineProperty(exports, "ChatbotApi", { enumerable: true, get: function () { return index_js_18.ChatbotApi; } });
 var errors_js_2 = require("./errors.js");
 Object.defineProperty(exports, "DivineApiError", { enumerable: true, get: function () { return errors_js_2.DivineApiError; } });
 Object.defineProperty(exports, "AuthenticationError", { enumerable: true, get: function () { return errors_js_2.AuthenticationError; } });

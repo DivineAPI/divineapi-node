@@ -468,6 +468,56 @@ const first = res.data.results[0];   // latitude 25.41667, longitude 85.16667, t
 // Place data (c) GeoNames (geonames.org), CC BY 4.0: res.attribution.
 ```
 
+### Astro Chatbot
+
+Needs an Astro Chatbot plan on your account. Same `apiKey` and `authToken`; the SDK sends
+them as `x-api-key` and `Authorization: Bearer` headers to `ask.divineapi.com`. Every
+conversation belongs to one of your end users: one key has many `user_id`s, each `user_id`
+has many `session_id`s, and the same `session_id` under two `user_id`s is two separate
+sessions.
+
+```typescript
+// First message of a session: send the birth details once (numbers are fine,
+// the SDK sends them as the strings the chatbot expects)
+const res = await client.chatbot.chat({
+  user_id: 'u_8812', session_id: 's_1', message: 'When will I get a job?',
+  full_name: 'Priya Sharma', day: 24, month: 5, year: 1996, hour: 14, min: 40,
+  gender: 'female', place: 'New Delhi', lat: 28.7041, lon: 77.1025, tzone: 5.5,
+  depth: 'standard',          // quick 20 / standard 30 / deep 50 credits
+});
+console.log(res.answer, res.credits_charged, res.credits_remaining);
+
+// Follow-ups in the same session reuse the stored birth details
+await client.chatbot.chat({ user_id: 'u_8812', session_id: 's_1', message: 'And for marriage?',
+  school: 'vedic', lens: 'love', language: 'Hindi' });
+
+// Stream the answer: { delta } events, then one { done: true, ... } receipt
+for await (const event of client.chatbot.chatStream({ user_id: 'u_8812', session_id: 's_1',
+  message: 'What should I focus on this month?' })) {
+  if (event.delta) process.stdout.write(event.delta);
+}
+
+// Daily horoscope for a date (full birth details on every call)
+await client.chatbot.horoscopePrediction({
+  user_id: 'u_8812', date: '2026-10-31',
+  day: 24, month: 5, year: 1996, hour: 14, min: 40, gender: 'female',
+  place: 'New Delhi', lat: 28.7041, lon: 77.1025, tzone: 5.5,
+});
+
+await client.chatbot.sessions({ user_id: 'u_8812' });                       // 404 if none yet
+await client.chatbot.session({ user_id: 'u_8812', session_id: 's_1' });     // messages + birth_details
+await client.chatbot.deleteSession({ user_id: 'u_8812', session_id: 's_1' }); // permanent
+await client.chatbot.balance();   // { state: 'active', credits_remaining, expires: 'YYYY-MM-DD' }
+```
+
+Other `chat()` options: `length_cap` (short / medium / full), `language` (any language
+name, or `auto`), `school` (western / vedic / kp / lalkitab), `lens` (general / career /
+love / health / money / spiritual), `confidence` (balanced / definitive / careful),
+`sensitivity` (standard / strict), and free text `tone`, `framing`, `assistant_name`,
+`brand_voice`, `sign_off` and `style_notes` (at most 500 characters). Guardrail replies
+and failed requests are not charged. A missing user or session is a `DivineApiError`
+with `statusCode` 404, and an out-of-credit account gets status 402.
+
 ## Error Handling
 
 ```typescript
