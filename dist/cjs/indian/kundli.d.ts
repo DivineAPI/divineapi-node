@@ -85,7 +85,7 @@ export declare class KundliApi {
     sadheSati(params: KundliBirthParams): Promise<ApiResponse>;
     /** Get ghata chakra. */
     ghataChakra(params: KundliBirthParams): Promise<ApiResponse>;
-    /** Get shadbala (planetary strength). */
+    /** Get shadbala (planetary strength). v3 adds `ishta_phala` and `kashta_phala` per planet. */
     shadbala(params: KundliBirthParams): Promise<ApiResponse>;
     /** Get gemstone suggestions. */
     gemstoneSuggestion(params: KundliBirthParams): Promise<ApiResponse>;

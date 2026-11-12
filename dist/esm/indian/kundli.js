@@ -166,9 +166,9 @@ export class KundliApi {
     async ghataChakra(params) {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/ghata-chakra', params);
     }
-    /** Get shadbala (planetary strength). */
+    /** Get shadbala (planetary strength). v3 adds `ishta_phala` and `kashta_phala` per planet. */
     async shadbala(params) {
-        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v2/shadbala', params);
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v3/shadbala', params);
     }
     /** Get gemstone suggestions. */
     async gemstoneSuggestion(params) {
