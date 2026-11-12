@@ -118,7 +118,10 @@ client.horoscope.daily(params)    // params.h_day: 'today' | 'tomorrow' | 'yeste
 client.horoscope.weekly(params)   // params.week:  'current' | 'prev' | 'next'
 client.horoscope.monthly(params)  // params.month: 'current' | 'prev' | 'next'
 client.horoscope.yearly(params)   // params.year:  'current' | 'prev' | 'next'
-client.horoscope.chinese(params)
+client.horoscope.chinese(params)        // params.h_day: 'today' | 'tomorrow' | 'yesterday'
+client.horoscope.chineseWeekly(params)  // params.sign: Chinese animal ('rat', 'ox', ...); params.week: 'current' | 'prev' | 'next'
+client.horoscope.chineseMonthly(params) // params.month: 'current' | 'prev' | 'next'
+client.horoscope.chineseYearly(params)  // params.year:  'current' | 'prev' | 'next'
 client.horoscope.numerology(params)
 client.horoscope.yesOrNoTarot(params)
 client.horoscope.dailyTarot(params)

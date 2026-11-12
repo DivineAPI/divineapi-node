@@ -6,6 +6,9 @@ import type {
   MonthlyHoroscopeParams,
   YearlyHoroscopeParams,
   ChineseHoroscopeParams,
+  ChineseWeeklyHoroscopeParams,
+  ChineseMonthlyHoroscopeParams,
+  ChineseYearlyHoroscopeParams,
   NumerologyHoroscopeParams,
   LanguageParam,
   CardImageParams,
@@ -58,9 +61,28 @@ export class HoroscopeApi {
     return this.client.post('astroapi-5.divineapi.com', '/api/v5/yearly-horoscope', params);
   }
 
-  /** Get Chinese horoscope. */
+  /** Get Chinese horoscope (daily: `h_day` is 'today', 'tomorrow' or 'yesterday'). */
   async chinese(params: ChineseHoroscopeParams): Promise<ApiResponse> {
     return this.client.post('astroapi-5.divineapi.com', '/api/v3/chinese-horoscope', params);
+  }
+
+  /**
+   * Get the weekly Chinese horoscope for an animal sign. `data` has `sign`, `week`
+   * (e.g. "10 Nov 2026 to 16 Nov 2026") and `prediction` (growth, health, wealth,
+   * career, love, family, fortune).
+   */
+  async chineseWeekly(params: ChineseWeeklyHoroscopeParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-5.divineapi.com', '/api/v3/chinese-horoscope-weekly', params);
+  }
+
+  /** Get the monthly Chinese horoscope. `data` has `sign`, `month` (e.g. "November 2026") and `prediction`. */
+  async chineseMonthly(params: ChineseMonthlyHoroscopeParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-5.divineapi.com', '/api/v3/chinese-horoscope-monthly', params);
+  }
+
+  /** Get the yearly Chinese horoscope. `data` has `sign`, `year` and `prediction`. */
+  async chineseYearly(params: ChineseYearlyHoroscopeParams): Promise<ApiResponse> {
+    return this.client.post('astroapi-5.divineapi.com', '/api/v3/chinese-horoscope-yearly', params);
   }
 
   /** Get numerology-based horoscope. */
