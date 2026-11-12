@@ -196,7 +196,7 @@ client.indian.kundli.compositeFriendship(params)
 client.indian.kundli.bhavaKundli(chartId, params)
 client.indian.kundli.sadheSati(params)
 client.indian.kundli.ghataChakra(params)
-client.indian.kundli.shadbala(params)
+client.indian.kundli.shadbala(params)   // v3 since 1.19.0: adds ishta_phala and kashta_phala per planet
 client.indian.kundli.gemstoneSuggestion(params)
 client.indian.kundli.yoginiDasha(params)
 client.indian.kundli.kaalChakraDasha(params)
@@ -278,6 +278,8 @@ client.indian.festival.malayalamFestivals(params)
 client.indian.festival.tamilFestivals(params)
 client.indian.festival.sankrantiFestivals(params)
 ```
+
+> **`shraavanaFestivals` calls v3 since 1.19.0** (the other eleven months have no v3 and stay on v2). In v2, `hariyaali_teej`, `gayatri_jayanti`, `narali_purnima` and `sanskrit_divas` returned their date under `dates` instead of `date`; v3 fixes those four. `shraavana_somvaar_vrat` and `mangla_gauri_vrat` still use `dates` because they fall on every Monday and Tuesday of the month.
 
 ### Western Astrology - Natal
 
