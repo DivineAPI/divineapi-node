@@ -744,6 +744,17 @@ export interface NameCorrectionParams extends LanguageParam {
   year: number;
 }
 
+/** Business Name Correction: the business name plus its owner's full name and birth date. No `lan`: the response is English only. */
+export interface BusinessNameCorrectionParams extends BaseParams {
+  business_name: string;
+  /** Owner's full name. */
+  full_name: string;
+  /** Owner's birth date. */
+  day: number;
+  month: number;
+  year: number;
+}
+
 export interface CoreNumbersParams extends BaseParams {
   full_name: string;
   day: number;

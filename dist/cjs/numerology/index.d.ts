@@ -1,5 +1,5 @@
 import { BaseClient } from '../client.js';
-import type { ApiResponse, NewMobileNumberParams, AnalyzeMobileNumberParams, ChaldeanNumerologyParams, NameCorrectionParams, CoreNumbersParams } from '../types.js';
+import type { ApiResponse, NewMobileNumberParams, AnalyzeMobileNumberParams, ChaldeanNumerologyParams, NameCorrectionParams, BusinessNameCorrectionParams, CoreNumbersParams } from '../types.js';
 /**
  * Numerology API endpoints.
  * Hosts: astroapi-7 and astroapi-4
@@ -21,6 +21,11 @@ export declare class NumerologyApi {
     nameNumber(params: ChaldeanNumerologyParams): Promise<ApiResponse>;
     /** Get name correction suggestions (takes full_name, not fname/lname). */
     nameCorrection(params: NameCorrectionParams): Promise<ApiResponse>;
+    /**
+     * Check a business name against its owner's numbers (full_name and birth date are the owner's).
+     * `data` has business_name_number, name_number, life_path_number, birthday_number, business_name_alignment_percentage, target_business_name_number, is_already_aligned, suggested_business_names (up to 3 respellings that reach the target number) and content (heading, description, advice).
+     */
+    businessNameCorrection(params: BusinessNameCorrectionParams): Promise<ApiResponse>;
     /** Get birthday number analysis. */
     birthdayNumber(params: ChaldeanNumerologyParams): Promise<ApiResponse>;
     /** Get missing numbers. */
