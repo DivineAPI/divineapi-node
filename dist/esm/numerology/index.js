@@ -35,6 +35,13 @@ export class NumerologyApi {
     async nameCorrection(params) {
         return this.client.post('astroapi-7.divineapi.com', '/numerology/v1/name-correction', params);
     }
+    /**
+     * Check a business name against its owner's numbers (full_name and birth date are the owner's).
+     * `data` has business_name_number, name_number, life_path_number, birthday_number, business_name_alignment_percentage, target_business_name_number, is_already_aligned, suggested_business_names (up to 3 respellings that reach the target number) and content (heading, description, advice).
+     */
+    async businessNameCorrection(params) {
+        return this.client.post('astroapi-7.divineapi.com', '/numerology/v1/business-name-correction', params);
+    }
     /** Get birthday number analysis. */
     async birthdayNumber(params) {
         return this.client.post('astroapi-7.divineapi.com', '/numerology/v1/birthday-number', params);

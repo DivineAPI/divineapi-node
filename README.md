@@ -438,6 +438,7 @@ client.numerology.zodiacPlanetNumber(params)
 client.numerology.luckNumerology(params)
 client.numerology.nameNumber(params)
 client.numerology.nameCorrection(params)
+client.numerology.businessNameCorrection(params)   // business_name + owner's full_name and day/month/year
 client.numerology.birthdayNumber(params)
 client.numerology.missingNumbers(params)
 client.numerology.driverAndConductorNumbers(params)
