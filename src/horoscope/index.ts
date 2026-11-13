@@ -68,7 +68,7 @@ export class HoroscopeApi {
 
   /**
    * Get the weekly Chinese horoscope for an animal sign. `data` has `sign`, `week`
-   * (e.g. "10 Nov 2026 to 16 Nov 2026") and `prediction` (growth, health, wealth,
+   * (e.g. "08 Nov 2026 to 14 Nov 2026") and `prediction` (growth, health, wealth,
    * career, love, family, fortune).
    */
   async chineseWeekly(params: ChineseWeeklyHoroscopeParams): Promise<ApiResponse> {
