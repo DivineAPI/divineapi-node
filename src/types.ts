@@ -224,6 +224,29 @@ export interface ChineseHoroscopeParams extends TimezoneParam, LanguageParam {
   h_day: string;
 }
 
+/** Chinese zodiac animal signs accepted by the Chinese horoscope endpoints. */
+export type ChineseSign =
+  | 'rat' | 'ox' | 'tiger' | 'rabbit' | 'dragon' | 'snake'
+  | 'horse' | 'goat' | 'monkey' | 'rooster' | 'dog' | 'pig';
+
+export interface ChineseWeeklyHoroscopeParams extends TimezoneParam, LanguageParam {
+  sign: ChineseSign;
+  /** Week selector: 'current', 'prev', or 'next'. Calendar dates are rejected. */
+  week: PeriodSelector;
+}
+
+export interface ChineseMonthlyHoroscopeParams extends TimezoneParam, LanguageParam {
+  sign: ChineseSign;
+  /** Month selector: 'current', 'prev', or 'next'. Month numbers are rejected. */
+  month: PeriodSelector;
+}
+
+export interface ChineseYearlyHoroscopeParams extends TimezoneParam, LanguageParam {
+  sign: ChineseSign;
+  /** Year selector: 'current', 'prev', or 'next'. Calendar years are rejected. */
+  year: PeriodSelector;
+}
+
 export interface NumerologyHoroscopeParams extends TimezoneParam, LanguageParam, DateParams {
   number: number;
 }
