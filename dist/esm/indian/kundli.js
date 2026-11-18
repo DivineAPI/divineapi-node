@@ -115,7 +115,7 @@ export class KundliApi {
     /**
      * Get the Vimshottari Dasha from the moment a KP Prashna question is asked:
      * `current_dasha` and `dasha_timeline`, the full 120-year tree from the
-     * current mahadasha (819 periods, about 74 KB).
+     * current mahadasha (819 periods, about 68 KB).
      */
     async kpPrashnaDasha(params) {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/kp-prashna/dasha', prashnaPayload(params));

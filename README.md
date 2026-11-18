@@ -223,7 +223,7 @@ const asked = { day: 12, month: 10, year: 2026, hour: 10, min: 30, place: 'New D
 client.indian.kundli.kpPrashnaInstantQuestions()   // question categories + house_hint
 client.indian.kundli.kpPrashnaChart({ ...asked, horary_number: 100 })   // number 1-249
 client.indian.kundli.kpPrashnaRulingPlanets(asked)
-client.indian.kundli.kpPrashnaDasha(asked)         // full 819-period timeline (~74 KB)
+client.indian.kundli.kpPrashnaDasha(asked)         // full 819-period timeline (~68 KB)
 // Transit
 client.indian.kundli.transitAscendant(params)
 client.indian.kundli.transitMoon(params)
