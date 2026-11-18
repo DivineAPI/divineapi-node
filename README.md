@@ -118,7 +118,10 @@ client.horoscope.daily(params)    // params.h_day: 'today' | 'tomorrow' | 'yeste
 client.horoscope.weekly(params)   // params.week:  'current' | 'prev' | 'next'
 client.horoscope.monthly(params)  // params.month: 'current' | 'prev' | 'next'
 client.horoscope.yearly(params)   // params.year:  'current' | 'prev' | 'next'
-client.horoscope.chinese(params)
+client.horoscope.chinese(params)        // params.h_day: 'today' | 'tomorrow' | 'yesterday'
+client.horoscope.chineseWeekly(params)  // params.sign: Chinese animal ('rat', 'ox', ...); params.week: 'current' | 'prev' | 'next'
+client.horoscope.chineseMonthly(params) // params.month: 'current' | 'prev' | 'next'
+client.horoscope.chineseYearly(params)  // params.year:  'current' | 'prev' | 'next'
 client.horoscope.numerology(params)
 client.horoscope.yesOrNoTarot(params)
 client.horoscope.dailyTarot(params)
@@ -182,6 +185,10 @@ client.indian.panchang.monthSuryaNakshatraList(params)
 
 ```typescript
 client.indian.kundli.basicAstroDetails(params)
+// weekday: 'vedic' changes the day at sunrise, so a birth before sunrise gets the
+// previous day's vaar ('civil', the default, changes it at midnight). Also accepted by
+// varshphalVarshaPravesh, varshphalBasicAstroDetails and lalKitabVarshphalVarshaPravesh.
+client.indian.kundli.basicAstroDetails({ ...params, weekday: 'vedic' })
 client.indian.kundli.planetaryPositions(params)
 client.indian.kundli.horoscopeChart(params)
 client.indian.kundli.vimshottariDasha(params)
@@ -192,7 +199,7 @@ client.indian.kundli.compositeFriendship(params)
 client.indian.kundli.bhavaKundli(chartId, params)
 client.indian.kundli.sadheSati(params)
 client.indian.kundli.ghataChakra(params)
-client.indian.kundli.shadbala(params)
+client.indian.kundli.shadbala(params)   // v3 since 1.19.0: adds ishta_phala and kashta_phala per planet
 client.indian.kundli.gemstoneSuggestion(params)
 client.indian.kundli.yoginiDasha(params)
 client.indian.kundli.kaalChakraDasha(params)
@@ -281,6 +288,8 @@ client.indian.festival.malayalamFestivals(params)
 client.indian.festival.tamilFestivals(params)
 client.indian.festival.sankrantiFestivals(params)
 ```
+
+> **`shraavanaFestivals` calls v3 since 1.19.0** (the other eleven months have no v3 and stay on v2). In v2, `hariyaali_teej`, `gayatri_jayanti`, `narali_purnima` and `sanskrit_divas` returned their date under `dates` instead of `date`; v3 fixes those four. `shraavana_somvaar_vrat` and `mangla_gauri_vrat` still use `dates` because they fall on every Monday and Tuesday of the month.
 
 ### Western Astrology - Natal
 
@@ -436,6 +445,7 @@ client.numerology.zodiacPlanetNumber(params)
 client.numerology.luckNumerology(params)
 client.numerology.nameNumber(params)
 client.numerology.nameCorrection(params)
+client.numerology.businessNameCorrection(params)   // business_name + owner's full_name and day/month/year
 client.numerology.birthdayNumber(params)
 client.numerology.missingNumbers(params)
 client.numerology.driverAndConductorNumbers(params)

@@ -1,5 +1,5 @@
 import { BaseClient } from '../client.js';
-import type { ApiResponse, KundliBirthParams, KpPrashnaParams, KpPrashnaChartParams, VarshphalParams, HoroscopeChartParams, VimshottariDashaParams, DashaAnalysisParams, SubPlanetChartParams, KundliTransitParams, PlanetAnalysisParams, LalKitabMahadashaContentParams, LalKitabAntardashaContentParams, LalKitabHouseSignificationParams, LalKitabVarshphalParams } from '../types.js';
+import type { ApiResponse, KundliBirthParams, KpPrashnaParams, KpPrashnaChartParams, BasicAstroDetailsParams, VarshphalParams, VarshphalWeekdayParams, LalKitabVarshaPraveshParams, HoroscopeChartParams, VimshottariDashaParams, DashaAnalysisParams, SubPlanetChartParams, KundliTransitParams, PlanetAnalysisParams, LalKitabMahadashaContentParams, LalKitabAntardashaContentParams, LalKitabHouseSignificationParams, LalKitabVarshphalParams } from '../types.js';
 /**
  * Indian Kundli (Birth Chart) API endpoints.
  * Host: astroapi-3.divineapi.com
@@ -78,8 +78,11 @@ export declare class KundliApi {
     antarDashaAnalysis(params: DashaAnalysisParams): Promise<ApiResponse>;
     /** Get pratyantar dasha analysis. */
     pratyantarDashaAnalysis(params: DashaAnalysisParams): Promise<ApiResponse>;
-    /** Get basic astro details. */
-    basicAstroDetails(params: KundliBirthParams): Promise<ApiResponse>;
+    /**
+     * Get basic astro details. `vaar` is the weekday of birth; with
+     * `weekday: 'vedic'` a birth before sunrise gets the previous day.
+     */
+    basicAstroDetails(params: BasicAstroDetailsParams): Promise<ApiResponse>;
     /** Get planetary positions. */
     planetaryPositions(params: KundliBirthParams): Promise<ApiResponse>;
     /** Get horoscope chart by chart ID. */
@@ -107,7 +110,7 @@ export declare class KundliApi {
     sadheSati(params: KundliBirthParams): Promise<ApiResponse>;
     /** Get ghata chakra. */
     ghataChakra(params: KundliBirthParams): Promise<ApiResponse>;
-    /** Get shadbala (planetary strength). */
+    /** Get shadbala (planetary strength). v3 adds `ishta_phala` and `kashta_phala` per planet. */
     shadbala(params: KundliBirthParams): Promise<ApiResponse>;
     /** Get gemstone suggestions. */
     gemstoneSuggestion(params: KundliBirthParams): Promise<ApiResponse>;
@@ -156,8 +159,12 @@ export declare class KundliApi {
     lalKitabDebts(params: KundliBirthParams): Promise<ApiResponse>;
     /** Get Lal Kitab house signification (house_no: 1-12). */
     lalKitabHouseSignification(params: LalKitabHouseSignificationParams): Promise<ApiResponse>;
-    /** Get Lal Kitab varshphal varsha pravesh for the given varshphal_year. */
-    lalKitabVarshphalVarshaPravesh(params: LalKitabVarshphalParams): Promise<ApiResponse>;
+    /**
+     * Get Lal Kitab varshphal varsha pravesh for the given varshphal_year.
+     * `weekday` in the response is the day of that moment; with
+     * `weekday: 'vedic'` a moment before sunrise gets the previous day.
+     */
+    lalKitabVarshphalVarshaPravesh(params: LalKitabVarshaPraveshParams): Promise<ApiResponse>;
     /** Get Lal Kitab varshphal planetary positions for the given varshphal_year. */
     lalKitabVarshphalPlanetaryPositions(params: LalKitabVarshphalParams): Promise<ApiResponse>;
     /** Get Lal Kitab varshphal muntha for the given varshphal_year. */
@@ -177,8 +184,18 @@ export declare class KundliApi {
     /** Get planet remedies (analysis_planet: sun, moon, mars, mercury, jupiter, venus, saturn, rahu or ketu). */
     planetRemedies(params: PlanetAnalysisParams): Promise<ApiResponse>;
     rudrakshaSuggestion(params: KundliBirthParams): Promise<ApiResponse>;
-    varshphalVarshaPravesh(params: VarshphalParams): Promise<ApiResponse>;
-    varshphalBasicAstroDetails(params: VarshphalParams): Promise<ApiResponse>;
+    /**
+     * Get the varshphal Varsha Pravesh (start of the annual chart) for varshphal_year.
+     * `weekday` in the response is the day of that moment; with
+     * `weekday: 'vedic'` a moment before sunrise gets the previous day.
+     */
+    varshphalVarshaPravesh(params: VarshphalWeekdayParams): Promise<ApiResponse>;
+    /**
+     * Get varshphal basic astro details for varshphal_year. `vaar` is the day of
+     * the Varsha Pravesh moment; with `weekday: 'vedic'` a moment before sunrise
+     * gets the previous day.
+     */
+    varshphalBasicAstroDetails(params: VarshphalWeekdayParams): Promise<ApiResponse>;
     varshphalPlanetaryPositions(params: VarshphalParams): Promise<ApiResponse>;
     varshphalHoroscopeChart(chartId: string, params: VarshphalParams): Promise<ApiResponse>;
     varshphalTajikaAspect(params: VarshphalParams): Promise<ApiResponse>;

@@ -224,6 +224,29 @@ export interface ChineseHoroscopeParams extends TimezoneParam, LanguageParam {
   h_day: string;
 }
 
+/** Chinese zodiac animal signs accepted by the Chinese horoscope endpoints. */
+export type ChineseSign =
+  | 'rat' | 'ox' | 'tiger' | 'rabbit' | 'dragon' | 'snake'
+  | 'horse' | 'goat' | 'monkey' | 'rooster' | 'dog' | 'pig';
+
+export interface ChineseWeeklyHoroscopeParams extends TimezoneParam, LanguageParam {
+  sign: ChineseSign;
+  /** Week selector: 'current', 'prev', or 'next'. Calendar dates are rejected. */
+  week: PeriodSelector;
+}
+
+export interface ChineseMonthlyHoroscopeParams extends TimezoneParam, LanguageParam {
+  sign: ChineseSign;
+  /** Month selector: 'current', 'prev', or 'next'. Month numbers are rejected. */
+  month: PeriodSelector;
+}
+
+export interface ChineseYearlyHoroscopeParams extends TimezoneParam, LanguageParam {
+  sign: ChineseSign;
+  /** Year selector: 'current', 'prev', or 'next'. Calendar years are rejected. */
+  year: PeriodSelector;
+}
+
 export interface NumerologyHoroscopeParams extends TimezoneParam, LanguageParam, DateParams {
   number: number;
 }
@@ -339,6 +362,21 @@ export interface KpPrashnaChartParams extends KpPrashnaParams {
   node_type?: 'meannode' | 'truenode';
 }
 
+/** How the weekday (vaar) is counted. */
+export type WeekdayMode = 'civil' | 'vedic';
+
+export interface WeekdayParam extends BaseParams {
+  /**
+   * 'civil' (the API default) changes the day at midnight; 'vedic' changes it at
+   * local sunrise, so a moment between midnight and sunrise belongs to the previous
+   * day. Case-insensitive; any other value throws a ValidationError before the call.
+   */
+  weekday?: WeekdayMode;
+}
+
+/** basicAstroDetails: birth details plus the optional weekday mode. */
+export interface BasicAstroDetailsParams extends KundliBirthParams, WeekdayParam {}
+
 export interface HoroscopeChartParams extends BirthParams, ChartStylingParams {
   chart_id: string;
 }
@@ -385,10 +423,16 @@ export interface LalKitabVarshphalParams extends BirthParams {
   varshphal_year: number;
 }
 
+/** lalKitabVarshphalVarshaPravesh: varshphal params plus the optional weekday mode. */
+export interface LalKitabVarshaPraveshParams extends LalKitabVarshphalParams, WeekdayParam {}
+
 export interface VarshphalParams extends BirthParams {
   /** Year for the annual (varshphal) chart */
   varshphal_year: number;
 }
+
+/** varshphalVarshaPravesh and varshphalBasicAstroDetails: varshphal params plus the optional weekday mode. */
+export interface VarshphalWeekdayParams extends VarshphalParams, WeekdayParam {}
 
 // ── Match Making Params ──
 
@@ -716,6 +760,17 @@ export interface ChaldeanNumerologyParams extends LanguageParam {
 // Name Correction takes a single full_name, not fname/lname like its siblings.
 export interface NameCorrectionParams extends LanguageParam {
   full_name: string;
+  day: number;
+  month: number;
+  year: number;
+}
+
+/** Business Name Correction: the business name plus its owner's full name and birth date. No `lan`: the response is English only. */
+export interface BusinessNameCorrectionParams extends BaseParams {
+  business_name: string;
+  /** Owner's full name. */
+  full_name: string;
+  /** Owner's birth date. */
   day: number;
   month: number;
   year: number;

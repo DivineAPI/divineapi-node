@@ -1,6 +1,24 @@
+import { ValidationError } from '../errors.js';
 /** KP Prashna payload with sec (default 0) and the API-required but unused fields filled in. */
 function prashnaPayload(params) {
     return { ...params, sec: params.sec ?? 0, full_name: params.full_name ?? 'Querent', gender: params.gender ?? 'other' };
+}
+const WEEKDAY_MODES = new Set(['civil', 'vedic']);
+/**
+ * Return a copy of params with `weekday` trimmed and lowercased. Left out when
+ * not given, so the API applies its default ('civil').
+ * @throws {ValidationError} for anything other than 'civil' or 'vedic'.
+ */
+function applyWeekday(params) {
+    const wd = params?.weekday;
+    if (wd === undefined || wd === null || wd === '') {
+        return params;
+    }
+    const mode = String(wd).trim().toLowerCase();
+    if (!WEEKDAY_MODES.has(mode)) {
+        throw new ValidationError(`Invalid weekday '${String(wd)}'. Must be 'civil' or 'vedic'.`);
+    }
+    return { ...params, weekday: mode };
 }
 /**
  * Indian Kundli (Birth Chart) API endpoints.
@@ -138,9 +156,12 @@ export class KundliApi {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/pratyantar-dasha-analysis', params);
     }
     // ── Core Kundli Endpoints ──
-    /** Get basic astro details. */
+    /**
+     * Get basic astro details. `vaar` is the weekday of birth; with
+     * `weekday: 'vedic'` a birth before sunrise gets the previous day.
+     */
     async basicAstroDetails(params) {
-        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v3/basic-astro-details', params);
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v3/basic-astro-details', applyWeekday(params));
     }
     /** Get planetary positions. */
     async planetaryPositions(params) {
@@ -183,9 +204,9 @@ export class KundliApi {
     async ghataChakra(params) {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/ghata-chakra', params);
     }
-    /** Get shadbala (planetary strength). */
+    /** Get shadbala (planetary strength). v3 adds `ishta_phala` and `kashta_phala` per planet. */
     async shadbala(params) {
-        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v2/shadbala', params);
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v3/shadbala', params);
     }
     /** Get gemstone suggestions. */
     async gemstoneSuggestion(params) {
@@ -275,9 +296,13 @@ export class KundliApi {
     async lalKitabHouseSignification(params) {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/house-signification', params);
     }
-    /** Get Lal Kitab varshphal varsha pravesh for the given varshphal_year. */
+    /**
+     * Get Lal Kitab varshphal varsha pravesh for the given varshphal_year.
+     * `weekday` in the response is the day of that moment; with
+     * `weekday: 'vedic'` a moment before sunrise gets the previous day.
+     */
     async lalKitabVarshphalVarshaPravesh(params) {
-        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/varshphal/varsha-pravesh', params);
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/lal-kitab/varshphal/varsha-pravesh', applyWeekday(params));
     }
     /** Get Lal Kitab varshphal planetary positions for the given varshphal_year. */
     async lalKitabVarshphalPlanetaryPositions(params) {
@@ -319,11 +344,21 @@ export class KundliApi {
     async rudrakshaSuggestion(params) {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/rudraksha-suggestion', params);
     }
+    /**
+     * Get the varshphal Varsha Pravesh (start of the annual chart) for varshphal_year.
+     * `weekday` in the response is the day of that moment; with
+     * `weekday: 'vedic'` a moment before sunrise gets the previous day.
+     */
     async varshphalVarshaPravesh(params) {
-        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/varsha-pravesh', params);
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/varsha-pravesh', applyWeekday(params));
     }
+    /**
+     * Get varshphal basic astro details for varshphal_year. `vaar` is the day of
+     * the Varsha Pravesh moment; with `weekday: 'vedic'` a moment before sunrise
+     * gets the previous day.
+     */
     async varshphalBasicAstroDetails(params) {
-        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/basic-astro-details', params);
+        return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/basic-astro-details', applyWeekday(params));
     }
     async varshphalPlanetaryPositions(params) {
         return this.client.post('astroapi-3.divineapi.com', '/indian-api/v1/varshphal/planetary-positions', params);

@@ -61,9 +61,13 @@ export class FestivalApi {
     return this.client.post('astroapi-3.divineapi.com', '/indian-api/v2/ashada-festivals', params);
   }
 
-  /** Get Shraavana month festivals. */
+  /**
+   * Get Shraavana month festivals. The only month with a v3 (DV-374): in v2, four of its
+   * festivals (hariyaali_teej, gayatri_jayanti, narali_purnima, sanskrit_divas) return
+   * their date under `dates` instead of `date`; v3 fixes those four.
+   */
   async shraavanaFestivals(params: FestivalMonthParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v2/shraavana-festivals', params);
+    return this.client.post('astroapi-3.divineapi.com', '/indian-api/v3/shraavana-festivals', params);
   }
 
   /** Get Bhadrapada month festivals. */
