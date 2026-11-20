@@ -634,6 +634,81 @@ export interface LocationSearchParams extends BaseParams {
     place: string;
 }
 /**
+ * Timezone lookup: give exactly ONE place (`place_id`, or `lat` + `lon`, or `timezone`),
+ * and either all of `day`, `month`, `year`, `hour`, `min` (local time; `sec` defaults
+ * to 0) or none of them for the current time.
+ */
+export interface TimezoneParams extends BaseParams {
+    /** place_id of a place from `location.search()` (e.g. 1275004 for Kolkata). */
+    place_id?: number;
+    /** Latitude, with `lon`: the nearest known place is used. */
+    lat?: number;
+    /** Longitude, with `lat`. */
+    lon?: number;
+    /** IANA timezone name instead of a place (e.g. "America/New_York"). */
+    timezone?: string;
+    /** Local day of the month (1-31). */
+    day?: number;
+    /** Local month (1-12). */
+    month?: number;
+    /** Local year (1800-2200). */
+    year?: number;
+    /** Local hour, 24-hour clock (0-23). */
+    hour?: number;
+    /** Local minute (0-59). */
+    min?: number;
+    /** Local second (0-59, default 0). */
+    sec?: number;
+}
+/** A place in a timezone result. */
+export interface TimezonePlace {
+    place_id: number;
+    name: string;
+    full_name: string;
+    country: string;
+    admin1: string;
+    latitude: number;
+    longitude: number;
+    timezone: string;
+}
+/** `data` of a timezone result. */
+export interface TimezoneData {
+    /** The matched place, or null when looked up by timezone name. */
+    place: TimezonePlace | null;
+    /** IANA timezone name. */
+    timezone: string;
+    /** "YYYY-MM-DD HH:MM:SS" at the place. */
+    local_datetime: string;
+    /** "YYYY-MM-DD HH:MM:SS" in UTC. */
+    utc_datetime: string;
+    /** UTC offset in decimal hours at that moment (e.g. 5.5, -4): the `tzone` to send. */
+    timezone_value: number;
+    /** UTC offset as text (e.g. "+05:30"). */
+    utc_offset: string;
+    /** Summer time was in force. */
+    is_dst: boolean;
+    /** The local time happened twice (clocks went back); the first of the two is used. */
+    ambiguous: boolean;
+}
+/** Response of `location.timezone()`. */
+export interface TimezoneResponse {
+    status: 'success';
+    code: number;
+    message: string;
+    data: TimezoneData;
+    attribution: string;
+}
+/** Response of `location.health()`. */
+export interface LocationHealthResponse {
+    status: string;
+    code: number;
+    message: string;
+    data: {
+        service: string;
+        status: string;
+    };
+}
+/**
  * Birth details for the Astro Chatbot. Numbers are fine: the SDK sends every value as
  * the string the chatbot requires (it rejects JSON numbers with 422).
  */

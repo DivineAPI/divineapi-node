@@ -17,6 +17,12 @@ export declare class BaseClient {
      */
     post<T = unknown>(host: ApiHost, path: string, params?: Record<string, unknown>): Promise<T>;
     /**
+     * Make a GET request with no body, e.g. a service health check.
+     * @param host - The API host (e.g., "geolocation.divineapi.com")
+     * @param path - The endpoint path (e.g., "/health")
+     */
+    get<T = unknown>(host: ApiHost, path: string): Promise<T>;
+    /**
      * POST a JSON body with the API key in an `x-api-key` header.
      * Used by Reports V2 (`/api/v1/reports/generate`, `/api/v1/western/reports/generate`),
      * which rejects form-encoded requests with 401 "x-api-key header required".

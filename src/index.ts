@@ -49,7 +49,7 @@ export class DivineApi {
   public readonly lifestyle: LifestyleApi;
   /** Calculator endpoints */
   public readonly calculators: CalculatorApi;
-  /** Location endpoints (place name -> lat, lon, timezone) */
+  /** Location endpoints (place search, the timezone offset on a date, service health) */
   public readonly location: LocationApi;
   /** Astro Chatbot endpoints (ask.divineapi.com; needs an Astro Chatbot plan) */
   public readonly chatbot: ChatbotApi;

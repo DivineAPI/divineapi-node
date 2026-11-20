@@ -65,6 +65,21 @@ export class BaseClient {
   }
 
   /**
+   * Make a GET request with no body, e.g. a service health check.
+   * @param host - The API host (e.g., "geolocation.divineapi.com")
+   * @param path - The endpoint path (e.g., "/health")
+   */
+  async get<T = unknown>(host: ApiHost, path: string): Promise<T> {
+    return this.send<T>(`https://${host}${path}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${this.authToken}`,
+        'Accept': 'application/json',
+      },
+    });
+  }
+
+  /**
    * POST a JSON body with the API key in an `x-api-key` header.
    * Used by Reports V2 (`/api/v1/reports/generate`, `/api/v1/western/reports/generate`),
    * which rejects form-encoded requests with 401 "x-api-key header required".
