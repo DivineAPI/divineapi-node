@@ -50,7 +50,7 @@ class DivineApi {
     lifestyle;
     /** Calculator endpoints */
     calculators;
-    /** Location endpoints (place name -> lat, lon, timezone) */
+    /** Location endpoints (place search, the timezone offset on a date, service health) */
     location;
     /** Astro Chatbot endpoints (ask.divineapi.com; needs an Astro Chatbot plan) */
     chatbot;
