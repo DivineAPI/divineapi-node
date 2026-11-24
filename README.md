@@ -122,6 +122,8 @@ client.horoscope.chinese(params)        // params.h_day: 'today' | 'tomorrow' | 
 client.horoscope.chineseWeekly(params)  // params.sign: Chinese animal ('rat', 'ox', ...); params.week: 'current' | 'prev' | 'next'
 client.horoscope.chineseMonthly(params) // params.month: 'current' | 'prev' | 'next'
 client.horoscope.chineseYearly(params)  // params.year:  'current' | 'prev' | 'next'
+// Any of the four Chinese calls: special_info: true adds data.special (lucky_colors, horoscope_percentage, summary)
+client.horoscope.chineseYearlyTopSigns(params) // no sign; params.year: 'current' | 'prev' | 'next' -> data.areas.career[0].sign
 client.horoscope.numerology(params)
 client.horoscope.yesOrNoTarot(params)
 client.horoscope.dailyTarot(params)

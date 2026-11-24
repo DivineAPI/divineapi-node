@@ -161,26 +161,68 @@ export interface YearlyHoroscopeParams extends TimezoneParam, LanguageParam {
     /** Year selector: 'current', 'prev', or 'next'. Calendar years are rejected. */
     year: PeriodSelector;
 }
-export interface ChineseHoroscopeParams extends TimezoneParam, LanguageParam {
+/** Opt-in extra block of the four Chinese horoscope endpoints. */
+export interface ChineseSpecialInfoParam extends BaseParams {
+    /**
+     * `true` (or 1) adds `data.special` (see {@link ChineseSpecialInfo}): two lucky
+     * colours, a 0-100 score per area and a short summary. Off by default. The SDK
+     * sends 1, because the API ignores "true".
+     */
+    special_info?: boolean | 0 | 1;
+}
+/** `data.special` of a Chinese horoscope called with `special_info: true`. */
+export interface ChineseSpecialInfo {
+    /** Two lucky colours, e.g. `{ name: 'Red', hex: '#D7263D' }`. */
+    lucky_colors: {
+        name: string;
+        hex: string;
+    }[];
+    /** 0-100 per area: growth, health, wealth, career, love, family, luck. Null if not filled. */
+    horoscope_percentage: Record<string, number> | null;
+    /** Short overview of the reading ('' if not filled). */
+    summary: string;
+}
+export interface ChineseHoroscopeParams extends TimezoneParam, LanguageParam, ChineseSpecialInfoParam {
     sign: string;
     h_day: string;
 }
 /** Chinese zodiac animal signs accepted by the Chinese horoscope endpoints. */
 export type ChineseSign = 'rat' | 'ox' | 'tiger' | 'rabbit' | 'dragon' | 'snake' | 'horse' | 'goat' | 'monkey' | 'rooster' | 'dog' | 'pig';
-export interface ChineseWeeklyHoroscopeParams extends TimezoneParam, LanguageParam {
+export interface ChineseWeeklyHoroscopeParams extends TimezoneParam, LanguageParam, ChineseSpecialInfoParam {
     sign: ChineseSign;
     /** Week selector: 'current', 'prev', or 'next'. Calendar dates are rejected. */
     week: PeriodSelector;
 }
-export interface ChineseMonthlyHoroscopeParams extends TimezoneParam, LanguageParam {
+export interface ChineseMonthlyHoroscopeParams extends TimezoneParam, LanguageParam, ChineseSpecialInfoParam {
     sign: ChineseSign;
     /** Month selector: 'current', 'prev', or 'next'. Month numbers are rejected. */
     month: PeriodSelector;
 }
-export interface ChineseYearlyHoroscopeParams extends TimezoneParam, LanguageParam {
+export interface ChineseYearlyHoroscopeParams extends TimezoneParam, LanguageParam, ChineseSpecialInfoParam {
     sign: ChineseSign;
     /** Year selector: 'current', 'prev', or 'next'. Calendar years are rejected. */
     year: PeriodSelector;
+}
+/** Top 3 Chinese signs of a year. There is no sign: all twelve animals are ranked. */
+export interface ChineseYearlyTopSignsParams extends TimezoneParam, LanguageParam {
+    /** Year selector: 'current', 'prev', or 'next'. Calendar years are rejected. */
+    year: PeriodSelector;
+}
+/** One ranked sign in {@link ChineseYearlyTopSignsData.areas}. */
+export interface ChineseTopSign {
+    /** 1 = best. */
+    rank: number;
+    /** Animal sign, capitalised (e.g. "Goat"). */
+    sign: string;
+    /** Why the sign ranks here. */
+    reason: string;
+}
+/** `data` of `horoscope.chineseYearlyTopSigns()`. */
+export interface ChineseYearlyTopSignsData {
+    /** Calendar year, e.g. "2026". */
+    year: string;
+    /** Keyed by area (career, health, love, wealth); three entries each, sorted by rank. */
+    areas: Record<string, ChineseTopSign[]>;
 }
 export interface NumerologyHoroscopeParams extends TimezoneParam, LanguageParam, DateParams {
     number: number;
