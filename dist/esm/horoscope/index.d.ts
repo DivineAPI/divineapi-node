@@ -1,5 +1,5 @@
 import { BaseClient } from '../client.js';
-import type { ApiResponse, DailyHoroscopeParams, WeeklyHoroscopeParams, MonthlyHoroscopeParams, YearlyHoroscopeParams, ChineseHoroscopeParams, ChineseWeeklyHoroscopeParams, ChineseMonthlyHoroscopeParams, ChineseYearlyHoroscopeParams, NumerologyHoroscopeParams, LanguageParam, CardImageParams, LoveCompatibilityParams, WhichAnimalParams } from '../types.js';
+import type { ApiResponse, DailyHoroscopeParams, WeeklyHoroscopeParams, MonthlyHoroscopeParams, YearlyHoroscopeParams, ChineseHoroscopeParams, ChineseWeeklyHoroscopeParams, ChineseMonthlyHoroscopeParams, ChineseYearlyHoroscopeParams, ChineseYearlyTopSignsParams, ChineseYearlyTopSignsData, NumerologyHoroscopeParams, LanguageParam, CardImageParams, LoveCompatibilityParams, WhichAnimalParams } from '../types.js';
 /**
  * Horoscope & Tarot API endpoints.
  * Host: astroapi-5.divineapi.com
@@ -20,18 +20,36 @@ export declare class HoroscopeApi {
     monthly(params: MonthlyHoroscopeParams): Promise<ApiResponse>;
     /** Get yearly horoscope for a zodiac sign. */
     yearly(params: YearlyHoroscopeParams): Promise<ApiResponse>;
-    /** Get Chinese horoscope (daily: `h_day` is 'today', 'tomorrow' or 'yesterday'). */
+    /**
+     * Get Chinese horoscope (daily: `h_day` is 'today', 'tomorrow' or 'yesterday').
+     * `data` has `sign`, `date` and `prediction`; `special_info: true` adds `data.special`
+     * ({@link ChineseSpecialInfo}).
+     */
     chinese(params: ChineseHoroscopeParams): Promise<ApiResponse>;
     /**
      * Get the weekly Chinese horoscope for an animal sign. `data` has `sign`, `week`
      * (e.g. "08 Nov 2026 to 14 Nov 2026") and `prediction` (growth, health, wealth,
-     * career, love, family, fortune).
+     * career, love, family, fortune). `special_info: true` adds `data.special`: two lucky
+     * colours, a 0-100 score per area and a summary ({@link ChineseSpecialInfo}).
      */
     chineseWeekly(params: ChineseWeeklyHoroscopeParams): Promise<ApiResponse>;
-    /** Get the monthly Chinese horoscope. `data` has `sign`, `month` (e.g. "November 2026") and `prediction`. */
+    /**
+     * Get the monthly Chinese horoscope. `data` has `sign`, `month` (e.g. "November 2026")
+     * and `prediction`; `special_info` works as in {@link chineseWeekly}.
+     */
     chineseMonthly(params: ChineseMonthlyHoroscopeParams): Promise<ApiResponse>;
-    /** Get the yearly Chinese horoscope. `data` has `sign`, `year` and `prediction`. */
+    /**
+     * Get the yearly Chinese horoscope. `data` has `sign`, `year` and `prediction`;
+     * `special_info` works as in {@link chineseWeekly}.
+     */
     chineseYearly(params: ChineseYearlyHoroscopeParams): Promise<ApiResponse>;
+    /**
+     * Get the top 3 Chinese signs of the year in each life area. There is no sign: all
+     * twelve animals are ranked. `data.areas` is keyed by area (career, health, love,
+     * wealth), three `{ rank, sign, reason }` entries each, sorted by rank. A year without
+     * a ranking answers `success: 0`, "Data not found.".
+     */
+    chineseYearlyTopSigns(params: ChineseYearlyTopSignsParams): Promise<ApiResponse<ChineseYearlyTopSignsData>>;
     /** Get numerology-based horoscope. */
     numerology(params: NumerologyHoroscopeParams): Promise<ApiResponse>;
     /** Get a Yes or No tarot reading. */

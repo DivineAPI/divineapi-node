@@ -9,12 +9,25 @@ import type {
   ChineseWeeklyHoroscopeParams,
   ChineseMonthlyHoroscopeParams,
   ChineseYearlyHoroscopeParams,
+  ChineseYearlyTopSignsParams,
+  ChineseYearlyTopSignsData,
+  ChineseSpecialInfoParam,
   NumerologyHoroscopeParams,
   LanguageParam,
   CardImageParams,
   LoveCompatibilityParams,
   WhichAnimalParams,
 } from '../types.js';
+
+/**
+ * The Chinese endpoints add `data.special` only for `special_info=1`, and `true` would
+ * be sent as "true", which the API ignores. Sends 1 when on and drops the field when off,
+ * so a call without it is unchanged.
+ */
+function withSpecialInfo(params: ChineseSpecialInfoParam): Record<string, unknown> {
+  const { special_info, ...rest } = params;
+  return special_info === true || special_info === 1 ? { ...rest, special_info: 1 } : rest;
+}
 
 /**
  * Horoscope & Tarot API endpoints.
@@ -61,28 +74,49 @@ export class HoroscopeApi {
     return this.client.post('astroapi-5.divineapi.com', '/api/v5/yearly-horoscope', params);
   }
 
-  /** Get Chinese horoscope (daily: `h_day` is 'today', 'tomorrow' or 'yesterday'). */
+  /**
+   * Get Chinese horoscope (daily: `h_day` is 'today', 'tomorrow' or 'yesterday').
+   * `data` has `sign`, `date` and `prediction`; `special_info: true` adds `data.special`
+   * ({@link ChineseSpecialInfo}).
+   */
   async chinese(params: ChineseHoroscopeParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-5.divineapi.com', '/api/v3/chinese-horoscope', params);
+    return this.client.post('astroapi-5.divineapi.com', '/api/v3/chinese-horoscope', withSpecialInfo(params));
   }
 
   /**
    * Get the weekly Chinese horoscope for an animal sign. `data` has `sign`, `week`
    * (e.g. "08 Nov 2026 to 14 Nov 2026") and `prediction` (growth, health, wealth,
-   * career, love, family, fortune).
+   * career, love, family, fortune). `special_info: true` adds `data.special`: two lucky
+   * colours, a 0-100 score per area and a summary ({@link ChineseSpecialInfo}).
    */
   async chineseWeekly(params: ChineseWeeklyHoroscopeParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-5.divineapi.com', '/api/v3/chinese-horoscope-weekly', params);
+    return this.client.post('astroapi-5.divineapi.com', '/api/v3/chinese-horoscope-weekly', withSpecialInfo(params));
   }
 
-  /** Get the monthly Chinese horoscope. `data` has `sign`, `month` (e.g. "November 2026") and `prediction`. */
+  /**
+   * Get the monthly Chinese horoscope. `data` has `sign`, `month` (e.g. "November 2026")
+   * and `prediction`; `special_info` works as in {@link chineseWeekly}.
+   */
   async chineseMonthly(params: ChineseMonthlyHoroscopeParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-5.divineapi.com', '/api/v3/chinese-horoscope-monthly', params);
+    return this.client.post('astroapi-5.divineapi.com', '/api/v3/chinese-horoscope-monthly', withSpecialInfo(params));
   }
 
-  /** Get the yearly Chinese horoscope. `data` has `sign`, `year` and `prediction`. */
+  /**
+   * Get the yearly Chinese horoscope. `data` has `sign`, `year` and `prediction`;
+   * `special_info` works as in {@link chineseWeekly}.
+   */
   async chineseYearly(params: ChineseYearlyHoroscopeParams): Promise<ApiResponse> {
-    return this.client.post('astroapi-5.divineapi.com', '/api/v3/chinese-horoscope-yearly', params);
+    return this.client.post('astroapi-5.divineapi.com', '/api/v3/chinese-horoscope-yearly', withSpecialInfo(params));
+  }
+
+  /**
+   * Get the top 3 Chinese signs of the year in each life area. There is no sign: all
+   * twelve animals are ranked. `data.areas` is keyed by area (career, health, love,
+   * wealth), three `{ rank, sign, reason }` entries each, sorted by rank. A year without
+   * a ranking answers `success: 0`, "Data not found.".
+   */
+  async chineseYearlyTopSigns(params: ChineseYearlyTopSignsParams): Promise<ApiResponse<ChineseYearlyTopSignsData>> {
+    return this.client.post('astroapi-5.divineapi.com', '/api/v3/chinese-yearly-top-signs', params);
   }
 
   /** Get numerology-based horoscope. */
